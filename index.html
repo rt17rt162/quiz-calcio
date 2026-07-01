@@ -7,14 +7,9 @@
 <style>
 /* ─── RESET & BASE ─── */
 :root {
-  --bg: #121212;
-  --card: #1a1a1a;
-  --blue: #00e5ff;
-  --green: #39ff8f;
-  --red: #ff4757;
-  --yellow: #ffd32a;
-  --text: #f0f4f2;
-  --muted: #7a8f87;
+  --bg: #121212; --card: #1a1a1a; --blue: #00e5ff;
+  --green: #39ff8f; --red: #ff4757; --yellow: #ffd32a;
+  --text: #f0f4f2; --muted: #7a8f87;
 }
 *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; margin: 0; overscroll-behavior: none; }
@@ -37,7 +32,7 @@ body {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
   padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
-  overflow-y: auto; transition: opacity .25s ease;
+  overflow-y: auto;
 }
 .screen.hidden { display: none; }
 
@@ -76,13 +71,26 @@ body {
 /* ─── SPINNER & SYNC OVERLAY ─── */
 .spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,.1); border-top-color: var(--green); animation: spin .85s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.sync-overlay { position: absolute; inset: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.sync-overlay h2 { font-size: 32px; font-weight: 900; color: var(--blue); margin-top: 16px; animation: pulse 1s infinite; }
-@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(.95); } }
+
+/*
+  SYNC OVERLAY — appare solo durante la brevissima finestra di countdown.
+  Viene nascosto non appena revealAt è passato o mancano ≤0s.
+*/
+.sync-overlay {
+  position: absolute; inset: 0; background: var(--bg); z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.sync-overlay.hidden { display: none; }
+.sync-overlay h2 {
+  font-size: 32px; font-weight: 900; color: var(--blue); margin-top: 16px;
+  animation: pulse 1s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(.95)} }
 
 /* ─── ROOM & PLAYERS ─── */
 .code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0 28px; }
 .code-val { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue); line-height: 1.1; }
+.code-hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
 .score-bar { display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0; }
 .pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; }
 .pchip.me  { border-color: rgba(0,229,255,.4); }
@@ -118,11 +126,12 @@ body {
 .vf-feedback { min-height: 40px; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 .vf-btns { display: flex; gap: 14px; flex-shrink: 0; }
 .vf-btn { flex: 1; border: 2px solid; border-radius: 20px; padding: 22px 8px; font-size: 20px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.vf-btn.vero { background: rgba(57,255,143,.12); border-color: var(--green); color: var(--green); }
-.vf-btn.falso { background: rgba(255,71,87,.12); border-color: var(--red); color: var(--red); }
-.vf-btn.hit { box-shadow: 0 0 30px currentColor; opacity: 1 !important; }
+.vf-btn span { font-size: 14px; font-weight: 700; }
+.vf-btn.vero  { background: rgba(57,255,143,.12); border-color: var(--green); color: var(--green); }
+.vf-btn.falso { background: rgba(255,71,87,.12);  border-color: var(--red);   color: var(--red); }
+.vf-btn.hit   { box-shadow: 0 0 30px currentColor; opacity: 1 !important; }
 
-/* ─── L'IDENTIKIT ─── */
+/* ─── IDENTIKIT ─── */
 .idk-clues { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; margin-bottom: 14px; padding-top: 10px; }
 .idk-clue { background: rgba(255,255,255,.05); border-left: 4px solid var(--yellow); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; animation: fadeUp .3s ease; }
 .idk-points { font-size: 11px; font-weight: 800; color: var(--yellow); margin-bottom: 4px; letter-spacing: 1px; }
@@ -141,7 +150,9 @@ body {
 .vs-num.me  { color: var(--blue); }
 .vs-num.opp { color: var(--green); }
 .verdict { font-size: 17px; font-weight: 900; margin-bottom: 28px; }
-.verdict.win  { color: var(--green); } .verdict.lose { color: var(--red); } .verdict.draw { color: var(--blue); }
+.verdict.win  { color: var(--green); }
+.verdict.lose { color: var(--red); }
+.verdict.draw { color: var(--blue); }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 .fade-in { animation: fadeUp .4s ease both; }
@@ -171,8 +182,12 @@ body {
 <div class="screen hidden" id="s-wait">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <p class="label-xs" style="margin:0 0 4px;">Condividi il codice</p>
-    <div class="code-box"><div class="code-val" id="wCode">----</div><div class="code-hint">Fai inserire questo codice all'avversario</div></div>
-    <div class="spinner"></div><p style="font-size:15px;color:var(--muted);font-weight:600;">In attesa dell'avversario...</p>
+    <div class="code-box">
+      <div class="code-val" id="wCode">----</div>
+      <div class="code-hint">Fai inserire questo codice all'avversario</div>
+    </div>
+    <div class="spinner"></div>
+    <p style="font-size:15px;color:var(--muted);font-weight:600;">In attesa dell'avversario...</p>
   </div>
 </div>
 
@@ -185,7 +200,7 @@ body {
     <p class="label-xs" style="margin:0 0 4px;">Scegli il mini-gioco</p>
     <div class="game-grid">
       <div class="game-card" id="pickQuiz"><div class="icon">🏆</div><div class="info"><div class="name">Quiz Calcio</div><div class="desc">5 domande classiche · 10s · 1 pt</div></div></div>
-      <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo blocca · +10 o -5</div></div></div>
+      <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo blocca · +10 se giusto · +5 all'avversario se sbaglio</div></div></div>
       <div class="game-card" id="pickIDK"><div class="icon">🕵️</div><div class="info"><div class="name">L'Identikit</div><div class="desc">Indovina il giocatore dagli indizi!</div></div></div>
     </div>
   </div>
@@ -195,7 +210,8 @@ body {
 <div class="screen hidden" id="s-lobby-guest">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lgCode">----</div></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-    <div class="spinner"></div><p style="font-size:16px;font-weight:700;color:var(--muted);margin:0 0 6px;">In attesa del master...</p>
+    <div class="spinner"></div>
+    <p style="font-size:16px;font-weight:700;color:var(--muted);margin:0 0 6px;">In attesa del master...</p>
     <p style="font-size:13px;color:var(--muted);margin:0;">Il master sta scegliendo il gioco</p>
   </div>
 </div>
@@ -212,7 +228,9 @@ body {
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" id="qCard">
     <div class="q-text" id="qText"></div><div class="options" id="qOpts"></div>
   </div>
-  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;"><span id="qTimerLbl">10s</span></div>
+  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;">
+    <span id="qTimerLbl">10s</span>
+  </div>
 </div>
 
 <!-- 5. VERO O FALSO -->
@@ -225,10 +243,12 @@ body {
   </div>
   <div class="vf-area" id="vfCard">
     <p class="label-xs">È vero o falso?</p>
-    <div class="vf-text" id="vfText">...</div><div class="vf-feedback" id="vfFeedback"></div>
+    <div class="vf-text" id="vfText">...</div>
+    <div class="vf-feedback" id="vfFeedback"></div>
   </div>
   <div class="vf-btns">
-    <button class="vf-btn vero" id="vfV">✅<span>VERO</span></button><button class="vf-btn falso" id="vfF">❌<span>FALSO</span></button>
+    <button class="vf-btn vero" id="vfV">✅<span>VERO</span></button>
+    <button class="vf-btn falso" id="vfF">❌<span>FALSO</span></button>
   </div>
 </div>
 
@@ -241,7 +261,7 @@ body {
     <div class="pchip opp"><div class="pname" id="idkOppName">Avversario</div><div class="pscore" id="idkOppScore">0</div><div class="pstatus" id="idkOppSt">&nbsp;</div></div>
   </div>
   <div class="idk-clues" id="idkClues"></div>
-  <div class="vf-feedback" id="idkFeedback" style="min-height:24px; font-size:14px; margin-bottom:8px;"></div>
+  <div class="vf-feedback" id="idkFeedback" style="min-height:24px;font-size:14px;margin-bottom:8px;"></div>
   <div class="idk-input-area">
     <div class="idk-autocomplete" id="idkAuto"></div>
     <input type="text" id="idkInp" placeholder="Nome giocatore..." autocomplete="off">
@@ -252,8 +272,13 @@ body {
 <!-- 7. RISULTATO -->
 <div class="screen hidden" id="s-result">
   <div class="result-center fade-in">
-    <div class="result-medal" id="rMedal">🏆</div><p class="label-xs" style="margin:0 0 6px;">Partita Finita</p>
-    <div class="vs-scores"><div class="vs-num me" id="rMeScore">0</div><div class="vs-div">–</div><div class="vs-num opp" id="rOppScore">0</div></div>
+    <div style="font-size:54px;margin-bottom:8px;" id="rMedal">🏆</div>
+    <p class="label-xs" style="margin:0 0 6px;">Partita Finita</p>
+    <div class="vs-scores">
+      <div class="vs-num me" id="rMeScore">0</div>
+      <div style="font-size:18px;color:var(--muted);font-weight:700;">–</div>
+      <div class="vs-num opp" id="rOppScore">0</div>
+    </div>
     <div style="display:flex;justify-content:space-between;width:100%;max-width:260px;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:20px;">
       <span id="rMeName">Tu</span><span id="rOppName">Avversario</span>
     </div>
@@ -267,286 +292,538 @@ body {
 <script>
 'use strict';
 
-/* ─── DATABASES ─── */
+/* ═══════════════════════════════════════════
+   DATABASES
+═══════════════════════════════════════════ */
 const QUIZ_DB = [
   { q:"Quale squadra ha vinto più Scudetti nella storia della Serie A?", o:["Juventus","Inter","Milan","Roma"], c:0 },
   { q:"In quale anno l'Italia ha vinto il suo primo Mondiale?", o:["1930","1934","1938","1950"], c:1 },
   { q:"Quale club ha vinto la prima Coppa dei Campioni nel 1956?", o:["Barcelona","Juventus","Real Madrid","Benfica"], c:2 },
   { q:"Quanti Palloni d'Oro ha vinto Lionel Messi (fino al 2024)?", o:["6","7","8","9"], c:2 },
-  { q:"Con quale club Diego Maradona ha vinto l'unico Scudetto in Italia?", o:["Roma","Lazio","Inter","Napoli"], c:3 }
+  { q:"Con quale club Diego Maradona ha vinto l'unico Scudetto in Italia?", o:["Roma","Lazio","Inter","Napoli"], c:3 },
+  { q:"Chi ha segnato il gol della vittoria nella finale Mondiale 2010?", o:["Iniesta","Villa","Xavi","Torres"], c:0 },
+  { q:"Quante Champions League ha vinto Cristiano Ronaldo?", o:["3","4","5","6"], c:2 },
+  { q:"In quale anno l'Inter ha vinto il Triplete?", o:["2008","2009","2010","2011"], c:2 },
+  { q:"Chi detiene il record presenze con la Nazionale italiana?", o:["Cannavaro","Buffon","Maldini","Zoff"], c:1 },
+  { q:"Quale paese africano raggiunse per primo i quarti Mondiale?", o:["Nigeria","Camerun","Senegal","Marocco"], c:1 }
 ];
+
 const VF_DB = [
   { s:"Gianluigi Buffon ha giocato più di 1000 partite in carriera.", a: true },
   { s:"La Juventus ha vinto 10 Scudetti consecutivi tra il 2012 e il 2022.", a: false },
   { s:"Lionel Messi ha vinto il Mondiale nel 2018 in Russia.", a: false },
   { s:"Zinedine Zidane ha vinto 3 Champions League consecutive da allenatore del Real Madrid.", a: true },
-  { s:"Paolo Maldini non ha mai vinto una Champions League come giocatore.", a: false }
+  { s:"Paolo Maldini non ha mai vinto una Champions League come giocatore.", a: false },
+  { s:"Il primo Mondiale di calcio si è svolto in Uruguay nel 1930.", a: true },
+  { s:"Cristiano Ronaldo è nato a Funchal, in Portogallo.", a: true },
+  { s:"L'Italia ha vinto cinque Campionati del Mondo di calcio.", a: false },
+  { s:"Ronaldo Il Fenomeno ha segnato 8 gol nella fase finale del Mondiale 2002.", a: true },
+  { s:"La finale di Champions 2005 tra Liverpool e Milan terminò 3-3 nei tempi regolamentari.", a: true }
 ];
+
 const IDK_DB = [
-  { n: "Zlatan Ibrahimovic", c: ["Ho giocato in Juventus, Inter e Milan.","Ho vinto campionati in 4 paesi diversi.","Sono il miglior marcatore della nazionale svedese.","Ho detto: 'I leoni non si paragonano agli umani'."] },
-  { n: "Francesco Totti", c: ["Ho giocato in una sola squadra per tutta la carriera.","Ho vinto un Mondiale con l'Italia.","Il mio simbolo era il 'Cucchiaio'.","Il mio soprannome è 'Er Pupone'."] },
-  { n: "Cristiano Ronaldo", c: ["Ho iniziato la carriera nello Sporting Lisbona.","Ho vinto 5 Palloni d'Oro.","Sono il miglior marcatore della Champions League.","La mia esultanza più famosa è 'Siuuu'."] }
+  { n:"Zlatan Ibrahimovic", c:["Ho giocato in Juventus, Inter e Milan.","Ho vinto campionati in 4 paesi diversi.","Sono il miglior marcatore della nazionale svedese.","Ho detto: 'I leoni non si paragonano agli umani'."] },
+  { n:"Francesco Totti", c:["Ho giocato in una sola squadra per tutta la carriera.","Ho vinto un Mondiale con l'Italia.","Il mio simbolo era il 'Cucchiaio'.","Il mio soprannome è 'Er Pupone'."] },
+  { n:"Cristiano Ronaldo", c:["Ho iniziato la carriera nello Sporting Lisbona.","Ho vinto 5 Palloni d'Oro.","Sono il miglior marcatore della Champions League.","La mia esultanza più famosa è 'Siuuu'."] }
 ];
-const IDK_NAMES = ["Zlatan Ibrahimovic", "Francesco Totti", "Cristiano Ronaldo", "Lionel Messi", "Paolo Maldini", "Gianluigi Buffon", "Diego Maradona", "Pelé", "Ronaldo Il Fenomeno", "Alessandro Del Piero"];
 
-const Q_TIME = 10; const Q_PER_MATCH = 5; const VF_PER_MATCH = 5; const IDK_PER_MATCH = 3;
+const IDK_NAMES = [
+  "Zlatan Ibrahimovic","Francesco Totti","Cristiano Ronaldo","Lionel Messi",
+  "Paolo Maldini","Gianluigi Buffon","Diego Maradona","Pelé",
+  "Ronaldo Il Fenomeno","Alessandro Del Piero"
+];
 
-/* ─── FIREBASE INIT & SYNC TIME ─── */
+const Q_TIME = 10;
+const Q_PER_MATCH  = 5;
+const VF_PER_MATCH = 5;
+const IDK_PER_MATCH = 3;
+const SYNC_WINDOW_MS = 1500; // overlay "PRONTI..." dura al massimo 1.5s
+
+/* ═══════════════════════════════════════════
+   FIREBASE INIT
+═══════════════════════════════════════════ */
 firebase.initializeApp({
   apiKey: "AIzaSyDIyhNTyBCSEzSczT7dxyPej5iW6v2FWog",
   authDomain: "quizcalciomultiplayer.firebaseapp.com",
   databaseURL: "https://quizcalciomultiplayer-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "quizcalciomultiplayer"
 });
-const db = firebase.database();
+const DB = firebase.database();
 const SV = firebase.database.ServerValue.TIMESTAMP;
 
+// Offset tra orologio locale e server Firebase (aggiornato in tempo reale)
 let serverOffset = 0;
-db.ref('.info/serverTimeOffset').on('value', s => serverOffset = s.val() || 0);
+DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
 const now = () => Date.now() + serverOffset;
 
-/* ─── STATO LOCALE ─── */
+/* ═══════════════════════════════════════════
+   STATO LOCALE
+═══════════════════════════════════════════ */
 let myId = sessionStorage.getItem('pid');
-if (!myId) { myId = 'p' + Math.random().toString(36).slice(2,10); sessionStorage.setItem('pid', myId); }
+if (!myId) { myId = 'p' + Math.random().toString(36).slice(2, 10); sessionStorage.setItem('pid', myId); }
+
 let room = null, isMaster = false, myName = '', roomOff = null;
-let tickId = null, syncTickId = null, idkTimers = [];
+let tickId = null, advanceTimer = null;
+let idkClueTimers = [];
 let lastIdx = -1, myAnswered = false, vfLocked = false;
 let qIdx = [], vfIdx = [], idkIdx = [];
 
+/* ═══════════════════════════════════════════
+   DOM HELPERS
+═══════════════════════════════════════════ */
 const $ = id => document.getElementById(id);
-function show(id) {
-  ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-idk','s-result'].forEach(s => $(s).classList.add('hidden'));
-  $(id).classList.remove('hidden');
+const SCREENS = ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-idk','s-result'];
+function show(id) { SCREENS.forEach(s => $(s).classList.add('hidden')); $(id).classList.remove('hidden'); }
+function genCode() { const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join(''); }
+function shuffle(n, total) { const a=[...Array(total).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,n); }
+
+function resetLocals() {
+  clearInterval(tickId);
+  clearTimeout(advanceTimer);
+  idkClueTimers.forEach(clearTimeout);
+  idkClueTimers = [];
+  lastIdx = -1; myAnswered = false; vfLocked = false;
 }
-function genCode() { const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:4}, () => c[Math.floor(Math.random()*c.length)]).join(''); }
-function shuffle(n, total) { const a = [...Array(total).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,n); }
-function resetLocals() { clearInterval(tickId); clearInterval(syncTickId); idkTimers.forEach(clearTimeout); idkTimers=[]; lastIdx = -1; myAnswered = false; vfLocked = false; }
 
-/* ─── MENU & LOBBY ─── */
+/* ═══════════════════════════════════════════
+   HANDLE SYNC OVERLAY — VERSIONE ROBUSTA
+   ─────────────────────────────────────────
+   Regole:
+   1. Se revealAt non esiste → avvia subito.
+   2. Se revealAt è già passato (now >= revealAt) → avvia subito.
+   3. Se revealAt è nel passato da più di 5s → avvia subito (fallback di sicurezza).
+   4. Solo se revealAt è nel futuro prossimo (≤ SYNC_WINDOW_MS) → mostra
+      l'overlay "PRONTI..." per la finestra residua, poi avvia.
+   5. Mai usare setInterval: un singolo setTimeout è sufficiente.
+═══════════════════════════════════════════ */
+let syncTimeout = null;
+function handleSync(revealAt, overlayId, onReady) {
+  clearTimeout(syncTimeout);
+  const overlay = $(overlayId);
+
+  // Nessun revealAt → avvia immediatamente senza overlay
+  if (!revealAt) {
+    overlay.classList.add('hidden');
+    onReady();
+    return;
+  }
+
+  const wait = revealAt - now(); // ms mancanti al via
+
+  // Già passato (qualsiasi ritardo, compreso il fallback di 5s) → avvia subito
+  if (wait <= 0) {
+    overlay.classList.add('hidden');
+    onReady();
+    return;
+  }
+
+  // Nel futuro ma oltre la finestra massima → quasi impossibile in condizioni normali,
+  // ma se succede trattalo come errore e avvia comunque dopo SYNC_WINDOW_MS al massimo.
+  const safeWait = Math.min(wait, SYNC_WINDOW_MS);
+
+  overlay.classList.remove('hidden');
+  syncTimeout = setTimeout(() => {
+    overlay.classList.add('hidden');
+    onReady();
+  }, safeWait);
+}
+
+/* ═══════════════════════════════════════════
+   MENU — CREA STANZA
+═══════════════════════════════════════════ */
 $('btnCreate').addEventListener('click', async () => {
-  myName = $('iName').value.trim(); if (!myName) return $('menuErr').textContent = 'Inserisci nome.';
+  myName = $('iName').value.trim();
+  if (!myName) { $('menuErr').textContent = 'Inserisci il tuo nome.'; return; }
+  $('menuErr').textContent = '';
   $('btnCreate').disabled = $('btnJoin').disabled = true;
-  let code; do { code = genCode(); } while ((await db.ref('rooms/'+code).get()).exists());
+
+  let code, attempts = 0;
+  do { code = genCode(); attempts++; } while ((await DB.ref('rooms/' + code).get()).exists() && attempts < 10);
+
   room = code; isMaster = true;
-  await db.ref('rooms/'+room).set({ status: 'waiting', masterId: myId, currentIndex: 0, players: { [myId]: { name: myName, score: 0 } } });
-  db.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
-  $('wCode').textContent = room; show('s-wait'); listenRoom();
+  await DB.ref('rooms/' + room).set({
+    status: 'waiting', masterId: myId, currentIndex: 0,
+    players: { [myId]: { name: myName, score: 0 } }
+  });
+  DB.ref('rooms/' + room + '/players/' + myId).onDisconnect().remove();
+  $('wCode').textContent = room;
+  show('s-wait');
+  listenRoom();
 });
 
+/* ═══════════════════════════════════════════
+   MENU — UNISCITI
+═══════════════════════════════════════════ */
 $('btnJoin').addEventListener('click', async () => {
-  myName = $('iName').value.trim(); const code = $('iCode').value.trim().toUpperCase();
-  if (!myName || code.length!==4) return $('menuErr').textContent = 'Dati non validi.';
+  myName = $('iName').value.trim();
+  const code = $('iCode').value.trim().toUpperCase();
+  if (!myName || code.length !== 4) { $('menuErr').textContent = 'Dati non validi.'; return; }
+  $('menuErr').textContent = '';
   $('btnCreate').disabled = $('btnJoin').disabled = true;
-  const snap = await db.ref('rooms/'+code).get();
-  if (!snap.exists()) { $('btnCreate').disabled = $('btnJoin').disabled = false; return $('menuErr').textContent = 'Stanza non trovata.'; }
+
+  const snap = await DB.ref('rooms/' + code).get();
+  if (!snap.exists()) {
+    $('menuErr').textContent = 'Stanza non trovata.';
+    $('btnCreate').disabled = $('btnJoin').disabled = false;
+    return;
+  }
   room = code; isMaster = false;
-  await db.ref('rooms/'+room+'/players/'+myId).set({ name: myName, score: 0 });
-  db.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
-  $('wCode').textContent = room; show('s-wait'); listenRoom();
+  await DB.ref('rooms/' + room + '/players/' + myId).set({ name: myName, score: 0 });
+  DB.ref('rooms/' + room + '/players/' + myId).onDisconnect().remove();
+  $('wCode').textContent = room;
+  show('s-wait');
+  listenRoom();
 });
 
+/* ═══════════════════════════════════════════
+   FIREBASE LISTENER
+═══════════════════════════════════════════ */
 function listenRoom() {
-  if(roomOff) roomOff();
-  const r = db.ref('rooms/'+room);
-  roomOff = () => r.off('value');
-  r.on('value', s => { const d = s.val(); if(d) handleUpdate(d); });
+  if (roomOff) roomOff();
+  const ref = DB.ref('rooms/' + room);
+  const handler = ref.on('value', snap => { const d = snap.val(); if (d) handleUpdate(d); });
+  roomOff = () => ref.off('value', handler);
 }
 
 function handleUpdate(data) {
   const pids = Object.keys(data.players || {}).sort();
-  const me = data.players[myId], oppId = pids.find(id => id !== myId), opp = oppId ? data.players[oppId] : null;
-  if(data.qIdx) qIdx = data.qIdx; if(data.vfIdx) vfIdx = data.vfIdx; if(data.idkIdx) idkIdx = data.idkIdx;
+  const me = data.players[myId];
+  const oppId = pids.find(id => id !== myId);
+  const opp = oppId ? data.players[oppId] : null;
 
-  if (isMaster && data.status === 'waiting' && pids.length === 2) return db.ref('rooms/'+room).update({ status: 'lobby' });
+  if (data.qIdx)   qIdx   = data.qIdx;
+  if (data.vfIdx)  vfIdx  = data.vfIdx;
+  if (data.idkIdx) idkIdx = data.idkIdx;
 
-  switch(data.status) {
-    case 'waiting': show('s-wait'); break;
-    case 'lobby': renderLobby(me, opp); break;
-    case 'playing': renderQuiz(data, me, opp); break;
-    case 'vf_playing': renderVF(data, me, opp); break;
-    case 'idk_playing': renderIDK(data, me, opp); break;
-    case 'finished': resetLocals(); renderResult(me, opp); break;
+  // Master: appena arriva il 2° giocatore passa a lobby
+  if (isMaster && data.status === 'waiting' && pids.length === 2) {
+    DB.ref('rooms/' + room).update({ status: 'lobby' });
+    return;
+  }
+
+  switch (data.status) {
+    case 'waiting':        show('s-wait');             break;
+    case 'lobby':          renderLobby(me, opp);       break;
+    case 'playing':        renderQuiz(data, me, opp);  break;
+    case 'vf_playing':     renderVF(data, me, opp);    break;
+    case 'idk_playing':    renderIDK(data, me, opp);   break;
+    case 'finished':       resetLocals(); renderResult(me, opp); break;
   }
 }
 
+/* ═══════════════════════════════════════════
+   LOBBY
+═══════════════════════════════════════════ */
 function renderLobby(me, opp) {
-  if (isMaster && lastIdx !== -1) { Object.keys(me?{[myId]:me}:{...me, ...opp}).forEach(id => db.ref('rooms/'+room+'/players/'+id).update({ score: 0, answers: null })); resetLocals(); }
+  // Reset punteggi e stato locale a ogni rientro in lobby
+  if (isMaster) {
+    DB.ref('rooms/' + room + '/players').once('value', snap => {
+      const ps = snap.val() || {};
+      Object.keys(ps).forEach(id => DB.ref('rooms/' + room + '/players/' + id).update({ score: 0, answers: null }));
+    });
+  }
+  resetLocals();
+
   $('lmCode').textContent = $('lgCode').textContent = room;
-  const c = $('lmPlayers'); c.innerHTML='';
-  [{n:me?.name||'Tu',cls:'me'},{n:opp?.name||'Avversario',cls:'opp'}].forEach(p => {
-    const d=document.createElement('div'); d.style.cssText='flex:1;padding:10px;border-radius:12px;font-weight:800;font-size:14px;';
-    d.style.background = p.cls==='me'?'rgba(0,229,255,.1)':'rgba(57,255,143,.1)'; d.style.color = p.cls==='me'?'var(--blue)':'var(--green)'; d.textContent=p.n; c.appendChild(d);
+  const cont = $('lmPlayers'); cont.innerHTML = '';
+  [{ n: me?.name || 'Tu', cls: 'me' }, { n: opp?.name || 'Avversario', cls: 'opp' }].forEach(p => {
+    const d = document.createElement('div');
+    d.style.cssText = 'flex:1;padding:10px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;';
+    d.style.background = p.cls === 'me' ? 'rgba(0,229,255,.1)' : 'rgba(57,255,143,.1)';
+    d.style.color = p.cls === 'me' ? 'var(--blue)' : 'var(--green)';
+    d.textContent = p.n; cont.appendChild(d);
   });
   show(isMaster ? 's-lobby-master' : 's-lobby-guest');
 }
 
-/* Master Selections */
-const startGame = (mode, count, total, arrName) => {
-  if(!isMaster) return;
-  db.ref('rooms/'+room).update({ status: mode, currentIndex: 0, [arrName]: shuffle(count, total), revealAt: now() + 1500, roomAns: null });
-};
-$('pickQuiz').onclick = () => startGame('playing', Q_PER_MATCH, QUIZ_DB.length, 'qIdx');
-$('pickVF').onclick   = () => startGame('vf_playing', VF_PER_MATCH, VF_DB.length, 'vfIdx');
-$('pickIDK').onclick  = () => startGame('idk_playing', IDK_PER_MATCH, IDK_DB.length, 'idkIdx');
-
-/* ─── SYNC OVERLAY ─── */
-function handleSync(revealAt, overlayId, onReady) {
-  const over = $(overlayId); clearInterval(syncTickId);
-  if (!revealAt || now() >= revealAt) { over.classList.add('hidden'); onReady(); return; }
-  over.classList.remove('hidden');
-  syncTickId = setInterval(() => { if (now() >= revealAt) { clearInterval(syncTickId); over.classList.add('hidden'); onReady(); } }, 100);
-}
-
-/* ─── 1. QUIZ ─── */
-function renderQuiz(data, me, opp) {
-  show('s-quiz');
-  $('qMeName').textContent = me?.name||'Tu'; $('qMeScore').textContent = me?.score||0; $('qOppName').textContent = opp?.name||'...'; $('qOppScore').textContent = opp?.score||0;
-  const idx = data.currentIndex || 0; $('qProg').textContent = (idx+1) + ' / ' + Q_PER_MATCH;
-  const myA = me?.answers?.[idx], oppA = opp?.answers?.[idx];
-  $('qMeSt').textContent = myA ? '✓' : 'Scegli…'; $('qOppSt').textContent = oppA ? '✓' : '...';
-
-  handleSync(data.revealAt, 'syncQuiz', () => {
-    if (idx !== lastIdx) { lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA); }
-    else if (myA && !myAnswered) { myAnswered = true; revealQuiz(idx, myA.sel); }
-    startTick(data.revealAt, Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
-      if(!myAnswered) { myAnswered = true; revealQuiz(idx, -1); db.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({sel:-1}); }
-    });
-    if(isMaster) {
-      const allDone = Object.values(data.players).every(p => p.answers?.[idx]);
-      if(allDone || now() > data.revealAt + (Q_TIME*1000) + 500) nextRound('playing', idx, Q_PER_MATCH, 1500);
-    }
+/* ─── Selezione gioco (solo master) ─── */
+function startGame(mode, count, total, idxKey) {
+  if (!isMaster) return;
+  DB.ref('rooms/' + room).update({
+    status: mode, currentIndex: 0,
+    [idxKey]: shuffle(count, total),
+    revealAt: now() + SYNC_WINDOW_MS, // 1.5s di conto alla rovescia
+    roomAns: null, scored: null
   });
 }
-function loadQuiz(idx, ex) {
-  const q = QUIZ_DB[qIdx[idx] ?? idx]; $('qCard').classList.remove('fade-in'); void $('qCard').offsetWidth; $('qCard').classList.add('fade-in');
-  $('qText').textContent = q.q; $('qOpts').innerHTML='';
-  q.o.forEach((o, i) => { const b = document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=()=>submitQ(idx,i); $('qOpts').appendChild(b); });
-  if(ex) revealQuiz(idx, ex.sel);
-}
-function submitQ(idx, sel) {
-  if(myAnswered) return; myAnswered = true;
-  const ok = sel === QUIZ_DB[qIdx[idx]??idx].c; revealQuiz(idx, sel);
-  db.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({sel, ok});
-  if(ok) db.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s=>(s||0)+1);
-}
-function revealQuiz(idx, sel) {
-  const c = QUIZ_DB[qIdx[idx]??idx].c;
-  $('qOpts').querySelectorAll('.opt').forEach((b, i) => { b.disabled=true; if(i===c) b.classList.add('correct'); else if(i===sel) b.classList.add('wrong'); });
+$('pickQuiz').onclick = () => startGame('playing',     Q_PER_MATCH,   QUIZ_DB.length, 'qIdx');
+$('pickVF').onclick   = () => startGame('vf_playing',  VF_PER_MATCH,  VF_DB.length,  'vfIdx');
+$('pickIDK').onclick  = () => startGame('idk_playing', IDK_PER_MATCH, IDK_DB.length, 'idkIdx');
+
+/* ═══════════════════════════════════════════
+   QUIZ
+═══════════════════════════════════════════ */
+function renderQuiz(data, me, opp) {
+  show('s-quiz');
+  $('qMeName').textContent  = me?.name  || 'Tu';
+  $('qMeScore').textContent = me?.score || 0;
+  $('qOppName').textContent  = opp?.name  || '...';
+  $('qOppScore').textContent = opp?.score || 0;
+
+  const idx = data.currentIndex || 0;
+  $('qProg').textContent = (idx + 1) + ' / ' + Q_PER_MATCH;
+  const myA = me?.answers?.[idx], oppA = opp?.answers?.[idx];
+  $('qMeSt').textContent  = myA  ? '✓ Risposto' : 'Scegli…';
+  $('qOppSt').textContent = oppA ? '✓ Risposto' : '...';
+
+  handleSync(data.revealAt, 'syncQuiz', () => {
+    if (idx !== lastIdx) {
+      lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA);
+    } else if (myA && !myAnswered) {
+      myAnswered = true; revealQuiz(idx, myA.sel);
+    }
+
+    startTick(data.revealAt, Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
+      if (!myAnswered) {
+        myAnswered = true; revealQuiz(idx, -1);
+        DB.ref('rooms/' + room + '/players/' + myId + '/answers/' + idx).set({ sel: -1, ok: false });
+      }
+    });
+
+    if (isMaster) masterCheckQuiz(data, idx);
+  });
 }
 
-/* ─── 2. VERO O FALSO ─── */
+function loadQuiz(idx, existing) {
+  const q = QUIZ_DB[qIdx[idx] ?? idx];
+  const card = $('qCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
+  $('qText').textContent = q.q;
+  $('qOpts').innerHTML = '';
+  q.o.forEach((opt, oi) => {
+    const b = document.createElement('button'); b.className = 'opt'; b.textContent = opt;
+    b.onclick = () => submitQuiz(idx, oi); $('qOpts').appendChild(b);
+  });
+  if (existing) revealQuiz(idx, existing.sel);
+}
+
+function submitQuiz(idx, sel) {
+  if (myAnswered) return; myAnswered = true;
+  const ok = sel === QUIZ_DB[qIdx[idx] ?? idx].c;
+  revealQuiz(idx, sel);
+  DB.ref('rooms/' + room + '/players/' + myId + '/answers/' + idx).set({ sel, ok });
+  if (ok) DB.ref('rooms/' + room + '/players/' + myId + '/score').transaction(s => (s || 0) + 1);
+}
+
+function revealQuiz(idx, sel) {
+  const correct = QUIZ_DB[qIdx[idx] ?? idx].c;
+  $('qOpts').querySelectorAll('.opt').forEach((b, i) => {
+    b.disabled = true;
+    if (i === correct) b.classList.add('correct');
+    else if (i === sel) b.classList.add('wrong');
+  });
+}
+
+let quizAdvancing = false;
+function masterCheckQuiz(data, idx) {
+  if (quizAdvancing) return;
+  const players = data.players || {};
+  const ids = Object.keys(players);
+  if (ids.length < 2) return;
+  const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
+  const timeUp  = data.revealAt && (now() > data.revealAt + Q_TIME * 1000 + 600);
+  if (allDone || timeUp) {
+    quizAdvancing = true;
+    clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(() => {
+      quizAdvancing = false;
+      nextRound('playing', idx, Q_PER_MATCH);
+    }, allDone ? 1300 : 300);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   VERO O FALSO
+═══════════════════════════════════════════ */
 function renderVF(data, me, opp) {
   show('s-vf');
-  $('vfMeName').textContent = me?.name||'Tu'; $('vfMeScore').textContent = me?.score||0; $('vfOppName').textContent = opp?.name||'...'; $('vfOppScore').textContent = opp?.score||0;
-  const idx = data.currentIndex || 0; $('vfProg').textContent = (idx+1) + ' / ' + VF_PER_MATCH;
-  const q = VF_DB[vfIdx[idx] ?? idx], ans = data.roomAns?.[idx];
+  $('vfMeName').textContent  = me?.name  || 'Tu';
+  $('vfMeScore').textContent = me?.score || 0;
+  $('vfOppName').textContent  = opp?.name  || '...';
+  $('vfOppScore').textContent = opp?.score || 0;
+
+  const idx = data.currentIndex || 0;
+  $('vfProg').textContent = (idx + 1) + ' / ' + VF_PER_MATCH;
+  const q = VF_DB[vfIdx[idx] ?? idx];
+  const ans = data.roomAns?.[idx] ?? null;
 
   handleSync(data.revealAt, 'syncVF', () => {
     if (idx !== lastIdx) {
-      lastIdx = idx; vfLocked = false; $('vfCard').classList.remove('fade-in'); void $('vfCard').offsetWidth; $('vfCard').classList.add('fade-in');
-      $('vfText').textContent = q.s; $('vfFeedback').textContent = '';
-      $('vfV').disabled = $('vfF').disabled = false; $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
+      lastIdx = idx; vfLocked = false;
+      const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
+      $('vfText').textContent = q.s;
+      $('vfFeedback').textContent = '';
+      $('vfV').disabled = $('vfF').disabled = false;
+      $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
     }
+
     if (ans) {
       $('vfV').disabled = $('vfF').disabled = true;
       const ok = ans.v === q.a, first = ans.pid === myId;
-      (ans.v ? $('vfV') : $('vfF')).className += ' hit';
-      $('vfFeedback').textContent = first ? (ok ? '⚡ Esatto! +10pt' : '❌ Sbagliato! +5pt a lui') : (ok ? '⚡ Ha risposto prima lui!' : '❌ Ha sbagliato! +5pt a te');
+      (ans.v ? $('vfV') : $('vfF')).classList.add('hit');
+      $('vfFeedback').textContent = first
+        ? (ok ? '⚡ Esatto! +10pt' : '❌ Sbagliato! +5pt a lui')
+        : (ok ? '⚡ Ha risposto prima lui!' : '✅ Ha sbagliato! +5pt a te');
       $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+
+      // Master assegna punti una volta sola
       if (isMaster && !data.scored?.[idx]) {
-        const pids = Object.keys(data.players), oppId = pids.find(i=>i!==ans.pid);
-        db.ref('rooms/'+room+'/players/'+(ok?ans.pid:oppId)+'/score').transaction(s=>(s||0)+(ok?10:5));
-        db.ref('rooms/'+room+'/scored/'+idx).set(true);
-        nextRound('vf_playing', idx, VF_PER_MATCH, 3000);
+        const pids = Object.keys(data.players || {});
+        const oppId = pids.find(id => id !== ans.pid);
+        const winnerId = ok ? ans.pid : oppId;
+        if (winnerId) DB.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s || 0) + (ok ? 10 : 5));
+        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+        clearTimeout(advanceTimer);
+        advanceTimer = setTimeout(() => nextRound('vf_playing', idx, VF_PER_MATCH), 2800);
       }
     }
   });
 }
-$('vfV').onclick = () => { if(vfLocked)return; vfLocked=true; db.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? {pid:myId, v:true} : undefined); };
-$('vfF').onclick = () => { if(vfLocked)return; vfLocked=true; db.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? {pid:myId, v:false} : undefined); };
 
-/* ─── 3. L'IDENTIKIT ─── */
+$('vfV').onclick = () => {
+  if (vfLocked) return; vfLocked = true;
+  DB.ref('rooms/' + room + '/roomAns/' + lastIdx).transaction(c => c === null ? { pid: myId, v: true } : undefined);
+};
+$('vfF').onclick = () => {
+  if (vfLocked) return; vfLocked = true;
+  DB.ref('rooms/' + room + '/roomAns/' + lastIdx).transaction(c => c === null ? { pid: myId, v: false } : undefined);
+};
+
+/* ═══════════════════════════════════════════
+   L'IDENTIKIT
+═══════════════════════════════════════════ */
 function renderIDK(data, me, opp) {
   show('s-idk');
-  $('idkMeName').textContent = me?.name||'Tu'; $('idkMeScore').textContent = me?.score||0; $('idkOppName').textContent = opp?.name||'...'; $('idkOppScore').textContent = opp?.score||0;
-  const idx = data.currentIndex || 0; $('idkProg').textContent = (idx+1) + ' / ' + IDK_PER_MATCH;
-  const q = IDK_DB[idkIdx[idx] ?? idx], ans = data.roomAns?.[idx];
+  $('idkMeName').textContent  = me?.name  || 'Tu';
+  $('idkMeScore').textContent = me?.score || 0;
+  $('idkOppName').textContent  = opp?.name  || '...';
+  $('idkOppScore').textContent = opp?.score || 0;
+
+  const idx = data.currentIndex || 0;
+  $('idkProg').textContent = (idx + 1) + ' / ' + IDK_PER_MATCH;
+  const q = IDK_DB[idkIdx[idx] ?? idx];
+  const ans = data.roomAns?.[idx] ?? null;
 
   handleSync(data.revealAt, 'syncIDK', () => {
     if (idx !== lastIdx) {
-      lastIdx = idx; vfLocked = false; idkTimers.forEach(clearTimeout); idkTimers = [];
-      $('idkClues').innerHTML = ''; $('idkInp').value = ''; $('idkFeedback').textContent = '';
+      lastIdx = idx; vfLocked = false;
+      idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
+      $('idkClues').innerHTML = ''; $('idkInp').value = '';
+      $('idkFeedback').textContent = '';
       $('idkInp').disabled = $('idkBtn').disabled = false;
-      
-      // Gli indizi appaiono dal revealAt (esatto per entrambi)
+
+      // Gli indizi compaiono a intervalli di 4s a partire da revealAt
+      const baseTime = data.revealAt || now();
       q.c.forEach((clue, i) => {
-        const timeToClue = data.revealAt + (i * 4000);
-        if (now() >= timeToClue) showClue(clue, 4-i);
-        else idkTimers.push(setTimeout(() => { if(!data.roomAns?.[idx]) showClue(clue, 4-i); }, timeToClue - now()));
+        const delay = Math.max(0, baseTime + i * 4000 - now());
+        idkClueTimers.push(setTimeout(() => {
+          if (!data.roomAns?.[idx]) showClue(clue, 4 - i);
+        }, delay));
       });
     }
+
     if (ans) {
-      $('idkInp').disabled = $('idkBtn').disabled = true; idkTimers.forEach(clearTimeout);
-      const ok = ans.v.toLowerCase() === q.n.toLowerCase(), first = ans.pid === myId;
-      $('idkFeedback').textContent = first ? (ok ? `Esatto! +${ans.pts}pt` : `Sbagliato! +${ans.pts}pt a lui`) : (ok ? `Ha indovinato! +${ans.pts}pt a lui` : `Ha sbagliato! +${ans.pts}pt a te`);
+      $('idkInp').disabled = $('idkBtn').disabled = true;
+      idkClueTimers.forEach(clearTimeout);
+      const ok = ans.v.toLowerCase() === q.n.toLowerCase();
+      const first = ans.pid === myId;
+      $('idkFeedback').textContent = first
+        ? (ok ? `Esatto! +${ans.pts}pt 🎉` : `Sbagliato! +${ans.pts}pt a lui`)
+        : (ok ? `Ha indovinato! +${ans.pts}pt a lui` : `Ha sbagliato! +${ans.pts}pt a te`);
       $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+
       if (isMaster && !data.scored?.[idx]) {
-        const pids = Object.keys(data.players), oppId = pids.find(i=>i!==ans.pid);
-        db.ref('rooms/'+room+'/players/'+(ok?ans.pid:oppId)+'/score').transaction(s=>(s||0)+ans.pts);
-        db.ref('rooms/'+room+'/scored/'+idx).set(true);
-        nextRound('idk_playing', idx, IDK_PER_MATCH, 3500);
+        const pids = Object.keys(data.players || {});
+        const oppId = pids.find(id => id !== ans.pid);
+        const winnerId = ok ? ans.pid : oppId;
+        if (winnerId) DB.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s || 0) + ans.pts);
+        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+        clearTimeout(advanceTimer);
+        advanceTimer = setTimeout(() => nextRound('idk_playing', idx, IDK_PER_MATCH), 3200);
       }
     }
   });
 }
-function showClue(text, pts) { const d=document.createElement('div'); d.className='idk-clue'; d.innerHTML=`<div class="idk-points">${pts} PUNTI</div>${text}`; $('idkClues').appendChild(d); $('idkClues').scrollTop=$('idkClues').scrollHeight; }
+
+function showClue(text, pts) {
+  const d = document.createElement('div'); d.className = 'idk-clue';
+  d.innerHTML = `<div class="idk-points">${pts} PUNTI</div>${text}`;
+  $('idkClues').appendChild(d);
+  $('idkClues').scrollTop = $('idkClues').scrollHeight;
+}
 
 $('idkInp').oninput = function() {
   const v = this.value.toLowerCase(), ac = $('idkAuto'); ac.innerHTML = '';
-  if(!v) { ac.style.display='none'; return; }
-  const m = IDK_NAMES.filter(n => n.toLowerCase().includes(v));
-  if(m.length) { ac.style.display='block'; m.forEach(n => { const d=document.createElement('div'); d.className='idk-ac-item'; d.textContent=n; d.onclick=()=>{$('idkInp').value=n; ac.style.display='none';}; ac.appendChild(d); }); }
-  else ac.style.display='none';
-};
-$('idkBtn').onclick = () => {
-  if(vfLocked || !$('idkInp').value.trim()) return; vfLocked = true;
-  const pts = 4 - ($('idkClues').children.length - 1);
-  db.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? {pid:myId, v:$('idkInp').value.trim(), pts} : undefined);
+  if (!v) { ac.style.display = 'none'; return; }
+  const matches = IDK_NAMES.filter(n => n.toLowerCase().includes(v));
+  if (matches.length) {
+    ac.style.display = 'block';
+    matches.forEach(n => {
+      const d = document.createElement('div'); d.className = 'idk-ac-item'; d.textContent = n;
+      d.onclick = () => { $('idkInp').value = n; ac.style.display = 'none'; };
+      ac.appendChild(d);
+    });
+  } else { ac.style.display = 'none'; }
 };
 
-/* ─── UTILS MASTER AVANZAMENTO ─── */
-let advanceTimer = null;
-function nextRound(mode, idx, max, delay) {
-  clearTimeout(advanceTimer);
-  advanceTimer = setTimeout(() => {
-    if(idx+1 >= max) db.ref('rooms/'+room).update({ status: 'finished' });
-    else db.ref('rooms/'+room).update({ currentIndex: idx+1, revealAt: now() + 1500 });
-  }, delay);
+$('idkBtn').onclick = () => {
+  const val = $('idkInp').value.trim();
+  if (vfLocked || !val) return;
+  vfLocked = true;
+  const pts = Math.max(1, 4 - ($('idkClues').children.length - 1));
+  DB.ref('rooms/' + room + '/roomAns/' + lastIdx).transaction(c => c === null ? { pid: myId, v: val, pts } : undefined);
+};
+
+/* ═══════════════════════════════════════════
+   AVANZAMENTO ROUND (solo master)
+═══════════════════════════════════════════ */
+function nextRound(mode, idx, max) {
+  if (idx + 1 >= max) {
+    DB.ref('rooms/' + room).update({ status: 'finished' });
+  } else {
+    DB.ref('rooms/' + room).update({
+      currentIndex: idx + 1,
+      revealAt: now() + SYNC_WINDOW_MS,  // nuovo conto alla rovescia per la prossima domanda
+      roomAns: null
+    });
+  }
 }
 
-/* ─── TIMER UI ─── */
+/* ═══════════════════════════════════════════
+   TIMER BAR
+═══════════════════════════════════════════ */
 function startTick(startedAt, duration, fillId, lblId, onEnd) {
   clearInterval(tickId);
   const tick = () => {
-    const r = Math.max(duration - ((now() - startedAt)/1000), 0);
-    if($(lblId)) $(lblId).textContent = Math.ceil(r) + 's';
-    if($(fillId)) { $(fillId).style.width = (r/duration*100)+'%'; $(fillId).classList.toggle('danger', r<=3); }
-    if(r<=0) { clearInterval(tickId); onEnd?.(); }
+    const rem = Math.max(duration - (now() - startedAt) / 1000, 0);
+    const lbl = $(lblId), fill = $(fillId);
+    if (lbl)  lbl.textContent = Math.ceil(rem) + 's';
+    if (fill) { fill.style.width = (rem / duration * 100) + '%'; fill.classList.toggle('danger', rem <= 3); }
+    if (rem <= 0) { clearInterval(tickId); onEnd?.(); }
   };
-  tick(); tickId = setInterval(tick, 200);
+  tick(); tickId = setInterval(tick, 250);
 }
 
-/* ─── RESULT & RESET ─── */
+/* ═══════════════════════════════════════════
+   RISULTATO
+═══════════════════════════════════════════ */
 function renderResult(me, opp) {
   show('s-result');
-  const ms = me?.score||0, os = opp?.score||0;
-  $('rMeScore').textContent = ms; $('rOppScore').textContent = os;
-  $('rMeName').textContent = me?.name||'Tu'; $('rOppName').textContent = opp?.name||'Avversario';
-  if(ms>os) { $('rMedal').textContent='🏆'; $('rVerdict').textContent='Hai vinto!'; $('rVerdict').className='verdict win'; }
-  else if(ms<os) { $('rMedal').textContent='😔'; $('rVerdict').textContent='Hai perso.'; $('rVerdict').className='verdict lose'; }
-  else { $('rMedal').textContent='🤝'; $('rVerdict').textContent='Pareggio!'; $('rVerdict').className='verdict draw'; }
+  const ms = me?.score || 0, os = opp?.score || 0;
+  $('rMeScore').textContent  = ms;
+  $('rOppScore').textContent = os;
+  $('rMeName').textContent   = me?.name  || 'Tu';
+  $('rOppName').textContent  = opp?.name || 'Avversario';
+  if (ms > os)      { $('rMedal').textContent = '🏆'; $('rVerdict').textContent = 'Hai vinto! 🎉'; $('rVerdict').className = 'verdict win'; }
+  else if (ms < os) { $('rMedal').textContent = '😔'; $('rVerdict').textContent = 'Hai perso. Rivincita?'; $('rVerdict').className = 'verdict lose'; }
+  else              { $('rMedal').textContent = '🤝'; $('rVerdict').textContent = 'Pareggio!'; $('rVerdict').className = 'verdict draw'; }
 }
-$('btnLobby').onclick = () => { if(isMaster) db.ref('rooms/'+room).update({status:'lobby', scored:null}); };
+
+$('btnLobby').onclick = () => {
+  if (isMaster) {
+    DB.ref('rooms/' + room).update({ status: 'lobby', scored: null, roomAns: null, revealAt: null });
+  }
+  // Il listener Firebase porterà entrambi automaticamente alla lobby
+};
 </script>
 </body>
 </html>
