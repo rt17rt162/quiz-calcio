@@ -12,21 +12,16 @@
   --blue: #00e5ff;
   --green: #39ff8f;
   --red: #ff4757;
+  --yellow: #ffd32a;
   --text: #f0f4f2;
   --muted: #7a8f87;
 }
 *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; margin: 0; overscroll-behavior: none; }
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg); color: var(--text);
   font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
+  position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
 }
 
 /* ─── GLOW BACKGROUND ─── */
@@ -42,107 +37,54 @@ body {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
   padding: max(20px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom));
-  overflow-y: auto;
-  transition: opacity .25s ease;
+  overflow-y: auto; transition: opacity .25s ease;
 }
 .screen.hidden { display: none; }
 
 /* ─── HEADER ─── */
-.hdr {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0; margin-bottom: 4px;
-}
+.hdr { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; margin-bottom: 4px; }
 .logo {
   font-size: 14px; font-weight: 900; letter-spacing: .5px;
   background: linear-gradient(90deg, var(--blue), var(--green));
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .logo em { font-style: normal; -webkit-text-fill-color: initial; }
-.pill {
-  font-size: 12px; font-weight: 700; color: var(--muted);
-  background: rgba(255,255,255,.06); padding: 5px 12px; border-radius: 99px;
-}
+.pill { font-size: 12px; font-weight: 700; color: var(--muted); background: rgba(255,255,255,.06); padding: 5px 12px; border-radius: 99px; }
 
 /* ─── TYPOGRAPHY ─── */
-.label-xs {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--muted);
-}
-.title-lg {
-  font-size: clamp(22px, 7vw, 30px); font-weight: 900;
-  background: linear-gradient(90deg, var(--blue), var(--green));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  margin: 0;
-}
+.label-xs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+.title-lg { font-size: clamp(22px, 7vw, 30px); font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0; }
 
-/* ─── INPUTS ─── */
+/* ─── INPUTS & BUTTONS ─── */
 .field { width: 100%; margin-bottom: 14px; }
-.field label {
-  display: block; font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px;
-}
+.field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
 .field input {
-  width: 100%; padding: 15px 16px; border-radius: 14px;
-  border: 1.5px solid rgba(255,255,255,.1);
-  background: rgba(255,255,255,.04); color: var(--text);
-  font-size: 17px; font-weight: 600; outline: none;
-  transition: border-color .2s;
+  width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04); color: var(--text); font-size: 17px; font-weight: 600; outline: none; transition: border-color .2s;
 }
 .field input:focus { border-color: var(--blue); }
-.field input::placeholder { color: #4a5e58; }
-
-/* ─── BUTTONS ─── */
 .btn {
-  width: 100%; padding: 17px; border-radius: 16px; border: none;
-  font-size: 16px; font-weight: 900; cursor: pointer; letter-spacing: .3px;
-  transition: transform .1s ease, opacity .15s;
+  width: 100%; padding: 17px; border-radius: 16px; border: none; font-size: 16px; font-weight: 900;
+  cursor: pointer; letter-spacing: .3px; transition: transform .1s ease, opacity .15s;
 }
 .btn:active { transform: scale(.97); }
 .btn:disabled { opacity: .45; cursor: default; transform: none; }
-.btn-main {
-  background: linear-gradient(135deg, var(--blue), var(--green));
-  color: #080e0b; box-shadow: 0 8px 28px rgba(0,229,255,.25);
-}
-.btn-ghost {
-  background: rgba(255,255,255,.05);
-  color: var(--text); border: 1.5px solid rgba(255,255,255,.12);
-}
-
-/* ─── ERROR MSG ─── */
+.btn-main { background: linear-gradient(135deg, var(--blue), var(--green)); color: #080e0b; box-shadow: 0 8px 28px rgba(0,229,255,.25); }
+.btn-ghost { background: rgba(255,255,255,.05); color: var(--text); border: 1.5px solid rgba(255,255,255,.12); }
 .err { font-size: 13px; font-weight: 600; color: var(--red); min-height: 18px; margin-top: 12px; }
 
-/* ─── SPINNER ─── */
-.spinner {
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 3px solid rgba(255,255,255,.1);
-  border-top-color: var(--green);
-  animation: spin .85s linear infinite;
-  margin: 0 auto 14px;
-}
+/* ─── SPINNER & SYNC OVERLAY ─── */
+.spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,.1); border-top-color: var(--green); animation: spin .85s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.sync-overlay { position: absolute; inset: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.sync-overlay h2 { font-size: 32px; font-weight: 900; color: var(--blue); margin-top: 16px; animation: pulse 1s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .6; transform: scale(.95); } }
 
-/* ─── ROOM CODE BOX ─── */
-.code-box {
-  background: rgba(255,255,255,.04);
-  border: 1.5px dashed rgba(0,229,255,.35);
-  border-radius: 16px; padding: 18px 22px; text-align: center;
-  margin: 20px 0 28px;
-}
-.code-val {
-  font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue);
-  line-height: 1.1;
-}
-.code-hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
-
-/* ─── PLAYER CHIPS (scoreboard) ─── */
-.score-bar {
-  display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0;
-}
-.pchip {
-  flex: 1; background: rgba(255,255,255,.05);
-  border: 1.5px solid rgba(255,255,255,.1);
-  border-radius: 14px; padding: 10px 12px;
-}
+/* ─── ROOM & PLAYERS ─── */
+.code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0 28px; }
+.code-val { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue); line-height: 1.1; }
+.score-bar { display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0; }
+.pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; }
 .pchip.me  { border-color: rgba(0,229,255,.4); }
 .pchip.opp { border-color: rgba(57,255,143,.4); }
 .pchip .pname { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -151,128 +93,71 @@ body {
 .pchip.opp .pscore { color: var(--green); }
 .pchip .pstatus { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
-/* ─── TIMER BAR ─── */
-.timer-track {
-  height: 7px; background: rgba(255,255,255,.08);
-  border-radius: 99px; overflow: hidden; margin: 8px 0 14px; flex-shrink: 0;
-}
-.timer-fill {
-  height: 100%; width: 100%;
-  background: linear-gradient(90deg, var(--blue), var(--green));
-  border-radius: 99px; transition: width .35s linear, background .3s;
-}
-.timer-fill.danger { background: linear-gradient(90deg, var(--red), #ff8a7a); }
-
-/* ─── QUIZ OPTIONS ─── */
-.q-text {
-  font-size: clamp(19px, 5.5vw, 26px); font-weight: 800; line-height: 1.35;
-  margin-bottom: 18px;
-}
-.options { display: flex; flex-direction: column; gap: 11px; }
-.opt {
-  background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1);
-  color: var(--text); padding: 17px 16px; border-radius: 15px;
-  font-size: clamp(14px, 4vw, 16px); font-weight: 600;
-  text-align: left; cursor: pointer; min-height: 56px;
-  display: flex; align-items: center;
-  transition: transform .1s, background .18s, border-color .18s, box-shadow .18s;
-}
-.opt:active { transform: scale(.97); }
-.opt:disabled { cursor: default; }
-.opt.correct { background: rgba(57,255,143,.18); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 16px rgba(57,255,143,.3); }
-.opt.wrong   { background: rgba(255,71,87,.18);  border-color: var(--red);   color: #ffd0d3; box-shadow: 0 0 16px rgba(255,71,87,.3); }
-
-/* ─── GAME CARDS (lobby) ─── */
+/* ─── GAME CARDS (LOBBY) ─── */
 .game-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
-.game-card {
-  display: flex; align-items: center; gap: 16px;
-  background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.1);
-  border-radius: 18px; padding: 20px 18px; cursor: pointer;
-  transition: transform .12s, border-color .2s, background .2s;
-}
+.game-card { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.1); border-radius: 18px; padding: 20px 18px; cursor: pointer; transition: transform .12s, border-color .2s, background .2s; }
 .game-card:active { transform: scale(.97); }
 .game-card:hover  { border-color: rgba(0,229,255,.4); background: rgba(0,229,255,.05); }
 .game-card .icon { font-size: 38px; flex-shrink: 0; }
 .game-card .info .name { font-size: 18px; font-weight: 900; margin-bottom: 3px; }
 .game-card .info .desc { font-size: 12px; color: var(--muted); font-weight: 600; line-height: 1.4; }
 
+/* ─── QUIZ ─── */
+.timer-track { height: 7px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; margin: 8px 0 14px; flex-shrink: 0; }
+.timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .35s linear, background .3s; }
+.timer-fill.danger { background: linear-gradient(90deg, var(--red), #ff8a7a); }
+.q-text { font-size: clamp(19px, 5.5vw, 26px); font-weight: 800; line-height: 1.35; margin-bottom: 18px; }
+.options { display: flex; flex-direction: column; gap: 11px; }
+.opt { background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); color: var(--text); padding: 17px 16px; border-radius: 15px; font-size: clamp(14px, 4vw, 16px); font-weight: 600; text-align: left; cursor: pointer; min-height: 56px; }
+.opt.correct { background: rgba(57,255,143,.18); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 16px rgba(57,255,143,.3); }
+.opt.wrong   { background: rgba(255,71,87,.18); border-color: var(--red); color: #ffd0d3; box-shadow: 0 0 16px rgba(255,71,87,.3); }
+
 /* ─── VERO O FALSO ─── */
-.vf-area {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center; padding: 0 4px;
-}
-.vf-text {
-  font-size: clamp(20px, 5.8vw, 28px); font-weight: 800;
-  line-height: 1.35; margin: 12px 0 18px;
-}
-.vf-feedback {
-  min-height: 40px; font-size: 15px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-}
+.vf-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 4px; }
+.vf-text { font-size: clamp(20px, 5.8vw, 28px); font-weight: 800; line-height: 1.35; margin: 12px 0 18px; }
+.vf-feedback { min-height: 40px; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
 .vf-btns { display: flex; gap: 14px; flex-shrink: 0; }
-.vf-btn {
-  flex: 1; border: 2px solid; border-radius: 20px; padding: 22px 8px;
-  font-size: 20px; font-weight: 900; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  transition: transform .1s, box-shadow .2s, opacity .2s;
-}
-.vf-btn span { font-size: 14px; font-weight: 700; }
-.vf-btn:active { transform: scale(.95); }
-.vf-btn:disabled { opacity: .45; cursor: default; }
+.vf-btn { flex: 1; border: 2px solid; border-radius: 20px; padding: 22px 8px; font-size: 20px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; }
 .vf-btn.vero { background: rgba(57,255,143,.12); border-color: var(--green); color: var(--green); }
 .vf-btn.falso { background: rgba(255,71,87,.12); border-color: var(--red); color: var(--red); }
 .vf-btn.hit { box-shadow: 0 0 30px currentColor; opacity: 1 !important; }
 
-/* ─── FADE ANIMATION ─── */
-.fade-in { animation: fadeUp .4s ease both; }
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px) scale(.98); }
-  to   { opacity: 1; transform: translateY(0)  scale(1); }
-}
+/* ─── L'IDENTIKIT ─── */
+.idk-clues { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; margin-bottom: 14px; padding-top: 10px; }
+.idk-clue { background: rgba(255,255,255,.05); border-left: 4px solid var(--yellow); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; animation: fadeUp .3s ease; }
+.idk-points { font-size: 11px; font-weight: 800; color: var(--yellow); margin-bottom: 4px; letter-spacing: 1px; }
+.idk-input-area { position: relative; display: flex; gap: 10px; flex-shrink: 0; }
+.idk-autocomplete { position: absolute; bottom: 100%; left: 0; width: calc(100% - 90px); max-height: 200px; background: #1e2321; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); overflow-y: auto; display: none; z-index: 10; margin-bottom: 8px; box-shadow: 0 -5px 20px rgba(0,0,0,.5); }
+.idk-ac-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.05); font-weight: 600; cursor: pointer; }
+.idk-ac-item:active { background: rgba(255,255,255,.1); }
+.idk-input-area input { flex: 1; padding: 15px; border-radius: 14px; border: 2px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: white; font-size: 16px; outline: none; }
+.idk-input-area input:focus { border-color: var(--yellow); }
+.idk-input-area button { padding: 0 18px; border-radius: 14px; border: none; background: var(--yellow); color: #000; font-weight: 900; font-size: 15px; cursor: pointer; }
 
 /* ─── RESULT ─── */
-.result-center {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-}
-.result-medal { font-size: 56px; margin-bottom: 6px; }
+.result-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .vs-scores { display: flex; align-items: center; gap: 16px; margin: 8px 0; }
 .vs-num { font-size: 54px; font-weight: 900; line-height: 1; }
 .vs-num.me  { color: var(--blue); }
 .vs-num.opp { color: var(--green); }
-.vs-div { font-size: 18px; color: var(--muted); font-weight: 700; }
-.vs-names {
-  display: flex; justify-content: space-between;
-  width: 100%; max-width: 260px;
-  font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 20px;
-}
 .verdict { font-size: 17px; font-weight: 900; margin-bottom: 28px; }
-.verdict.win  { color: var(--green); }
-.verdict.lose { color: var(--red); }
-.verdict.draw { color: var(--blue); }
+.verdict.win  { color: var(--green); } .verdict.lose { color: var(--red); } .verdict.draw { color: var(--blue); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeUp .4s ease both; }
 </style>
 </head>
 <body>
 <div class="glow"></div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 1 — MENU
-══════════════════════════════════════ -->
+<!-- 1. MENU -->
 <div class="screen" id="s-menu">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
       <p class="label-xs" style="text-align:center;margin:0 0 6px;">⚽ Party Calcio</p>
       <h1 class="title-lg" style="text-align:center;margin:0 0 32px;">1 vs 1 Multiplayer</h1>
-
-      <div class="field">
-        <label for="iName">Il tuo nome</label>
-        <input id="iName" type="text" placeholder="Es. Marco" maxlength="14" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="iCode">Codice stanza (per unirti)</label>
-        <input id="iCode" type="text" placeholder="Es. A3BX" maxlength="4" autocomplete="off"
-               oninput="this.value=this.value.toUpperCase()">
-      </div>
+      <div class="field"><label for="iName">Il tuo nome</label><input id="iName" type="text" placeholder="Es. Marco" maxlength="14" autocomplete="off"></div>
+      <div class="field"><label for="iCode">Codice stanza</label><input id="iCode" type="text" placeholder="Es. A3BX" maxlength="4" autocomplete="off" oninput="this.value=this.value.toUpperCase()"></div>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px;">
         <button class="btn btn-main" id="btnCreate">Crea Stanza</button>
         <button class="btn btn-ghost" id="btnJoin">Unisciti alla Stanza</button>
@@ -282,803 +167,386 @@ body {
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 2 — WAITING (in attesa del 2° giocatore)
-══════════════════════════════════════ -->
+<!-- 2. WAITING -->
 <div class="screen hidden" id="s-wait">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <p class="label-xs" style="margin:0 0 4px;">Condividi il codice</p>
-    <div class="code-box">
-      <div class="code-val" id="wCode">----</div>
-      <div class="code-hint">Fai inserire questo codice all'avversario</div>
-    </div>
-    <div class="spinner"></div>
-    <p style="font-size:15px;color:var(--muted);font-weight:600;">In attesa dell'avversario...</p>
+    <div class="code-box"><div class="code-val" id="wCode">----</div><div class="code-hint">Fai inserire questo codice all'avversario</div></div>
+    <div class="spinner"></div><p style="font-size:15px;color:var(--muted);font-weight:600;">In attesa dell'avversario...</p>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 3A — LOBBY MASTER (scelta gioco)
-══════════════════════════════════════ -->
+<!-- 3A. LOBBY MASTER -->
 <div class="screen hidden" id="s-lobby-master">
-  <div class="hdr">
-    <div class="logo"><em>⚽</em> PARTY CALCIO</div>
-    <div class="pill" id="lmCode">----</div>
-  </div>
+  <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lmCode">----</div></div>
   <div style="margin-top:18px;">
     <p class="label-xs" style="margin:0 0 6px;">Entrambi connessi!</p>
     <div style="display:flex;gap:10px;margin-bottom:24px;" id="lmPlayers"></div>
     <p class="label-xs" style="margin:0 0 4px;">Scegli il mini-gioco</p>
     <div class="game-grid">
-      <div class="game-card" id="pickQuiz">
-        <div class="icon">🏆</div>
-        <div class="info">
-          <div class="name">Quiz Calcio</div>
-          <div class="desc">5 domande a risposta multipla · 10s per rispondere · 1 pt a risposta giusta</div>
-        </div>
-      </div>
-      <div class="game-card" id="pickVF">
-        <div class="icon">🟢🔴</div>
-        <div class="info">
-          <div class="name">Vero o Falso</div>
-          <div class="desc">Chi risponde primo blocca la risposta · +10 se giusto · +5 all'avversario se sbaglio</div>
-        </div>
-      </div>
+      <div class="game-card" id="pickQuiz"><div class="icon">🏆</div><div class="info"><div class="name">Quiz Calcio</div><div class="desc">5 domande classiche · 10s · 1 pt</div></div></div>
+      <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo blocca · +10 o -5</div></div></div>
+      <div class="game-card" id="pickIDK"><div class="icon">🕵️</div><div class="info"><div class="name">L'Identikit</div><div class="desc">Indovina il giocatore dagli indizi!</div></div></div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 3B — LOBBY GUEST (attesa)
-══════════════════════════════════════ -->
+<!-- 3B. LOBBY GUEST -->
 <div class="screen hidden" id="s-lobby-guest">
-  <div class="hdr">
-    <div class="logo"><em>⚽</em> PARTY CALCIO</div>
-    <div class="pill" id="lgCode">----</div>
-  </div>
+  <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lgCode">----</div></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-    <div class="spinner"></div>
-    <p style="font-size:16px;font-weight:700;color:var(--muted);margin:0 0 6px;">In attesa del master...</p>
+    <div class="spinner"></div><p style="font-size:16px;font-weight:700;color:var(--muted);margin:0 0 6px;">In attesa del master...</p>
     <p style="font-size:13px;color:var(--muted);margin:0;">Il master sta scegliendo il gioco</p>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 4 — QUIZ
-══════════════════════════════════════ -->
+<!-- 4. QUIZ -->
 <div class="screen hidden" id="s-quiz">
-  <div class="hdr">
-    <div class="logo"><em>⚽</em> QUIZ</div>
-    <div class="pill" id="qProg">1 / 5</div>
-  </div>
+  <div class="sync-overlay hidden" id="syncQuiz"><div class="spinner"></div><h2>PRONTI...</h2></div>
+  <div class="hdr"><div class="logo"><em>⚽</em> QUIZ</div><div class="pill" id="qProg">1 / 5</div></div>
   <div class="score-bar">
-    <div class="pchip me">
-      <div class="pname" id="qMeName">Tu</div>
-      <div class="pscore" id="qMeScore">0</div>
-      <div class="pstatus" id="qMeSt">&nbsp;</div>
-    </div>
-    <div class="pchip opp">
-      <div class="pname" id="qOppName">Avversario</div>
-      <div class="pscore" id="qOppScore">0</div>
-      <div class="pstatus" id="qOppSt">&nbsp;</div>
-    </div>
+    <div class="pchip me"><div class="pname" id="qMeName">Tu</div><div class="pscore" id="qMeScore">0</div><div class="pstatus" id="qMeSt">&nbsp;</div></div>
+    <div class="pchip opp"><div class="pname" id="qOppName">Avversario</div><div class="pscore" id="qOppScore">0</div><div class="pstatus" id="qOppSt">&nbsp;</div></div>
   </div>
   <div class="timer-track"><div class="timer-fill" id="qTimerFill"></div></div>
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" id="qCard">
-    <div class="q-text" id="qText"></div>
-    <div class="options" id="qOpts"></div>
+    <div class="q-text" id="qText"></div><div class="options" id="qOpts"></div>
   </div>
-  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;">
-    <span id="qTimerLbl">10s</span>
-    <span id="qRoom">Stanza: ----</span>
-  </div>
+  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;"><span id="qTimerLbl">10s</span></div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 5 — VERO O FALSO
-══════════════════════════════════════ -->
+<!-- 5. VERO O FALSO -->
 <div class="screen hidden" id="s-vf">
-  <div class="hdr">
-    <div class="logo"><em>⚽</em> VERO O FALSO</div>
-    <div class="pill" id="vfProg">1 / 5</div>
-  </div>
+  <div class="sync-overlay hidden" id="syncVF"><div class="spinner"></div><h2>PRONTI...</h2></div>
+  <div class="hdr"><div class="logo"><em>⚽</em> VERO O FALSO</div><div class="pill" id="vfProg">1 / 5</div></div>
   <div class="score-bar">
-    <div class="pchip me">
-      <div class="pname" id="vfMeName">Tu</div>
-      <div class="pscore" id="vfMeScore">0</div>
-      <div class="pstatus" id="vfMeSt">&nbsp;</div>
-    </div>
-    <div class="pchip opp">
-      <div class="pname" id="vfOppName">Avversario</div>
-      <div class="pscore" id="vfOppScore">0</div>
-      <div class="pstatus" id="vfOppSt">&nbsp;</div>
-    </div>
+    <div class="pchip me"><div class="pname" id="vfMeName">Tu</div><div class="pscore" id="vfMeScore">0</div><div class="pstatus" id="vfMeSt">&nbsp;</div></div>
+    <div class="pchip opp"><div class="pname" id="vfOppName">Avversario</div><div class="pscore" id="vfOppScore">0</div><div class="pstatus" id="vfOppSt">&nbsp;</div></div>
   </div>
   <div class="vf-area" id="vfCard">
     <p class="label-xs">È vero o falso?</p>
-    <div class="vf-text" id="vfText">...</div>
-    <div class="vf-feedback" id="vfFeedback"></div>
+    <div class="vf-text" id="vfText">...</div><div class="vf-feedback" id="vfFeedback"></div>
   </div>
   <div class="vf-btns">
-    <button class="vf-btn vero" id="vfV">✅<span>VERO</span></button>
-    <button class="vf-btn falso" id="vfF">❌<span>FALSO</span></button>
+    <button class="vf-btn vero" id="vfV">✅<span>VERO</span></button><button class="vf-btn falso" id="vfF">❌<span>FALSO</span></button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════
-     SCREEN 6 — RISULTATO
-══════════════════════════════════════ -->
+<!-- 6. IDENTIKIT -->
+<div class="screen hidden" id="s-idk">
+  <div class="sync-overlay hidden" id="syncIDK"><div class="spinner"></div><h2>PRONTI...</h2></div>
+  <div class="hdr"><div class="logo"><em>⚽</em> IDENTIKIT</div><div class="pill" id="idkProg">1 / 3</div></div>
+  <div class="score-bar">
+    <div class="pchip me"><div class="pname" id="idkMeName">Tu</div><div class="pscore" id="idkMeScore">0</div><div class="pstatus" id="idkMeSt">&nbsp;</div></div>
+    <div class="pchip opp"><div class="pname" id="idkOppName">Avversario</div><div class="pscore" id="idkOppScore">0</div><div class="pstatus" id="idkOppSt">&nbsp;</div></div>
+  </div>
+  <div class="idk-clues" id="idkClues"></div>
+  <div class="vf-feedback" id="idkFeedback" style="min-height:24px; font-size:14px; margin-bottom:8px;"></div>
+  <div class="idk-input-area">
+    <div class="idk-autocomplete" id="idkAuto"></div>
+    <input type="text" id="idkInp" placeholder="Nome giocatore..." autocomplete="off">
+    <button id="idkBtn">INVIA</button>
+  </div>
+</div>
+
+<!-- 7. RISULTATO -->
 <div class="screen hidden" id="s-result">
-  <div class="result-center" style="animation: fadeUp .5s ease;">
-    <div class="result-medal" id="rMedal">🏆</div>
-    <p class="label-xs" style="margin:0 0 6px;">Partita Finita</p>
-    <div class="vs-scores">
-      <div class="vs-num me" id="rMeScore">0</div>
-      <div class="vs-div">–</div>
-      <div class="vs-num opp" id="rOppScore">0</div>
-    </div>
-    <div class="vs-names">
-      <span id="rMeName">Tu</span>
-      <span id="rOppName">Avversario</span>
+  <div class="result-center fade-in">
+    <div class="result-medal" id="rMedal">🏆</div><p class="label-xs" style="margin:0 0 6px;">Partita Finita</p>
+    <div class="vs-scores"><div class="vs-num me" id="rMeScore">0</div><div class="vs-div">–</div><div class="vs-num opp" id="rOppScore">0</div></div>
+    <div style="display:flex;justify-content:space-between;width:100%;max-width:260px;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:20px;">
+      <span id="rMeName">Tu</span><span id="rOppName">Avversario</span>
     </div>
     <div class="verdict" id="rVerdict">—</div>
     <button class="btn btn-main" id="btnLobby" style="max-width:320px;">Torna alla Lobby</button>
   </div>
 </div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-
 <script>
 'use strict';
 
-/* ══════════════════════════════════════════
-   DATABASE QUIZ (30 domande difficili)
-══════════════════════════════════════════ */
+/* ─── DATABASES ─── */
 const QUIZ_DB = [
-  { q:"Quale squadra ha vinto più Scudetti nella storia della Serie A?",                      o:["Juventus","Inter","Milan","Roma"],                                          c:0 },
-  { q:"In quale anno l'Italia ha vinto il suo primo Mondiale?",                              o:["1930","1934","1938","1950"],                                                c:1 },
-  { q:"Chi era l'allenatore del Brasile campione del mondo nel 1970?",                       o:["Zagallo","Scolari","Parreira","Tite"],                                      c:0 },
-  { q:"Quale paese africano raggiunse per primo i quarti di finale di un Mondiale?",         o:["Nigeria","Camerun","Senegal","Marocco"],                                    c:1 },
-  { q:"Quale club ha vinto la prima Coppa dei Campioni nel 1956?",                           o:["Barcelona","Juventus","Real Madrid","Benfica"],                             c:2 },
-  { q:"Chi ha vinto il Pallone d'Oro nel 2023?",                                             o:["Kylian Mbappé","Erling Haaland","Lionel Messi","Karim Benzema"],            c:2 },
-  { q:"Quanti Palloni d'Oro ha vinto Lionel Messi (fino al 2024)?",                         o:["6","7","8","9"],                                                           c:2 },
-  { q:"Con quale club Diego Maradona ha vinto l'unico Scudetto in Italia?",                 o:["Roma","Lazio","Inter","Napoli"],                                            c:3 },
-  { q:"Chi ha segnato il 'Gol del Secolo' ai Mondiali del 1986?",                           o:["Platini","Maradona","Zico","Lineker"],                                      c:1 },
-  { q:"Quante volte Cristiano Ronaldo ha vinto la Champions League?",                        o:["3","4","5","6"],                                                           c:2 },
-  { q:"Quale paese ha vinto più Campionati del Mondo di calcio?",                            o:["Germania","Italia","Argentina","Brasile"],                                  c:3 },
-  { q:"Quale nazionale ha vinto i Mondiali di Qatar 2022?",                                  o:["Francia","Brasile","Croazia","Argentina"],                                  c:3 },
-  { q:"Chi ha allenato l'Italia campione d'Europa nel 2021?",                                o:["Conte","Mancini","Prandelli","Ancelotti"],                                  c:1 },
-  { q:"Quale club italiano ha la stella che rappresenta 10 Scudetti?",                       o:["Roma","Milan","Juventus","Inter"],                                          c:1 },
-  { q:"In quale anno è stato fondato il Real Madrid?",                                       o:["1892","1900","1902","1910"],                                                c:2 },
-  { q:"Chi detiene il record di presenze con la Nazionale italiana?",                        o:["Cannavaro","Buffon","Maldini","Zoff"],                                      c:1 },
-  { q:"Quale club ha vinto più Champions League nella storia?",                              o:["Barcelona","Bayern Monaco","Real Madrid","AC Milan"],                       c:2 },
-  { q:"In quale Mondiale Ronaldo Il Fenomeno fu capocannoniere?",                            o:["1994","1998","2002","2006"],                                                c:2 },
-  { q:"Chi para il rigore decisivo nella finale Mondiale 2006?",                             o:["Peruzzi","Buffon","Toldo","Pagliuca"],                                      c:1 },
-  { q:"Chi ha segnato il gol vittoria nella finale Mondiale 2010?",                          o:["Iniesta","Villa","Xavi","Torres"],                                          c:0 },
-  { q:"In quale anno l'Inter ha vinto il Triplete?",                                         o:["2008","2009","2010","2011"],                                                c:2 },
-  { q:"Quale calciatore si chiama 'El Pibe de Oro'?",                                       o:["Ronaldo","Pelé","Maradona","Messi"],                                        c:2 },
-  { q:"Quante Champions ha vinto la Juventus nella sua storia?",                             o:["1","2","3","4"],                                                           c:1 },
-  { q:"In quale anno il Borussia Dortmund ha vinto la Champions League?",                    o:["1995","1997","1999","2001"],                                                c:1 },
-  { q:"Quale club detiene il record di presenze consecutive in Champions?",                  o:["Real Madrid","Bayern Monaco","Barcelona","Man United"],                     c:0 },
-  { q:"Chi ha vinto la Scarpa d'Oro europea nella stagione 2022/23?",                       o:["Mbappé","Haaland","Kane","Lewandowski"],                                    c:1 },
-  { q:"In quale stadio si giocò la finale di Champions 1999 (Utd vs Bayern)?",               o:["Wembley","Camp Nou","San Siro","Olimpico"],                                 c:1 },
-  { q:"Quale Nazionale vinse la prima Copa América della storia?",                           o:["Brasile","Argentina","Uruguay","Cile"],                                     c:2 },
-  { q:"Quanti gol segnò Ronaldo Il Fenomeno nel Mondiale 2002?",                            o:["6","7","8","10"],                                                          c:2 },
-  { q:"In quale anno la Juventus ha concluso il suo 9° Scudetto consecutivo?",              o:["2018","2019","2020","2021"],                                                c:2 },
+  { q:"Quale squadra ha vinto più Scudetti nella storia della Serie A?", o:["Juventus","Inter","Milan","Roma"], c:0 },
+  { q:"In quale anno l'Italia ha vinto il suo primo Mondiale?", o:["1930","1934","1938","1950"], c:1 },
+  { q:"Quale club ha vinto la prima Coppa dei Campioni nel 1956?", o:["Barcelona","Juventus","Real Madrid","Benfica"], c:2 },
+  { q:"Quanti Palloni d'Oro ha vinto Lionel Messi (fino al 2024)?", o:["6","7","8","9"], c:2 },
+  { q:"Con quale club Diego Maradona ha vinto l'unico Scudetto in Italia?", o:["Roma","Lazio","Inter","Napoli"], c:3 }
 ];
-
-/* ══════════════════════════════════════════
-   DATABASE VERO O FALSO
-   { s: affermazione, a: true|false }
-══════════════════════════════════════════ */
 const VF_DB = [
-  { s:"Gianluigi Buffon ha giocato più di 1000 partite da professionista in carriera.",                         a: true  },
-  { s:"Ronaldo Il Fenomeno ha segnato 8 gol nella fase finale del Mondiale 2002.",                              a: true  },
-  { s:"La Juventus ha vinto 10 Scudetti consecutivi tra il 2012 e il 2022.",                                   a: false },
-  { s:"Lionel Messi ha vinto il Mondiale nel 2018 in Russia.",                                                  a: false },
-  { s:"Zinedine Zidane ha vinto 3 Champions League consecutive da allenatore del Real Madrid.",                 a: true  },
-  { s:"Paolo Maldini non ha mai vinto una Champions League come giocatore.",                                    a: false },
-  { s:"Il primo Mondiale di calcio si è svolto in Uruguay nel 1930.",                                          a: true  },
-  { s:"Cristiano Ronaldo è il calciatore che ha segnato più gol nella storia della Champions League.",         a: true  },
-  { s:"L'Italia ha vinto quattro Campionati del Mondo di calcio.",                                             a: true  },
-  { s:"La finale di Champions League del 2005 tra Liverpool e Milan terminò 6-3 ai rigori.",                   a: false },
+  { s:"Gianluigi Buffon ha giocato più di 1000 partite in carriera.", a: true },
+  { s:"La Juventus ha vinto 10 Scudetti consecutivi tra il 2012 e il 2022.", a: false },
+  { s:"Lionel Messi ha vinto il Mondiale nel 2018 in Russia.", a: false },
+  { s:"Zinedine Zidane ha vinto 3 Champions League consecutive da allenatore del Real Madrid.", a: true },
+  { s:"Paolo Maldini non ha mai vinto una Champions League come giocatore.", a: false }
 ];
+const IDK_DB = [
+  { n: "Zlatan Ibrahimovic", c: ["Ho giocato in Juventus, Inter e Milan.","Ho vinto campionati in 4 paesi diversi.","Sono il miglior marcatore della nazionale svedese.","Ho detto: 'I leoni non si paragonano agli umani'."] },
+  { n: "Francesco Totti", c: ["Ho giocato in una sola squadra per tutta la carriera.","Ho vinto un Mondiale con l'Italia.","Il mio simbolo era il 'Cucchiaio'.","Il mio soprannome è 'Er Pupone'."] },
+  { n: "Cristiano Ronaldo", c: ["Ho iniziato la carriera nello Sporting Lisbona.","Ho vinto 5 Palloni d'Oro.","Sono il miglior marcatore della Champions League.","La mia esultanza più famosa è 'Siuuu'."] }
+];
+const IDK_NAMES = ["Zlatan Ibrahimovic", "Francesco Totti", "Cristiano Ronaldo", "Lionel Messi", "Paolo Maldini", "Gianluigi Buffon", "Diego Maradona", "Pelé", "Ronaldo Il Fenomeno", "Alessandro Del Piero"];
 
-/* ══════════════════════════════════════════
-   COSTANTI
-══════════════════════════════════════════ */
-const Q_TIME = 10;
-const Q_PER_MATCH = 5;
-const VF_PER_MATCH = 5;
+const Q_TIME = 10; const Q_PER_MATCH = 5; const VF_PER_MATCH = 5; const IDK_PER_MATCH = 3;
 
-/* ══════════════════════════════════════════
-   FIREBASE INIT
-══════════════════════════════════════════ */
+/* ─── FIREBASE INIT & SYNC TIME ─── */
 firebase.initializeApp({
   apiKey: "AIzaSyDIyhNTyBCSEzSczT7dxyPej5iW6v2FWog",
   authDomain: "quizcalciomultiplayer.firebaseapp.com",
   databaseURL: "https://quizcalciomultiplayer-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "quizcalciomultiplayer",
-  storageBucket: "quizcalciomultiplayer.firebasestorage.app",
-  messagingSenderId: "230946615738",
-  appId: "1:230946615738:web:800f88405d58de75ad6d83"
+  projectId: "quizcalciomultiplayer"
 });
 const db = firebase.database();
 const SV = firebase.database.ServerValue.TIMESTAMP;
 
-/* ══════════════════════════════════════════
-   STATO LOCALE
-══════════════════════════════════════════ */
+let serverOffset = 0;
+db.ref('.info/serverTimeOffset').on('value', s => serverOffset = s.val() || 0);
+const now = () => Date.now() + serverOffset;
+
+/* ─── STATO LOCALE ─── */
 let myId = sessionStorage.getItem('pid');
 if (!myId) { myId = 'p' + Math.random().toString(36).slice(2,10); sessionStorage.setItem('pid', myId); }
+let room = null, isMaster = false, myName = '', roomOff = null;
+let tickId = null, syncTickId = null, idkTimers = [];
+let lastIdx = -1, myAnswered = false, vfLocked = false;
+let qIdx = [], vfIdx = [], idkIdx = [];
 
-let room = null;      // codice stanza
-let isMaster = false; // sono io il creatore?
-let myName = '';
-let roomRef = null;
-let roomOff = null;   // unsubscribe listener
-let tickId = null;    // setInterval timer
-let lastIdx = -1;     // ultimo indice rendering
-let qIdx = [];        // indici quiz scelti per la partita
-let vfIdx = [];       // indici VF scelti per la partita
-let myAnswered = false;
-let vfLocked = false;
-let hostAdvancing = false;
-
-/* ══════════════════════════════════════════
-   UTILS
-══════════════════════════════════════════ */
 const $ = id => document.getElementById(id);
-
 function show(id) {
-  ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-result']
-    .forEach(s => $(s).classList.add('hidden'));
+  ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-idk','s-result'].forEach(s => $(s).classList.add('hidden'));
   $(id).classList.remove('hidden');
 }
+function genCode() { const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:4}, () => c[Math.floor(Math.random()*c.length)]).join(''); }
+function shuffle(n, total) { const a = [...Array(total).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,n); }
+function resetLocals() { clearInterval(tickId); clearInterval(syncTickId); idkTimers.forEach(clearTimeout); idkTimers=[]; lastIdx = -1; myAnswered = false; vfLocked = false; }
 
-function genCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  return Array.from({length:4}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
-}
-
-function shuffle(n, total) {
-  const arr = [...Array(total).keys()];
-  for (let i = arr.length-1; i > 0; i--) {
-    const j = Math.floor(Math.random()*(i+1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr.slice(0, n);
-}
-
-function resetLocalState() {
-  clearInterval(tickId);
-  lastIdx = -1;
-  myAnswered = false;
-  vfLocked = false;
-  hostAdvancing = false;
-  qIdx = [];
-  vfIdx = [];
-}
-
-/* ══════════════════════════════════════════
-   MENU: CREA STANZA
-══════════════════════════════════════════ */
+/* ─── MENU & LOBBY ─── */
 $('btnCreate').addEventListener('click', async () => {
-  const name = $('iName').value.trim();
-  if (!name) { $('menuErr').textContent = 'Inserisci il tuo nome.'; return; }
-  $('menuErr').textContent = '';
-  $('btnCreate').disabled = true;
-  $('btnJoin').disabled = true;
-  myName = name;
-
-  try {
-    let code, attempts = 0;
-    do {
-      code = genCode();
-      const snap = await db.ref('rooms/' + code).get();
-      if (!snap.exists()) break;
-    } while (++attempts < 10);
-
-    room = code;
-    isMaster = true;
-
-    await db.ref('rooms/' + room).set({
-      status: 'waiting',
-      masterId: myId,
-      currentIndex: 0,
-      qIndices: [],
-      vfIndices: [],
-      gameMode: null,
-      startedAt: null,
-      createdAt: SV,
-      players: {
-        [myId]: { name: myName, score: 0 }
-      }
-    });
-
-    db.ref('rooms/' + room + '/players/' + myId).onDisconnect().remove();
-
-    $('wCode').textContent = room;
-    show('s-wait');
-    listenRoom();
-  } catch(e) {
-    $('menuErr').textContent = 'Errore di connessione. Riprova.';
-    console.error(e);
-  } finally {
-    $('btnCreate').disabled = false;
-    $('btnJoin').disabled = false;
-  }
+  myName = $('iName').value.trim(); if (!myName) return $('menuErr').textContent = 'Inserisci nome.';
+  $('btnCreate').disabled = $('btnJoin').disabled = true;
+  let code; do { code = genCode(); } while ((await db.ref('rooms/'+code).get()).exists());
+  room = code; isMaster = true;
+  await db.ref('rooms/'+room).set({ status: 'waiting', masterId: myId, currentIndex: 0, players: { [myId]: { name: myName, score: 0 } } });
+  db.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
+  $('wCode').textContent = room; show('s-wait'); listenRoom();
 });
 
-/* ══════════════════════════════════════════
-   MENU: UNISCITI ALLA STANZA
-══════════════════════════════════════════ */
 $('btnJoin').addEventListener('click', async () => {
-  const name = $('iName').value.trim();
-  const code = $('iCode').value.trim().toUpperCase();
-  if (!name) { $('menuErr').textContent = 'Inserisci il tuo nome.'; return; }
-  if (code.length !== 4) { $('menuErr').textContent = 'Inserisci un codice valido (4 caratteri).'; return; }
-  $('menuErr').textContent = '';
-  $('btnCreate').disabled = true;
-  $('btnJoin').disabled = true;
-  myName = name;
-
-  try {
-    const snap = await db.ref('rooms/' + code).get();
-    if (!snap.exists()) { $('menuErr').textContent = 'Stanza non trovata.'; return; }
-
-    const data = snap.val();
-    const pids = Object.keys(data.players || {});
-
-    if (!data.players[myId] && pids.length >= 2) { $('menuErr').textContent = 'Stanza piena.'; return; }
-    if (data.status === 'finished' || data.status === 'vf_finished') { $('menuErr').textContent = 'Partita già terminata.'; return; }
-
-    room = code;
-    isMaster = (data.masterId === myId);
-
-    await db.ref('rooms/' + room + '/players/' + myId).set({ name: myName, score: 0 });
-    db.ref('rooms/' + room + '/players/' + myId).onDisconnect().remove();
-
-    $('wCode').textContent = room;
-    show('s-wait');
-    listenRoom();
-  } catch(e) {
-    $('menuErr').textContent = 'Errore di connessione. Riprova.';
-    console.error(e);
-  } finally {
-    $('btnCreate').disabled = false;
-    $('btnJoin').disabled = false;
-  }
+  myName = $('iName').value.trim(); const code = $('iCode').value.trim().toUpperCase();
+  if (!myName || code.length!==4) return $('menuErr').textContent = 'Dati non validi.';
+  $('btnCreate').disabled = $('btnJoin').disabled = true;
+  const snap = await db.ref('rooms/'+code).get();
+  if (!snap.exists()) { $('btnCreate').disabled = $('btnJoin').disabled = false; return $('menuErr').textContent = 'Stanza non trovata.'; }
+  room = code; isMaster = false;
+  await db.ref('rooms/'+room+'/players/'+myId).set({ name: myName, score: 0 });
+  db.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
+  $('wCode').textContent = room; show('s-wait'); listenRoom();
 });
 
-/* ══════════════════════════════════════════
-   LISTENER FIREBASE — CUORE DEL GIOCO
-══════════════════════════════════════════ */
 function listenRoom() {
-  if (roomOff) roomOff();
-  const ref = db.ref('rooms/' + room);
-  const handler = ref.on('value', snap => {
-    const data = snap.val();
-    if (!data) return;
-    onRoomUpdate(data);
-  });
-  roomOff = () => ref.off('value', handler);
+  if(roomOff) roomOff();
+  const r = db.ref('rooms/'+room);
+  roomOff = () => r.off('value');
+  r.on('value', s => { const d = s.val(); if(d) handleUpdate(d); });
 }
 
-function onRoomUpdate(data) {
-  const players = data.players || {};
-  const pids = Object.keys(players).sort();
-  const me = players[myId] || null;
-  const oppId = pids.find(id => id !== myId);
-  const opp = oppId ? players[oppId] : null;
+function handleUpdate(data) {
+  const pids = Object.keys(data.players || {}).sort();
+  const me = data.players[myId], oppId = pids.find(id => id !== myId), opp = oppId ? data.players[oppId] : null;
+  if(data.qIdx) qIdx = data.qIdx; if(data.vfIdx) vfIdx = data.vfIdx; if(data.idkIdx) idkIdx = data.idkIdx;
 
-  // Sincronizza indici
-  if (data.qIndices)  qIdx  = data.qIndices;
-  if (data.vfIndices) vfIdx = data.vfIndices;
+  if (isMaster && data.status === 'waiting' && pids.length === 2) return db.ref('rooms/'+room).update({ status: 'lobby' });
 
-  // ── Master: quando arriva il 2° giocatore apri la lobby ──
-  if (isMaster && data.status === 'waiting' && pids.length === 2) {
-    db.ref('rooms/' + room).update({ status: 'lobby' });
-    return;
-  }
-
-  switch (data.status) {
-
-    case 'waiting':
-      show('s-wait');
-      break;
-
-    case 'lobby':
-      renderLobby(me, opp);
-      break;
-
-    case 'playing':
-      renderQuiz(data, me, opp);
-      break;
-
-    case 'vf_playing':
-      renderVF(data, me, opp);
-      break;
-
-    case 'finished':
-    case 'vf_finished':
-      clearInterval(tickId);
-      renderResult(me, opp);
-      break;
+  switch(data.status) {
+    case 'waiting': show('s-wait'); break;
+    case 'lobby': renderLobby(me, opp); break;
+    case 'playing': renderQuiz(data, me, opp); break;
+    case 'vf_playing': renderVF(data, me, opp); break;
+    case 'idk_playing': renderIDK(data, me, opp); break;
+    case 'finished': resetLocals(); renderResult(me, opp); break;
   }
 }
 
-/* ══════════════════════════════════════════
-   LOBBY
-══════════════════════════════════════════ */
 function renderLobby(me, opp) {
-  // reset punteggi all'inizio di ogni sessione lobby (solo master)
-  if (isMaster) {
-    db.ref('rooms/' + room + '/players').once('value', snap => {
-      const ps = snap.val() || {};
-      Object.keys(ps).forEach(id => {
-        db.ref('rooms/' + room + '/players/' + id).update({ score: 0, answers: null });
-      });
-    });
-  }
-
-  $('lmCode').textContent = room;
-  $('lgCode').textContent = room;
-
-  // Aggiorna nomi nella lobby master
-  const cont = $('lmPlayers');
-  cont.innerHTML = '';
-  [{ pid: myId, n: me?.name||'Tu', cls:'me' }, { pid: 'opp', n: opp?.name||'Avversario', cls:'opp' }]
-    .forEach(p => {
-      const d = document.createElement('div');
-      d.style.cssText = 'flex:1;padding:10px;border-radius:12px;text-align:center;font-weight:800;font-size:14px;';
-      d.style.background = p.cls === 'me' ? 'rgba(0,229,255,.1)' : 'rgba(57,255,143,.1)';
-      d.style.color = p.cls === 'me' ? 'var(--blue)' : 'var(--green)';
-      d.style.border = '1.5px solid ' + (p.cls === 'me' ? 'rgba(0,229,255,.3)' : 'rgba(57,255,143,.3)');
-      d.textContent = p.n;
-      cont.appendChild(d);
-    });
-
+  if (isMaster && lastIdx !== -1) { Object.keys(me?{[myId]:me}:{...me, ...opp}).forEach(id => db.ref('rooms/'+room+'/players/'+id).update({ score: 0, answers: null })); resetLocals(); }
+  $('lmCode').textContent = $('lgCode').textContent = room;
+  const c = $('lmPlayers'); c.innerHTML='';
+  [{n:me?.name||'Tu',cls:'me'},{n:opp?.name||'Avversario',cls:'opp'}].forEach(p => {
+    const d=document.createElement('div'); d.style.cssText='flex:1;padding:10px;border-radius:12px;font-weight:800;font-size:14px;';
+    d.style.background = p.cls==='me'?'rgba(0,229,255,.1)':'rgba(57,255,143,.1)'; d.style.color = p.cls==='me'?'var(--blue)':'var(--green)'; d.textContent=p.n; c.appendChild(d);
+  });
   show(isMaster ? 's-lobby-master' : 's-lobby-guest');
 }
 
-/* Master sceglie Quiz */
-$('pickQuiz').addEventListener('click', () => {
-  if (!isMaster) return;
-  const indices = shuffle(Q_PER_MATCH, QUIZ_DB.length);
-  db.ref('rooms/' + room).update({
-    status: 'playing',
-    gameMode: 'quiz',
-    currentIndex: 0,
-    qIndices: indices,
-    startedAt: SV,
-    vfAnswers: null
-  });
-});
+/* Master Selections */
+const startGame = (mode, count, total, arrName) => {
+  if(!isMaster) return;
+  db.ref('rooms/'+room).update({ status: mode, currentIndex: 0, [arrName]: shuffle(count, total), revealAt: now() + 1500, roomAns: null });
+};
+$('pickQuiz').onclick = () => startGame('playing', Q_PER_MATCH, QUIZ_DB.length, 'qIdx');
+$('pickVF').onclick   = () => startGame('vf_playing', VF_PER_MATCH, VF_DB.length, 'vfIdx');
+$('pickIDK').onclick  = () => startGame('idk_playing', IDK_PER_MATCH, IDK_DB.length, 'idkIdx');
 
-/* Master sceglie Vero o Falso */
-$('pickVF').addEventListener('click', () => {
-  if (!isMaster) return;
-  const indices = shuffle(VF_PER_MATCH, VF_DB.length);
-  db.ref('rooms/' + room).update({
-    status: 'vf_playing',
-    gameMode: 'vf',
-    currentIndex: 0,
-    vfIndices: indices,
-    startedAt: SV,
-    vfAnswers: null
-  });
-});
+/* ─── SYNC OVERLAY ─── */
+function handleSync(revealAt, overlayId, onReady) {
+  const over = $(overlayId); clearInterval(syncTickId);
+  if (!revealAt || now() >= revealAt) { over.classList.add('hidden'); onReady(); return; }
+  over.classList.remove('hidden');
+  syncTickId = setInterval(() => { if (now() >= revealAt) { clearInterval(syncTickId); over.classList.add('hidden'); onReady(); } }, 100);
+}
 
-/* ══════════════════════════════════════════
-   QUIZ
-══════════════════════════════════════════ */
+/* ─── 1. QUIZ ─── */
 function renderQuiz(data, me, opp) {
   show('s-quiz');
+  $('qMeName').textContent = me?.name||'Tu'; $('qMeScore').textContent = me?.score||0; $('qOppName').textContent = opp?.name||'...'; $('qOppScore').textContent = opp?.score||0;
+  const idx = data.currentIndex || 0; $('qProg').textContent = (idx+1) + ' / ' + Q_PER_MATCH;
+  const myA = me?.answers?.[idx], oppA = opp?.answers?.[idx];
+  $('qMeSt').textContent = myA ? '✓' : 'Scegli…'; $('qOppSt').textContent = oppA ? '✓' : '...';
 
-  $('qMeName').textContent  = me?.name  || 'Tu';
-  $('qMeScore').textContent = me?.score || 0;
-  $('qOppName').textContent  = opp?.name  || '...';
-  $('qOppScore').textContent = opp?.score || 0;
-  $('qRoom').textContent = 'Stanza: ' + room;
-
-  const idx = data.currentIndex || 0;
-  $('qProg').textContent = (idx+1) + ' / ' + Q_PER_MATCH;
-
-  const myAns  = me?.answers?.[idx]  ?? null;
-  const oppAns = opp?.answers?.[idx] ?? null;
-  $('qMeSt').textContent  = myAns  ? '✓ Risposto'      : 'Scegli…';
-  $('qOppSt').textContent = oppAns ? '✓ Risposto'      : (opp ? 'Sta pensando…' : '');
-
-  if (idx !== lastIdx) {
-    lastIdx = idx;
-    myAnswered = !!myAns;
-    loadQuizCard(idx, myAns);
-  } else if (myAns && !myAnswered) {
-    myAnswered = true;
-    revealQuiz(idx, myAns.sel);
-  }
-
-  startTick(data.startedAt, Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
-    if (!myAnswered) {
-      myAnswered = true;
-      revealQuiz(idx, -1);
-      db.ref('rooms/' + room + '/players/' + myId + '/answers/' + idx)
-        .set({ sel: -1, ok: false, at: SV });
+  handleSync(data.revealAt, 'syncQuiz', () => {
+    if (idx !== lastIdx) { lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA); }
+    else if (myA && !myAnswered) { myAnswered = true; revealQuiz(idx, myA.sel); }
+    startTick(data.revealAt, Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
+      if(!myAnswered) { myAnswered = true; revealQuiz(idx, -1); db.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({sel:-1}); }
+    });
+    if(isMaster) {
+      const allDone = Object.values(data.players).every(p => p.answers?.[idx]);
+      if(allDone || now() > data.revealAt + (Q_TIME*1000) + 500) nextRound('playing', idx, Q_PER_MATCH, 1500);
     }
   });
-
-  if (isMaster) masterCheckQuiz(data, idx);
 }
-
-function loadQuizCard(idx, existing) {
-  const dbIdx = qIdx[idx] ?? idx;
-  const q = QUIZ_DB[dbIdx];
-
-  const card = $('qCard');
-  card.classList.remove('fade-in');
-  void card.offsetWidth;
-  card.classList.add('fade-in');
-
-  $('qText').textContent = q.q;
-  const cont = $('qOpts');
-  cont.innerHTML = '';
-  q.o.forEach((opt, oi) => {
-    const btn = document.createElement('button');
-    btn.className = 'opt';
-    btn.textContent = opt;
-    btn.addEventListener('click', () => submitQuiz(idx, oi));
-    cont.appendChild(btn);
-  });
-
-  if (existing) revealQuiz(idx, existing.sel);
+function loadQuiz(idx, ex) {
+  const q = QUIZ_DB[qIdx[idx] ?? idx]; $('qCard').classList.remove('fade-in'); void $('qCard').offsetWidth; $('qCard').classList.add('fade-in');
+  $('qText').textContent = q.q; $('qOpts').innerHTML='';
+  q.o.forEach((o, i) => { const b = document.createElement('button'); b.className='opt'; b.textContent=o; b.onclick=()=>submitQ(idx,i); $('qOpts').appendChild(b); });
+  if(ex) revealQuiz(idx, ex.sel);
 }
-
-function submitQuiz(idx, sel) {
-  if (myAnswered) return;
-  myAnswered = true;
-  const dbIdx = qIdx[idx] ?? idx;
-  const ok = sel === QUIZ_DB[dbIdx].c;
-  revealQuiz(idx, sel);
-  db.ref('rooms/' + room + '/players/' + myId + '/answers/' + idx).set({ sel, ok, at: SV });
-  if (ok) db.ref('rooms/' + room + '/players/' + myId + '/score').transaction(s => (s||0) + 1);
+function submitQ(idx, sel) {
+  if(myAnswered) return; myAnswered = true;
+  const ok = sel === QUIZ_DB[qIdx[idx]??idx].c; revealQuiz(idx, sel);
+  db.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({sel, ok});
+  if(ok) db.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s=>(s||0)+1);
 }
-
 function revealQuiz(idx, sel) {
-  const dbIdx = qIdx[idx] ?? idx;
-  const correct = QUIZ_DB[dbIdx].c;
-  $('qOpts').querySelectorAll('.opt').forEach((btn, oi) => {
-    btn.disabled = true;
-    if (oi === correct) btn.classList.add('correct');
-    else if (oi === sel) btn.classList.add('wrong');
-  });
+  const c = QUIZ_DB[qIdx[idx]??idx].c;
+  $('qOpts').querySelectorAll('.opt').forEach((b, i) => { b.disabled=true; if(i===c) b.classList.add('correct'); else if(i===sel) b.classList.add('wrong'); });
 }
 
-function masterCheckQuiz(data, idx) {
-  if (hostAdvancing) return;
-  const players = data.players || {};
-  const ids = Object.keys(players);
-  if (ids.length < 2) return;
-  const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
-  const elapsed = data.startedAt ? (Date.now() - data.startedAt) / 1000 : 0;
-  const timeUp  = elapsed >= Q_TIME + 0.6;
-  if (allDone || timeUp) {
-    hostAdvancing = true;
-    setTimeout(() => {
-      const next = idx + 1;
-      if (next >= Q_PER_MATCH) {
-        db.ref('rooms/' + room).update({ status: 'finished' }).then(() => { hostAdvancing = false; });
-      } else {
-        db.ref('rooms/' + room).update({ currentIndex: next, startedAt: SV }).then(() => { hostAdvancing = false; });
-      }
-    }, allDone ? 1300 : 400);
-  }
-}
-
-/* ══════════════════════════════════════════
-   TIMER GENERICO
-══════════════════════════════════════════ */
-function startTick(startedAt, duration, fillId, lblId, onEnd) {
-  clearInterval(tickId);
-  if (!startedAt) return;
-  const fill = $(fillId), lbl = $(lblId);
-  function tick() {
-    const elapsed = (Date.now() - startedAt) / 1000;
-    const rem = Math.max(duration - elapsed, 0);
-    if (lbl) lbl.textContent = Math.ceil(rem) + 's';
-    if (fill) {
-      fill.style.transition = 'width .35s linear, background .3s';
-      fill.style.width = (rem / duration * 100) + '%';
-      fill.classList.toggle('danger', rem <= 3);
-    }
-    if (rem <= 0) { clearInterval(tickId); onEnd && onEnd(); }
-  }
-  tick();
-  tickId = setInterval(tick, 300);
-}
-
-/* ══════════════════════════════════════════
-   VERO O FALSO
-══════════════════════════════════════════ */
-let vfHostTimer = null;
-
+/* ─── 2. VERO O FALSO ─── */
 function renderVF(data, me, opp) {
   show('s-vf');
+  $('vfMeName').textContent = me?.name||'Tu'; $('vfMeScore').textContent = me?.score||0; $('vfOppName').textContent = opp?.name||'...'; $('vfOppScore').textContent = opp?.score||0;
+  const idx = data.currentIndex || 0; $('vfProg').textContent = (idx+1) + ' / ' + VF_PER_MATCH;
+  const q = VF_DB[vfIdx[idx] ?? idx], ans = data.roomAns?.[idx];
 
-  $('vfMeName').textContent  = me?.name  || 'Tu';
-  $('vfMeScore').textContent = me?.score || 0;
-  $('vfOppName').textContent  = opp?.name  || '...';
-  $('vfOppScore').textContent = opp?.score || 0;
-
-  const idx = data.currentIndex || 0;
-  $('vfProg').textContent = (idx+1) + ' / ' + VF_PER_MATCH;
-
-  const dbIdx = vfIdx[idx] ?? idx;
-  const q = VF_DB[dbIdx];
-  const round = data.vfAnswers?.[idx] ?? null; // { pid, ans, pointsDone }
-
-  // Nuova domanda → reset UI locale
-  if (idx !== lastIdx) {
-    lastIdx = idx;
-    vfLocked = false;
-    loadVFCard(q);
-    hostAdvancing = false;
-  }
-
-  // Qualcuno ha già risposto: mostra feedback e lascia che l'host avanzi
-  if (round) {
-    showVFRound(round, q, me, opp, idx);
-    if (isMaster && !hostAdvancing) {
-      hostAdvancing = true;
-      clearTimeout(vfHostTimer);
-      vfHostTimer = setTimeout(() => {
-        const next = idx + 1;
-        if (next >= VF_PER_MATCH) {
-          db.ref('rooms/' + room).update({ status: 'vf_finished' }).then(() => { hostAdvancing = false; });
-        } else {
-          db.ref('rooms/' + room).update({ currentIndex: next, startedAt: SV }).then(() => { hostAdvancing = false; });
-        }
-      }, 2200);
+  handleSync(data.revealAt, 'syncVF', () => {
+    if (idx !== lastIdx) {
+      lastIdx = idx; vfLocked = false; $('vfCard').classList.remove('fade-in'); void $('vfCard').offsetWidth; $('vfCard').classList.add('fade-in');
+      $('vfText').textContent = q.s; $('vfFeedback').textContent = '';
+      $('vfV').disabled = $('vfF').disabled = false; $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
     }
-  } else {
-    // Nessuno ha risposto ancora
-    $('vfFeedback').textContent = '';
-    $('vfMeSt').textContent = 'Chi risponde prima vince!';
-    $('vfOppSt').textContent = opp ? 'Chi risponde prima vince!' : '';
-    $('vfV').disabled = false;
-    $('vfF').disabled = false;
-    $('vfV').className = 'vf-btn vero';
-    $('vfF').className = 'vf-btn falso';
-  }
-}
-
-function loadVFCard(q) {
-  const card = $('vfCard');
-  card.classList.remove('fade-in');
-  void card.offsetWidth;
-  card.classList.add('fade-in');
-  $('vfText').textContent = q.s;
-  $('vfFeedback').textContent = '';
-  $('vfV').disabled = false;
-  $('vfF').disabled = false;
-  $('vfV').className = 'vf-btn vero';
-  $('vfF').className = 'vf-btn falso';
-}
-
-$('vfV').addEventListener('click', () => pressVF(true));
-$('vfF').addEventListener('click', () => pressVF(false));
-
-function pressVF(ans) {
-  if (vfLocked) return;
-  vfLocked = true;
-  $('vfV').disabled = true;
-  $('vfF').disabled = true;
-  const idx = lastIdx;
-  // Transaction atomica: scrive solo se il nodo è null → chi arriva primo vince
-  db.ref('rooms/' + room + '/vfAnswers/' + idx).transaction(cur => {
-    if (cur !== null) return; // qualcun altro è stato prima
-    return { pid: myId, ans, pointsDone: false };
+    if (ans) {
+      $('vfV').disabled = $('vfF').disabled = true;
+      const ok = ans.v === q.a, first = ans.pid === myId;
+      (ans.v ? $('vfV') : $('vfF')).className += ' hit';
+      $('vfFeedback').textContent = first ? (ok ? '⚡ Esatto! +10pt' : '❌ Sbagliato! +5pt a lui') : (ok ? '⚡ Ha risposto prima lui!' : '❌ Ha sbagliato! +5pt a te');
+      $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+      if (isMaster && !data.scored?.[idx]) {
+        const pids = Object.keys(data.players), oppId = pids.find(i=>i!==ans.pid);
+        db.ref('rooms/'+room+'/players/'+(ok?ans.pid:oppId)+'/score').transaction(s=>(s||0)+(ok?10:5));
+        db.ref('rooms/'+room+'/scored/'+idx).set(true);
+        nextRound('vf_playing', idx, VF_PER_MATCH, 3000);
+      }
+    }
   });
 }
+$('vfV').onclick = () => { if(vfLocked)return; vfLocked=true; db.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? {pid:myId, v:true} : undefined); };
+$('vfF').onclick = () => { if(vfLocked)return; vfLocked=true; db.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? {pid:myId, v:false} : undefined); };
 
-function showVFRound(round, q, me, opp, idx) {
-  $('vfV').disabled = true;
-  $('vfF').disabled = true;
+/* ─── 3. L'IDENTIKIT ─── */
+function renderIDK(data, me, opp) {
+  show('s-idk');
+  $('idkMeName').textContent = me?.name||'Tu'; $('idkMeScore').textContent = me?.score||0; $('idkOppName').textContent = opp?.name||'...'; $('idkOppScore').textContent = opp?.score||0;
+  const idx = data.currentIndex || 0; $('idkProg').textContent = (idx+1) + ' / ' + IDK_PER_MATCH;
+  const q = IDK_DB[idkIdx[idx] ?? idx], ans = data.roomAns?.[idx];
 
-  const correct  = round.ans === q.a;
-  const iWasFirst = round.pid === myId;
-
-  // Illumina il pulsante premuto
-  const btn = round.ans ? $('vfV') : $('vfF');
-  btn.className = 'vf-btn ' + (round.ans ? 'vero' : 'falso') + (correct ? ' hit' : '');
-
-  // Messaggio feedback
-  const firstNm = round.pid === myId ? (me?.name||'Tu') : (opp?.name||'Avversario');
-  let msg = '';
-  if (iWasFirst) {
-    msg = correct ? '⚡ Hai risposto prima! +10 punti 🎉' : '❌ Hai sbagliato! +5 punti all\'avversario';
-  } else {
-    msg = correct
-      ? `⚡ ${firstNm} ha risposto prima e ha ragione!`
-      : `✅ ${firstNm} ha sbagliato! +5 punti a te!`;
-  }
-  $('vfFeedback').textContent = msg;
-  $('vfMeSt').textContent  = correct === iWasFirst ? '🎯' : '';
-  $('vfOppSt').textContent = '';
-
-  // MASTER assegna i punti (una sola volta, tramite transaction su pointsDone)
-  if (isMaster && !round.pointsDone) {
-    db.ref('rooms/' + room + '/vfAnswers/' + idx + '/pointsDone').transaction(done => {
-      if (done) return; // già fatto
-      const winner = correct ? round.pid : Object.keys({...((me?{[myId]:me}:{}), ...(opp?{[opp.pid]:opp}:{}))}).find(id=>id!==round.pid);
-      // rileggo i player IDs dalla stanza
-      db.ref('rooms/' + room + '/players').once('value', snap => {
-        const ps = snap.val() || {};
-        const allIds = Object.keys(ps);
-        const winnerId = correct ? round.pid : allIds.find(id => id !== round.pid);
-        if (winnerId) db.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s||0) + (correct ? 10 : 5));
+  handleSync(data.revealAt, 'syncIDK', () => {
+    if (idx !== lastIdx) {
+      lastIdx = idx; vfLocked = false; idkTimers.forEach(clearTimeout); idkTimers = [];
+      $('idkClues').innerHTML = ''; $('idkInp').value = ''; $('idkFeedback').textContent = '';
+      $('idkInp').disabled = $('idkBtn').disabled = false;
+      
+      // Gli indizi appaiono dal revealAt (esatto per entrambi)
+      q.c.forEach((clue, i) => {
+        const timeToClue = data.revealAt + (i * 4000);
+        if (now() >= timeToClue) showClue(clue, 4-i);
+        else idkTimers.push(setTimeout(() => { if(!data.roomAns?.[idx]) showClue(clue, 4-i); }, timeToClue - now()));
       });
-      return true;
-    });
-  }
+    }
+    if (ans) {
+      $('idkInp').disabled = $('idkBtn').disabled = true; idkTimers.forEach(clearTimeout);
+      const ok = ans.v.toLowerCase() === q.n.toLowerCase(), first = ans.pid === myId;
+      $('idkFeedback').textContent = first ? (ok ? `Esatto! +${ans.pts}pt` : `Sbagliato! +${ans.pts}pt a lui`) : (ok ? `Ha indovinato! +${ans.pts}pt a lui` : `Ha sbagliato! +${ans.pts}pt a te`);
+      $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+      if (isMaster && !data.scored?.[idx]) {
+        const pids = Object.keys(data.players), oppId = pids.find(i=>i!==ans.pid);
+        db.ref('rooms/'+room+'/players/'+(ok?ans.pid:oppId)+'/score').transaction(s=>(s||0)+ans.pts);
+        db.ref('rooms/'+room+'/scored/'+idx).set(true);
+        nextRound('idk_playing', idx, IDK_PER_MATCH, 3500);
+      }
+    }
+  });
+}
+function showClue(text, pts) { const d=document.createElement('div'); d.className='idk-clue'; d.innerHTML=`<div class="idk-points">${pts} PUNTI</div>${text}`; $('idkClues').appendChild(d); $('idkClues').scrollTop=$('idkClues').scrollHeight; }
+
+$('idkInp').oninput = function() {
+  const v = this.value.toLowerCase(), ac = $('idkAuto'); ac.innerHTML = '';
+  if(!v) { ac.style.display='none'; return; }
+  const m = IDK_NAMES.filter(n => n.toLowerCase().includes(v));
+  if(m.length) { ac.style.display='block'; m.forEach(n => { const d=document.createElement('div'); d.className='idk-ac-item'; d.textContent=n; d.onclick=()=>{$('idkInp').value=n; ac.style.display='none';}; ac.appendChild(d); }); }
+  else ac.style.display='none';
+};
+$('idkBtn').onclick = () => {
+  if(vfLocked || !$('idkInp').value.trim()) return; vfLocked = true;
+  const pts = 4 - ($('idkClues').children.length - 1);
+  db.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? {pid:myId, v:$('idkInp').value.trim(), pts} : undefined);
+};
+
+/* ─── UTILS MASTER AVANZAMENTO ─── */
+let advanceTimer = null;
+function nextRound(mode, idx, max, delay) {
+  clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(() => {
+    if(idx+1 >= max) db.ref('rooms/'+room).update({ status: 'finished' });
+    else db.ref('rooms/'+room).update({ currentIndex: idx+1, revealAt: now() + 1500 });
+  }, delay);
 }
 
-/* ══════════════════════════════════════════
-   RESULT
-══════════════════════════════════════════ */
+/* ─── TIMER UI ─── */
+function startTick(startedAt, duration, fillId, lblId, onEnd) {
+  clearInterval(tickId);
+  const tick = () => {
+    const r = Math.max(duration - ((now() - startedAt)/1000), 0);
+    if($(lblId)) $(lblId).textContent = Math.ceil(r) + 's';
+    if($(fillId)) { $(fillId).style.width = (r/duration*100)+'%'; $(fillId).classList.toggle('danger', r<=3); }
+    if(r<=0) { clearInterval(tickId); onEnd?.(); }
+  };
+  tick(); tickId = setInterval(tick, 200);
+}
+
+/* ─── RESULT & RESET ─── */
 function renderResult(me, opp) {
   show('s-result');
-  const ms = me?.score || 0;
-  const os = opp?.score || 0;
-  $('rMeScore').textContent  = ms;
-  $('rOppScore').textContent = os;
-  $('rMeName').textContent   = me?.name  || 'Tu';
-  $('rOppName').textContent  = opp?.name || 'Avversario';
-
-  if (ms > os) {
-    $('rMedal').textContent = '🏆';
-    $('rVerdict').textContent = 'Hai vinto! 🎉';
-    $('rVerdict').className = 'verdict win';
-  } else if (ms < os) {
-    $('rMedal').textContent = '😔';
-    $('rVerdict').textContent = 'Hai perso. Rivincita?';
-    $('rVerdict').className = 'verdict lose';
-  } else {
-    $('rMedal').textContent = '🤝';
-    $('rVerdict').textContent = 'Pareggio!';
-    $('rVerdict').className = 'verdict draw';
-  }
+  const ms = me?.score||0, os = opp?.score||0;
+  $('rMeScore').textContent = ms; $('rOppScore').textContent = os;
+  $('rMeName').textContent = me?.name||'Tu'; $('rOppName').textContent = opp?.name||'Avversario';
+  if(ms>os) { $('rMedal').textContent='🏆'; $('rVerdict').textContent='Hai vinto!'; $('rVerdict').className='verdict win'; }
+  else if(ms<os) { $('rMedal').textContent='😔'; $('rVerdict').textContent='Hai perso.'; $('rVerdict').className='verdict lose'; }
+  else { $('rMedal').textContent='🤝'; $('rVerdict').textContent='Pareggio!'; $('rVerdict').className='verdict draw'; }
 }
-
-/* ══════════════════════════════════════════
-   TORNA ALLA LOBBY
-══════════════════════════════════════════ */
-$('btnLobby').addEventListener('click', () => {
-  resetLocalState();
-
-  if (isMaster) {
-    // Reset Firebase per nuova sessione
-    db.ref('rooms/' + room + '/players').once('value', snap => {
-      const ps = snap.val() || {};
-      const updates = {};
-      Object.keys(ps).forEach(id => {
-        updates[`players/${id}/score`] = 0;
-        updates[`players/${id}/answers`] = null;
-      });
-      updates['status'] = 'lobby';
-      updates['currentIndex'] = 0;
-      updates['gameMode'] = null;
-      updates['qIndices'] = [];
-      updates['vfIndices'] = [];
-      updates['startedAt'] = null;
-      updates['vfAnswers'] = null;
-      db.ref('rooms/' + room).update(updates);
-    });
-  }
-  // Il listener Firebase porterà entrambi alla lobby automaticamente
-});
+$('btnLobby').onclick = () => { if(isMaster) db.ref('rooms/'+room).update({status:'lobby', scored:null}); };
 </script>
 </body>
 </html>
