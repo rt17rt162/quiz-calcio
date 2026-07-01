@@ -321,22 +321,23 @@
 
 <script>
 // ============================================
-// DATABASE DOMANDE — aggiungi qui nuove domande
-// nello stesso formato: { q, options[4], correct }
-// "correct" è l'indice (0-3) della risposta esatta
-// L'ordine deve restare identico su tutti i client
-// (non viene mescolato) così le due stanze restano sincronizzate.
+// DATABASE DOMANDE (30 domande)
+// Formato: { q, options[4], correct }
+// "correct" = indice (0-3) della risposta esatta
+// Per aggiungerne altre: copia un blocco e incollalo
+// in fondo all'array, prima del "];".
 // ============================================
 const quizDatabase = [
+  // --- STORIA ---
   {
     q: "Quale squadra ha vinto più Scudetti nella storia della Serie A?",
     options: ["Juventus", "Inter", "Milan", "Roma"],
     correct: 0
   },
   {
-    q: "Chi ha vinto il Pallone d'Oro nel 2023?",
-    options: ["Kylian Mbappé", "Erling Haaland", "Lionel Messi", "Karim Benzema"],
-    correct: 2
+    q: "Quale paese ha vinto più Campionati del Mondo di calcio?",
+    options: ["Germania", "Italia", "Argentina", "Brasile"],
+    correct: 3
   },
   {
     q: "Quale nazionale ha vinto i Mondiali di Qatar 2022?",
@@ -344,14 +345,30 @@ const quizDatabase = [
     correct: 3
   },
   {
-    q: "In quale città ha sede storicamente il club del Real Madrid?",
-    options: ["Barcellona", "Madrid", "Siviglia", "Valencia"],
+    q: "In quale anno l'Italia ha vinto il suo primo Mondiale?",
+    options: ["1930", "1934", "1938", "1950"],
     correct: 1
   },
   {
-    q: "Quanti giocatori di movimento (esclusi i portieri) compongono una squadra di calcio in campo?",
-    options: ["9", "10", "11", "12"],
+    q: "Chi era l'allenatore del Brasile campione del mondo nel 1970?",
+    options: ["Zagallo", "Scolari", "Parreira", "Tite"],
+    correct: 0
+  },
+  {
+    q: "Qual è stato il primo paese africano a raggiungere i quarti di finale di un Mondiale?",
+    options: ["Nigeria", "Camerun", "Senegal", "Marocco"],
     correct: 1
+  },
+  {
+    q: "Quale club ha vinto la prima edizione della Champions League (1956)?",
+    options: ["Barcelona", "Juventus", "Real Madrid", "Benfica"],
+    correct: 2
+  },
+  // --- GIOCATORI FAMOSI ---
+  {
+    q: "Chi ha vinto il Pallone d'Oro nel 2023?",
+    options: ["Kylian Mbappé", "Erling Haaland", "Lionel Messi", "Karim Benzema"],
+    correct: 2
   },
   {
     q: "Chi è il giocatore con più gol nella storia della Champions League?",
@@ -359,14 +376,71 @@ const quizDatabase = [
     correct: 2
   },
   {
+    q: "Quale soprannome aveva il brasiliano Edson Arantes do Nascimento?",
+    options: ["Zico", "Pelé", "Ronaldo", "Garrincha"],
+    correct: 1
+  },
+  {
+    q: "Con quale club Diego Maradona ha vinto il suo unico Scudetto italiano?",
+    options: ["Roma", "Lazio", "Inter", "Napoli"],
+    correct: 3
+  },
+  {
+    q: "Chi ha segnato il 'Gol del Secolo' ai Mondiali del 1986?",
+    options: ["Platini", "Maradona", "Zico", "Lineker"],
+    correct: 1
+  },
+  {
+    q: "Quanti Palloni d'Oro ha vinto Lionel Messi (fino al 2024)?",
+    options: ["6", "7", "8", "9"],
+    correct: 2
+  },
+  {
+    q: "Ronaldo 'Il Fenomeno' è originario di quale paese?",
+    options: ["Argentina", "Colombia", "Portogallo", "Brasile"],
+    correct: 3
+  },
+  // --- REGOLE DEL GIOCO ---
+  {
+    q: "Quanti giocatori compongono una squadra di calcio in campo (incluso il portiere)?",
+    options: ["9", "10", "11", "12"],
+    correct: 2
+  },
+  {
+    q: "Da quanti metri viene battuto il calcio di rigore?",
+    options: ["9", "11", "16", "18"],
+    correct: 1
+  },
+  {
+    q: "Quanti minuti dura un tempo regolamentare di una partita di calcio?",
+    options: ["40", "45", "50", "60"],
+    correct: 1
+  },
+  {
+    q: "In una partita di calcio, quante sostituzioni sono consentite per squadra (regola FIFA attuale)?",
+    options: ["3", "4", "5", "6"],
+    correct: 2
+  },
+  {
+    q: "Cosa indica il cartellino rosso diretto in una partita di calcio?",
+    options: ["Ammonizione", "Espulsione immediata", "Cambio obbligatorio", "Rigore contro"],
+    correct: 1
+  },
+  {
+    q: "In quale caso si assegna un calcio d'angolo?",
+    options: ["Pallone uscito sul fondo toccato da un difensore", "Fallo in area", "Pallone in tribuna", "Gol annullato"],
+    correct: 0
+  },
+  // --- CAMPIONATI E CLUB ---
+  {
     q: "In quale stadio gioca le partite casalinghe il Milan?",
     options: ["Stadio Olimpico", "San Siro", "Allianz Stadium", "Stadio Diego Armando Maradona"],
     correct: 1
   },
   {
-    q: "Quale paese ha vinto più Campionati del Mondo di calcio?",
-    options: ["Germania", "Italia", "Argentina", "Brasile"],
-    correct: 3
+    q: "In quale città ha sede storicamente il club del Real Madrid?",
+    options: ["Barcellona", "Madrid", "Siviglia", "Valencia"],
+    correct: 1
   },
   {
     q: "Chi ha allenato l'Italia campione d'Europa nel 2021?",
@@ -377,10 +451,51 @@ const quizDatabase = [
     q: "Quale club inglese è soprannominato 'I Reds'?",
     options: ["Manchester United", "Arsenal", "Liverpool", "Chelsea"],
     correct: 2
+  },
+  {
+    q: "Quale club tedesco è soprannominato 'Die Roten' (I Rossi)?",
+    options: ["Borussia Dortmund", "Bayer Leverkusen", "Bayern Monaco", "Schalke 04"],
+    correct: 2
+  },
+  {
+    q: "Quale squadra spagnola gioca al Camp Nou?",
+    options: ["Real Madrid", "Atletico Madrid", "Valencia", "Barcelona"],
+    correct: 3
+  },
+  {
+    q: "In quale nazione gioca il PSG (Paris Saint-Germain)?",
+    options: ["Belgio", "Svizzera", "Francia", "Lussemburgo"],
+    correct: 2
+  },
+  {
+    q: "Quale club italiano ha la stella sul petto che rappresenta 10 scudetti?",
+    options: ["Roma", "Milan", "Juventus", "Inter"],
+    correct: 1
+  },
+  {
+    q: "Quante squadre partecipano alla fase a gironi della Champions League (formato dal 2024)?",
+    options: ["32", "36", "40", "48"],
+    correct: 1
+  },
+  {
+    q: "In quale paese si trova la Lega MLS (Major League Soccer)?",
+    options: ["Messico", "Canada", "Stati Uniti d'America", "USA e Canada"],
+    correct: 3
   }
 ];
 
-const QUESTION_TIME = 10; // secondi per domanda
+const QUESTION_TIME = 10;    // secondi per domanda
+const QUESTIONS_PER_MATCH = 5; // quante domande per partita
+
+// Restituisce un array di N indici casuali senza ripetizioni
+function pickRandomQuestions(n){
+  const pool = quizDatabase.map((_, i) => i);
+  for(let i = pool.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, n);
+}
 
 // ============================================
 // FIREBASE INIT
@@ -416,6 +531,7 @@ let countdownInterval = null;
 let lastRenderedIndex = -1;
 let myAnswered = false;
 let connectionListenerSet = false;
+let questionIndices = []; // indici del database scelti per questa partita
 
 // ============================================
 // RIFERIMENTI DOM
@@ -500,6 +616,7 @@ createBtn.addEventListener('click', async () => {
       status: 'waiting',
       hostId: playerId,
       currentIndex: 0,
+      questionIndices: pickRandomQuestions(QUESTIONS_PER_MATCH),
       questionStartedAt: null,
       createdAt: firebase.database.ServerValue.TIMESTAMP,
       players: {
@@ -622,6 +739,11 @@ function handleRoomUpdate(data){
   const oppId = playerIds.find(id => id !== playerId);
   const opp = oppId ? players[oppId] : null;
 
+  // Sincronizza sempre gli indici domande dal database Firebase
+  if(data.questionIndices){
+    questionIndices = data.questionIndices;
+  }
+
   // --- Avvio automatico quando ci sono 2 giocatori e siamo in attesa ---
   if(isHost && data.status === 'waiting' && playerIds.length === 2){
     db.ref('rooms/' + roomCode).update({
@@ -661,8 +783,8 @@ function renderQuizState(data, me, opp, oppId){
   oppName.textContent = opp ? opp.name : 'In attesa...';
   oppScore.textContent = opp ? (opp.score || 0) : 0;
 
-  const idx = data.currentIndex || 0;
-  const total = quizDatabase.length;
+  const idx = data.currentIndex || 0;            // posizione nella partita (0-4)
+  const total = questionIndices.length || QUESTIONS_PER_MATCH;
   progress.textContent = (idx + 1) + " / " + total;
 
   const myAnswerForThis = me && me.answers ? me.answers[idx] : null;
@@ -690,7 +812,10 @@ function renderQuizState(data, me, opp, oppId){
 }
 
 function loadQuestionUI(idx, myAnswerForThis){
-  const q = quizDatabase[idx];
+  // idx = posizione nella partita (0-4)
+  // dbIdx = indice reale nel quizDatabase
+  const dbIdx = questionIndices[idx] !== undefined ? questionIndices[idx] : idx;
+  const q = quizDatabase[dbIdx];
 
   cardArea.classList.remove('fade-card');
   void cardArea.offsetWidth;
@@ -716,7 +841,8 @@ function loadQuestionUI(idx, myAnswerForThis){
 function selectAnswer(idx, selectedIdx){
   if(myAnswered) return;
   myAnswered = true;
-  const q = quizDatabase[idx];
+  const dbIdx = questionIndices[idx] !== undefined ? questionIndices[idx] : idx;
+  const q = quizDatabase[dbIdx];
   const isCorrect = selectedIdx === q.correct;
 
   revealLocalAnswer(idx, selectedIdx);
@@ -735,7 +861,8 @@ function selectAnswer(idx, selectedIdx){
 }
 
 function revealLocalAnswer(idx, selectedIdx){
-  const q = quizDatabase[idx];
+  const dbIdx = questionIndices[idx] !== undefined ? questionIndices[idx] : idx;
+  const q = quizDatabase[dbIdx];
   const buttons = optionsList.querySelectorAll('.opt');
   buttons.forEach((btn, oIdx) => {
     btn.disabled = true;
@@ -804,7 +931,8 @@ function checkAdvanceCondition(data, idx, me, opp){
 
 function advanceQuestion(currentIdx){
   const nextIdx = currentIdx + 1;
-  if(nextIdx >= quizDatabase.length){
+  const matchLength = questionIndices.length || QUESTIONS_PER_MATCH;
+  if(nextIdx >= matchLength){
     db.ref('rooms/' + roomCode).update({ status: 'finished' }).then(() => {
       advancing = false;
     });
@@ -856,6 +984,7 @@ replayBtn.addEventListener('click', () => {
   myAnswered = false;
   advancing = false;
   connectionListenerSet = false;
+  questionIndices = [];
   menuMsg.textContent = "";
   roomInput.value = "";
   showScreen(menuScreen);
