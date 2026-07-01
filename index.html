@@ -68,35 +68,20 @@ body {
 .btn-ghost { background: rgba(255,255,255,.05); color: var(--text); border: 1.5px solid rgba(255,255,255,.12); }
 .err { font-size: 13px; font-weight: 600; color: var(--red); min-height: 18px; margin-top: 12px; }
 
-/* ─── SPINNER & SYNC OVERLAY ─── */
+/* ─── SPINNER ─── */
 .spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,.1); border-top-color: var(--green); animation: spin .85s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-/*
-  SYNC OVERLAY — appare solo durante la brevissima finestra di countdown.
-  Viene nascosto non appena revealAt è passato o mancano ≤0s.
-*/
-.sync-overlay {
-  position: absolute; inset: 0; background: var(--bg); z-index: 100;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.sync-overlay.hidden { display: none; }
-.sync-overlay h2 {
-  font-size: 32px; font-weight: 900; color: var(--blue); margin-top: 16px;
-  animation: pulse 1s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(.95)} }
 
 /* ─── ROOM & PLAYERS ─── */
 .code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0 28px; }
 .code-val { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue); line-height: 1.1; }
 .code-hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
 .score-bar { display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0; }
-.pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; }
+.pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; transition: transform 0.2s; }
 .pchip.me  { border-color: rgba(0,229,255,.4); }
 .pchip.opp { border-color: rgba(57,255,143,.4); }
 .pchip .pname { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pchip .pscore { font-size: 22px; font-weight: 900; }
+.pchip .pscore { font-size: 22px; font-weight: 900; transition: color 0.2s; }
 .pchip.me  .pscore { color: var(--blue); }
 .pchip.opp .pscore { color: var(--green); }
 .pchip .pstatus { font-size: 10px; color: var(--muted); margin-top: 2px; }
@@ -200,7 +185,7 @@ body {
     <p class="label-xs" style="margin:0 0 4px;">Scegli il mini-gioco</p>
     <div class="game-grid">
       <div class="game-card" id="pickQuiz"><div class="icon">🏆</div><div class="info"><div class="name">Quiz Calcio</div><div class="desc">5 domande classiche · 10s · 1 pt</div></div></div>
-      <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo blocca · +10 se giusto · +5 all'avversario se sbaglio</div></div></div>
+      <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo blocca · +10 se giusto · +5 all'avversario se sbagli</div></div></div>
       <div class="game-card" id="pickIDK"><div class="icon">🕵️</div><div class="info"><div class="name">L'Identikit</div><div class="desc">Indovina il giocatore dagli indizi!</div></div></div>
     </div>
   </div>
@@ -218,7 +203,6 @@ body {
 
 <!-- 4. QUIZ -->
 <div class="screen hidden" id="s-quiz">
-  <div class="sync-overlay hidden" id="syncQuiz"><div class="spinner"></div><h2>PRONTI...</h2></div>
   <div class="hdr"><div class="logo"><em>⚽</em> QUIZ</div><div class="pill" id="qProg">1 / 5</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="qMeName">Tu</div><div class="pscore" id="qMeScore">0</div><div class="pstatus" id="qMeSt">&nbsp;</div></div>
@@ -235,7 +219,6 @@ body {
 
 <!-- 5. VERO O FALSO -->
 <div class="screen hidden" id="s-vf">
-  <div class="sync-overlay hidden" id="syncVF"><div class="spinner"></div><h2>PRONTI...</h2></div>
   <div class="hdr"><div class="logo"><em>⚽</em> VERO O FALSO</div><div class="pill" id="vfProg">1 / 5</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="vfMeName">Tu</div><div class="pscore" id="vfMeScore">0</div><div class="pstatus" id="vfMeSt">&nbsp;</div></div>
@@ -254,7 +237,6 @@ body {
 
 <!-- 6. IDENTIKIT -->
 <div class="screen hidden" id="s-idk">
-  <div class="sync-overlay hidden" id="syncIDK"><div class="spinner"></div><h2>PRONTI...</h2></div>
   <div class="hdr"><div class="logo"><em>⚽</em> IDENTIKIT</div><div class="pill" id="idkProg">1 / 3</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="idkMeName">Tu</div><div class="pscore" id="idkMeScore">0</div><div class="pstatus" id="idkMeSt">&nbsp;</div></div>
@@ -287,13 +269,15 @@ body {
   </div>
 </div>
 
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 <script>
 'use strict';
 
 /* ═══════════════════════════════════════════
-   DATABASES
+   DATABASES (Dati finti)
 ═══════════════════════════════════════════ */
 const QUIZ_DB = [
   { q:"Quale squadra ha vinto più Scudetti nella storia della Serie A?", o:["Juventus","Inter","Milan","Roma"], c:0 },
@@ -337,7 +321,6 @@ const Q_TIME = 10;
 const Q_PER_MATCH  = 5;
 const VF_PER_MATCH = 5;
 const IDK_PER_MATCH = 3;
-const SYNC_WINDOW_MS = 1500; // overlay "PRONTI..." dura al massimo 1.5s
 
 /* ═══════════════════════════════════════════
    FIREBASE INIT
@@ -351,7 +334,7 @@ firebase.initializeApp({
 const DB = firebase.database();
 const SV = firebase.database.ServerValue.TIMESTAMP;
 
-// Offset tra orologio locale e server Firebase (aggiornato in tempo reale)
+// Offset locale solo per timer visivi del Quiz
 let serverOffset = 0;
 DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
 const now = () => Date.now() + serverOffset;
@@ -386,50 +369,7 @@ function resetLocals() {
 }
 
 /* ═══════════════════════════════════════════
-   HANDLE SYNC OVERLAY — VERSIONE ROBUSTA
-   ─────────────────────────────────────────
-   Regole:
-   1. Se revealAt non esiste → avvia subito.
-   2. Se revealAt è già passato (now >= revealAt) → avvia subito.
-   3. Se revealAt è nel passato da più di 5s → avvia subito (fallback di sicurezza).
-   4. Solo se revealAt è nel futuro prossimo (≤ SYNC_WINDOW_MS) → mostra
-      l'overlay "PRONTI..." per la finestra residua, poi avvia.
-   5. Mai usare setInterval: un singolo setTimeout è sufficiente.
-═══════════════════════════════════════════ */
-let syncTimeout = null;
-function handleSync(revealAt, overlayId, onReady) {
-  clearTimeout(syncTimeout);
-  const overlay = $(overlayId);
-
-  // Nessun revealAt → avvia immediatamente senza overlay
-  if (!revealAt) {
-    overlay.classList.add('hidden');
-    onReady();
-    return;
-  }
-
-  const wait = revealAt - now(); // ms mancanti al via
-
-  // Già passato (qualsiasi ritardo, compreso il fallback di 5s) → avvia subito
-  if (wait <= 0) {
-    overlay.classList.add('hidden');
-    onReady();
-    return;
-  }
-
-  // Nel futuro ma oltre la finestra massima → quasi impossibile in condizioni normali,
-  // ma se succede trattalo come errore e avvia comunque dopo SYNC_WINDOW_MS al massimo.
-  const safeWait = Math.min(wait, SYNC_WINDOW_MS);
-
-  overlay.classList.remove('hidden');
-  syncTimeout = setTimeout(() => {
-    overlay.classList.add('hidden');
-    onReady();
-  }, safeWait);
-}
-
-/* ═══════════════════════════════════════════
-   MENU — CREA STANZA
+   MENU — CREA/UNISCITI
 ═══════════════════════════════════════════ */
 $('btnCreate').addEventListener('click', async () => {
   myName = $('iName').value.trim();
@@ -451,9 +391,6 @@ $('btnCreate').addEventListener('click', async () => {
   listenRoom();
 });
 
-/* ═══════════════════════════════════════════
-   MENU — UNISCITI
-═══════════════════════════════════════════ */
 $('btnJoin').addEventListener('click', async () => {
   myName = $('iName').value.trim();
   const code = $('iCode').value.trim().toUpperCase();
@@ -495,7 +432,6 @@ function handleUpdate(data) {
   if (data.vfIdx)  vfIdx  = data.vfIdx;
   if (data.idkIdx) idkIdx = data.idkIdx;
 
-  // Master: appena arriva il 2° giocatore passa a lobby
   if (isMaster && data.status === 'waiting' && pids.length === 2) {
     DB.ref('rooms/' + room).update({ status: 'lobby' });
     return;
@@ -515,7 +451,6 @@ function handleUpdate(data) {
    LOBBY
 ═══════════════════════════════════════════ */
 function renderLobby(me, opp) {
-  // Reset punteggi e stato locale a ogni rientro in lobby
   if (isMaster) {
     DB.ref('rooms/' + room + '/players').once('value', snap => {
       const ps = snap.val() || {};
@@ -536,13 +471,13 @@ function renderLobby(me, opp) {
   show(isMaster ? 's-lobby-master' : 's-lobby-guest');
 }
 
-/* ─── Selezione gioco (solo master) ─── */
+/* ─── Selezione gioco (Solo master, Avvio Imediato) ─── */
 function startGame(mode, count, total, idxKey) {
   if (!isMaster) return;
   DB.ref('rooms/' + room).update({
     status: mode, currentIndex: 0,
     [idxKey]: shuffle(count, total),
-    revealAt: now() + SYNC_WINDOW_MS, // 1.5s di conto alla rovescia
+    startedAt: SV, // Ci serve solo per i calcoli del timer visivo
     roomAns: null, scored: null
   });
 }
@@ -566,22 +501,21 @@ function renderQuiz(data, me, opp) {
   $('qMeSt').textContent  = myA  ? '✓ Risposto' : 'Scegli…';
   $('qOppSt').textContent = oppA ? '✓ Risposto' : '...';
 
-  handleSync(data.revealAt, 'syncQuiz', () => {
-    if (idx !== lastIdx) {
-      lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA);
-    } else if (myA && !myAnswered) {
-      myAnswered = true; revealQuiz(idx, myA.sel);
-    }
-
-    startTick(data.revealAt, Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
+  // AVVIO IMMEDIATO
+  if (idx !== lastIdx) {
+    lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA);
+    // Inizia timer locale appena la UI viene renderizzata
+    startTick(data.startedAt || now(), Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
       if (!myAnswered) {
         myAnswered = true; revealQuiz(idx, -1);
         DB.ref('rooms/' + room + '/players/' + myId + '/answers/' + idx).set({ sel: -1, ok: false });
       }
     });
+  } else if (myA && !myAnswered) {
+    myAnswered = true; revealQuiz(idx, myA.sel);
+  }
 
-    if (isMaster) masterCheckQuiz(data, idx);
-  });
+  if (isMaster) masterCheckQuiz(data, idx);
 }
 
 function loadQuiz(idx, existing) {
@@ -620,14 +554,15 @@ function masterCheckQuiz(data, idx) {
   const ids = Object.keys(players);
   if (ids.length < 2) return;
   const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
-  const timeUp  = data.revealAt && (now() > data.revealAt + Q_TIME * 1000 + 600);
+  const timeUp  = data.startedAt && (now() > data.startedAt + Q_TIME * 1000 + 400);
+
   if (allDone || timeUp) {
     quizAdvancing = true;
     clearTimeout(advanceTimer);
     advanceTimer = setTimeout(() => {
       quizAdvancing = false;
       nextRound('playing', idx, Q_PER_MATCH);
-    }, allDone ? 1300 : 300);
+    }, allDone ? 1200 : 300); // Avanzamento super rapido!
   }
 }
 
@@ -636,47 +571,57 @@ function masterCheckQuiz(data, idx) {
 ═══════════════════════════════════════════ */
 function renderVF(data, me, opp) {
   show('s-vf');
-  $('vfMeName').textContent  = me?.name  || 'Tu';
-  $('vfMeScore').textContent = me?.score || 0;
-  $('vfOppName').textContent  = opp?.name  || '...';
-  $('vfOppScore').textContent = opp?.score || 0;
-
+  
   const idx = data.currentIndex || 0;
   $('vfProg').textContent = (idx + 1) + ' / ' + VF_PER_MATCH;
   const q = VF_DB[vfIdx[idx] ?? idx];
   const ans = data.roomAns?.[idx] ?? null;
 
-  handleSync(data.revealAt, 'syncVF', () => {
-    if (idx !== lastIdx) {
-      lastIdx = idx; vfLocked = false;
-      const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
-      $('vfText').textContent = q.s;
-      $('vfFeedback').textContent = '';
-      $('vfV').disabled = $('vfF').disabled = false;
-      $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
-    }
+  // PUNTEGGIO OTTIMISTICO (Real-Time Istantaneo)
+  let ms = me?.score || 0;
+  let os = opp?.score || 0;
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v === q.a;
+    if (ans.pid === myId) { if (ok) ms+=10; else os+=5; }
+    else                  { if (ok) os+=10; else ms+=5; }
+  }
+  $('vfMeScore').textContent  = ms;
+  $('vfOppScore').textContent = os;
+  $('vfMeName').textContent   = me?.name  || 'Tu';
+  $('vfOppName').textContent  = opp?.name || '...';
 
-    if (ans) {
-      $('vfV').disabled = $('vfF').disabled = true;
-      const ok = ans.v === q.a, first = ans.pid === myId;
-      (ans.v ? $('vfV') : $('vfF')).classList.add('hit');
-      $('vfFeedback').textContent = first
-        ? (ok ? '⚡ Esatto! +10pt' : '❌ Sbagliato! +5pt a lui')
-        : (ok ? '⚡ Ha risposto prima lui!' : '✅ Ha sbagliato! +5pt a te');
-      $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+  // NUOVA DOMANDA (Avvio Istantaneo)
+  if (idx !== lastIdx) {
+    lastIdx = idx; vfLocked = false;
+    const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
+    $('vfText').textContent = q.s;
+    $('vfFeedback').textContent = '';
+    $('vfV').disabled = $('vfF').disabled = false;
+    $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
+  }
 
-      // Master assegna punti una volta sola
-      if (isMaster && !data.scored?.[idx]) {
-        const pids = Object.keys(data.players || {});
-        const oppId = pids.find(id => id !== ans.pid);
-        const winnerId = ok ? ans.pid : oppId;
-        if (winnerId) DB.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s || 0) + (ok ? 10 : 5));
-        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
-        clearTimeout(advanceTimer);
-        advanceTimer = setTimeout(() => nextRound('vf_playing', idx, VF_PER_MATCH), 2800);
-      }
+  // RISPOSTA RICEVUTA
+  if (ans) {
+    $('vfV').disabled = $('vfF').disabled = true;
+    const ok = ans.v === q.a, first = ans.pid === myId;
+    (ans.v ? $('vfV') : $('vfF')).classList.add('hit');
+    
+    $('vfFeedback').textContent = first
+      ? (ok ? '⚡ Esatto! +10pt' : '❌ Sbagliato! +5pt a lui')
+      : (ok ? '⚡ Ha risposto prima lui!' : '✅ Ha sbagliato! +5pt a te');
+    $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+
+    if (isMaster && !data.scored?.[idx]) {
+      const pids = Object.keys(data.players || {});
+      const oppId = pids.find(id => id !== ans.pid);
+      const winnerId = ok ? ans.pid : oppId;
+      if (winnerId) DB.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s || 0) + (ok ? 10 : 5));
+      DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+      clearTimeout(advanceTimer);
+      // Avanzamento accelerato (1.5 secondi)
+      advanceTimer = setTimeout(() => nextRound('vf_playing', idx, VF_PER_MATCH), 1500); 
     }
-  });
+  }
 }
 
 $('vfV').onclick = () => {
@@ -693,55 +638,64 @@ $('vfF').onclick = () => {
 ═══════════════════════════════════════════ */
 function renderIDK(data, me, opp) {
   show('s-idk');
-  $('idkMeName').textContent  = me?.name  || 'Tu';
-  $('idkMeScore').textContent = me?.score || 0;
-  $('idkOppName').textContent  = opp?.name  || '...';
-  $('idkOppScore').textContent = opp?.score || 0;
-
+  
   const idx = data.currentIndex || 0;
   $('idkProg').textContent = (idx + 1) + ' / ' + IDK_PER_MATCH;
   const q = IDK_DB[idkIdx[idx] ?? idx];
   const ans = data.roomAns?.[idx] ?? null;
 
-  handleSync(data.revealAt, 'syncIDK', () => {
-    if (idx !== lastIdx) {
-      lastIdx = idx; vfLocked = false;
-      idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
-      $('idkClues').innerHTML = ''; $('idkInp').value = '';
-      $('idkFeedback').textContent = '';
-      $('idkInp').disabled = $('idkBtn').disabled = false;
+  // PUNTEGGIO OTTIMISTICO (Real-Time Istantaneo)
+  let ms = me?.score || 0;
+  let os = opp?.score || 0;
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v.toLowerCase() === q.n.toLowerCase();
+    if (ans.pid === myId) { if(ok) ms += ans.pts; else os += ans.pts; }
+    else                  { if(ok) os += ans.pts; else ms += ans.pts; }
+  }
+  $('idkMeScore').textContent  = ms;
+  $('idkOppScore').textContent = os;
+  $('idkMeName').textContent   = me?.name  || 'Tu';
+  $('idkOppName').textContent  = opp?.name || '...';
 
-      // Gli indizi compaiono a intervalli di 4s a partire da revealAt
-      const baseTime = data.revealAt || now();
-      q.c.forEach((clue, i) => {
-        const delay = Math.max(0, baseTime + i * 4000 - now());
-        idkClueTimers.push(setTimeout(() => {
-          if (!data.roomAns?.[idx]) showClue(clue, 4 - i);
-        }, delay));
-      });
+  // NUOVA DOMANDA (Avvio Istantaneo)
+  if (idx !== lastIdx) {
+    lastIdx = idx; vfLocked = false;
+    idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
+    $('idkClues').innerHTML = ''; $('idkInp').value = '';
+    $('idkFeedback').textContent = '';
+    $('idkInp').disabled = $('idkBtn').disabled = false;
+
+    // Indizi programmati in locale (ogni 3 secondi invece di 4, per dare più ritmo)
+    q.c.forEach((clue, i) => {
+      idkClueTimers.push(setTimeout(() => {
+        if (!data.roomAns?.[idx]) showClue(clue, 4 - i);
+      }, i * 3000));
+    });
+  }
+
+  // RISPOSTA RICEVUTA
+  if (ans) {
+    $('idkInp').disabled = $('idkBtn').disabled = true;
+    idkClueTimers.forEach(clearTimeout);
+    const ok = ans.v.toLowerCase() === q.n.toLowerCase();
+    const first = ans.pid === myId;
+    
+    $('idkFeedback').textContent = first
+      ? (ok ? `Esatto! +${ans.pts}pt 🎉` : `Sbagliato! +${ans.pts}pt a lui`)
+      : (ok ? `Ha indovinato! +${ans.pts}pt a lui` : `Ha sbagliato! +${ans.pts}pt a te`);
+    $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+
+    if (isMaster && !data.scored?.[idx]) {
+      const pids = Object.keys(data.players || {});
+      const oppId = pids.find(id => id !== ans.pid);
+      const winnerId = ok ? ans.pid : oppId;
+      if (winnerId) DB.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s || 0) + ans.pts);
+      DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+      clearTimeout(advanceTimer);
+      // Avanzamento accelerato (2 secondi)
+      advanceTimer = setTimeout(() => nextRound('idk_playing', idx, IDK_PER_MATCH), 2000);
     }
-
-    if (ans) {
-      $('idkInp').disabled = $('idkBtn').disabled = true;
-      idkClueTimers.forEach(clearTimeout);
-      const ok = ans.v.toLowerCase() === q.n.toLowerCase();
-      const first = ans.pid === myId;
-      $('idkFeedback').textContent = first
-        ? (ok ? `Esatto! +${ans.pts}pt 🎉` : `Sbagliato! +${ans.pts}pt a lui`)
-        : (ok ? `Ha indovinato! +${ans.pts}pt a lui` : `Ha sbagliato! +${ans.pts}pt a te`);
-      $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
-
-      if (isMaster && !data.scored?.[idx]) {
-        const pids = Object.keys(data.players || {});
-        const oppId = pids.find(id => id !== ans.pid);
-        const winnerId = ok ? ans.pid : oppId;
-        if (winnerId) DB.ref('rooms/' + room + '/players/' + winnerId + '/score').transaction(s => (s || 0) + ans.pts);
-        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
-        clearTimeout(advanceTimer);
-        advanceTimer = setTimeout(() => nextRound('idk_playing', idx, IDK_PER_MATCH), 3200);
-      }
-    }
-  });
+  }
 }
 
 function showClue(text, pts) {
@@ -769,12 +723,14 @@ $('idkBtn').onclick = () => {
   const val = $('idkInp').value.trim();
   if (vfLocked || !val) return;
   vfLocked = true;
-  const pts = Math.max(1, 4 - ($('idkClues').children.length - 1));
+  // Calcolo dinamico esatto dei punti (da 4 a 1) basato sugli indizi visibili
+  const numClues = Math.max(1, $('idkClues').children.length);
+  const pts = Math.max(1, 5 - numClues);
   DB.ref('rooms/' + room + '/roomAns/' + lastIdx).transaction(c => c === null ? { pid: myId, v: val, pts } : undefined);
 };
 
 /* ═══════════════════════════════════════════
-   AVANZAMENTO ROUND (solo master)
+   AVANZAMENTO ROUND
 ═══════════════════════════════════════════ */
 function nextRound(mode, idx, max) {
   if (idx + 1 >= max) {
@@ -782,14 +738,14 @@ function nextRound(mode, idx, max) {
   } else {
     DB.ref('rooms/' + room).update({
       currentIndex: idx + 1,
-      revealAt: now() + SYNC_WINDOW_MS,  // nuovo conto alla rovescia per la prossima domanda
-      roomAns: null
+      startedAt: SV,
+      roomAns: null, scored: null
     });
   }
 }
 
 /* ═══════════════════════════════════════════
-   TIMER BAR
+   TIMER BAR (Quiz)
 ═══════════════════════════════════════════ */
 function startTick(startedAt, duration, fillId, lblId, onEnd) {
   clearInterval(tickId);
@@ -800,7 +756,7 @@ function startTick(startedAt, duration, fillId, lblId, onEnd) {
     if (fill) { fill.style.width = (rem / duration * 100) + '%'; fill.classList.toggle('danger', rem <= 3); }
     if (rem <= 0) { clearInterval(tickId); onEnd?.(); }
   };
-  tick(); tickId = setInterval(tick, 250);
+  tick(); tickId = setInterval(tick, 200);
 }
 
 /* ═══════════════════════════════════════════
@@ -820,9 +776,8 @@ function renderResult(me, opp) {
 
 $('btnLobby').onclick = () => {
   if (isMaster) {
-    DB.ref('rooms/' + room).update({ status: 'lobby', scored: null, roomAns: null, revealAt: null });
+    DB.ref('rooms/' + room).update({ status: 'lobby', scored: null, roomAns: null, startedAt: null });
   }
-  // Il listener Firebase porterà entrambi automaticamente alla lobby
 };
 </script>
 </body>
