@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Party Calcio</title>
+<style>
+  :root { --bg: #121212; --blue: #00e5ff; --green: #39ff8f; --red: #ff4757; --text: #f0f4f2; --muted: #7a8f87; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+  h1 { background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; color: transparent; }
+  .box { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+  select, textarea, button { width: 100%; padding: 12px; margin-top: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,.2); background: #1a1a1a; color: white; font-size: 16px; }
+  textarea { height: 300px; font-family: monospace; resize: vertical; }
+  button { background: var(--blue); color: black; font-weight: bold; cursor: pointer; border: none; margin-top: 20px; transition: 0.2s; }
+  button:hover { background: var(--green); }
+  #log { margin-top: 15px; padding: 10px; border-radius: 8px; font-weight: bold; display: none; }
+  .success { background: rgba(57,255,143,.2); color: var(--green); }
+  .error { background: rgba(255,71,87,.2); color: var(--red); }
+</style>
+</head>
+<body>
 
+  <h1>🛠️ Pannello Admin - Database</h1>
+  <p style="color: var(--muted)">Usa questo pannello per aggiungere nuove domande al database cloud in tempo reale.</p>
+
+  <div class="box">
+    <label style="font-weight: bold; color: var(--blue);">1. Seleziona il Gioco:</label>
+    <select id="gameMode">
+      <option value="quiz">Il Quiz (Risposta Multipla)</option>
+      <option value="vf">Vero o Falso</option>
+      <option value="idk">L'Identikit</option>
+      <option value="form">La Formazione</option>
+    </select>
+  </div>
+
+  <div class="box">
+    <label style="font-weight: bold; color: var(--blue);">2. Incolla i Dati JSON:</label>
+    <p style="font-size: 12px; color: var(--muted);">Assicurati di incollare un ARRAY VALIDO generato dall'IA (deve iniziare con <b>[</b> e finire con <b>]</b>).</p>
+    <textarea id="jsonInput" placeholder='Esempio:
+[
+  { "q": "Chi ha vinto il mondiale 2006?", "o": ["Italia", "Francia", "Germania", "Brasile"], "c": 0 }
+]'></textarea>
+    
+    <button id="uploadBtn">Aggiungi al Database 🚀</button>
+    <div id="log"></div>
+  </div>
+
+  <div class="box">
+    <h3 style="margin-top:0;">Stato Attuale del Database:</h3>
+    <ul id="dbStats" style="color: var(--muted); line-height: 1.8;">
+      <li>Caricamento statistiche...</li>
+    </ul>
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+<script>
+  firebase.initializeApp({
+    apiKey: "AIzaSyDIyhNTyBCSEzSczT7dxyPej5iW6v2FWog",
+    authDomain: "quizcalciomultiplayer.firebaseapp.com",
+    databaseURL: "https://quizcalciomultiplayer-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "quizcalciomultiplayer"
+  });
+  const DB = firebase.database();
+
+  function showLog(msg, isError = false) {
+    const logEl = document.getElementById('log');
+    logEl.style.display = 'block';
+    logEl.textContent = msg;
+    logEl.className = isError ? 'error' : 'success';
+  }
+
+  // Monitora lo stato del database in tempo reale
+  DB.ref('gamedata/counts').on('value', snap => {
+    const counts = snap.val() || {};
+    document.getElementById('dbStats').innerHTML = `
+      <li><b>Quiz:</b> ${counts.quiz || 0} domande</li>
+      <li><b>Vero o Falso:</b> ${counts.vf || 0} domande</li>
+      <li><b>Identikit:</b> ${counts.idk || 0} giocatori</li>
+      <li><b>Formazioni:</b> ${counts.form || 0} formazioni</li>
+    `;
+  });
+
+  document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const mode = document.getElementById('gameMode').value;
+    const jsonText = document.getElementById('jsonInput').value.trim();
+
+    if (!jsonText) { showLog("Errore: La casella di testo è vuota.", true); return; }
+
+    let newData;
+    try {
+      newData = JSON.parse(jsonText);
+      if (!Array.isArray(newData)) throw new Error("I dati devono essere un Array (lista).");
+    } catch (e) {
+      showLog("Errore di formato JSON: " + e.message, true);
+      return;
+    }
+
+    document.getElementById('uploadBtn').disabled = true;
+    document.getElementById('uploadBtn').textContent = "Caricamento in corso...";
+
+    try {
+      // 1. Leggi il contatore attuale
+      const countSnap = await DB.ref('gamedata/counts/' + mode).once('value');
+      const currentCount = countSnap.val() || 0;
+
+      // 2. Prepara gli aggiornamenti (accodandoli a quelli esistenti)
+      const updates = {};
+      newData.forEach((item, index) => {
+        updates[`gamedata/${mode}/${currentCount + index}`] = item;
+      });
+      updates[`gamedata/counts/${mode}`] = currentCount + newData.length;
+
+      // 3. Invia tutto a Firebase in un colpo solo
+      await DB.ref().update(updates);
+
+      showLog(`Successo! Aggiunti ${newData.length} nuovi elementi a "${mode}".`);
+      document.getElementById('jsonInput').value = ''; // Pulisci la casella
+    } catch (e) {
+      showLog("Errore durante il caricamento su Firebase: " + e.message, true);
+    } finally {
+      document.getElementById('uploadBtn').disabled = false;
+      document.getElementById('uploadBtn').textContent = "Aggiungi al Database 🚀";
+    }
+  });
+</script>
+</body>
+</html>
