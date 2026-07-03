@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Party Calcio 1vs1</title>
 <style>
+/* ─── RESET & BASE ─── */
 :root {
   --bg: #121212; --card: #1a1a1a; --blue: #00e5ff;
   --green: #39ff8f; --red: #ff4757; --yellow: #ffd32a;
@@ -17,12 +18,16 @@ body {
   font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
   position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
 }
+
+/* ─── GLOW BACKGROUND ─── */
 .glow {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background:
     radial-gradient(ellipse at 20% 0%, rgba(0,229,255,.18) 0%, transparent 50%),
     radial-gradient(ellipse at 85% 100%, rgba(57,255,143,.15) 0%, transparent 50%);
 }
+
+/* ─── SCREENS ─── */
 .screen {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
@@ -30,6 +35,8 @@ body {
   overflow-y: auto;
 }
 .screen.hidden { display: none; }
+
+/* ─── HEADER ─── */
 .hdr { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; margin-bottom: 4px; }
 .logo {
   font-size: 14px; font-weight: 900; letter-spacing: .5px;
@@ -38,8 +45,12 @@ body {
 }
 .logo em { font-style: normal; -webkit-text-fill-color: initial; }
 .pill { font-size: 12px; font-weight: 700; color: var(--muted); background: rgba(255,255,255,.06); padding: 5px 12px; border-radius: 99px; }
+
+/* ─── TYPOGRAPHY ─── */
 .label-xs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
 .title-lg { font-size: clamp(22px, 7vw, 30px); font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0; }
+
+/* ─── INPUTS & BUTTONS ─── */
 .field { width: 100%; margin-bottom: 14px; }
 .field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
 .field input {
@@ -56,20 +67,26 @@ body {
 .btn-main { background: linear-gradient(135deg, var(--blue), var(--green)); color: #080e0b; box-shadow: 0 8px 28px rgba(0,229,255,.25); }
 .btn-ghost { background: rgba(255,255,255,.05); color: var(--text); border: 1.5px solid rgba(255,255,255,.12); }
 .err { font-size: 13px; font-weight: 600; color: var(--red); min-height: 18px; margin-top: 12px; }
+
+/* ─── SPINNER ─── */
 .spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,.1); border-top-color: var(--green); animation: spin .85s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── ROOM & PLAYERS ─── */
 .code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0 28px; }
 .code-val { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue); line-height: 1.1; }
 .code-hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
 .score-bar { display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0; }
-.pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; }
+.pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; transition: transform 0.2s; }
 .pchip.me  { border-color: rgba(0,229,255,.4); }
 .pchip.opp { border-color: rgba(57,255,143,.4); }
 .pchip .pname { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pchip .pscore { font-size: 22px; font-weight: 900; transition: transform .15s; }
+.pchip .pscore { font-size: 22px; font-weight: 900; transition: color 0.2s; }
 .pchip.me  .pscore { color: var(--blue); }
 .pchip.opp .pscore { color: var(--green); }
 .pchip .pstatus { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* ─── GAME CARDS (LOBBY) ─── */
 .game-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
 .game-card { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.1); border-radius: 18px; padding: 20px 18px; cursor: pointer; transition: transform .12s, border-color .2s, background .2s; }
 .game-card:active { transform: scale(.97); }
@@ -77,9 +94,13 @@ body {
 .game-card .icon { font-size: 38px; flex-shrink: 0; }
 .game-card .info .name { font-size: 18px; font-weight: 900; margin-bottom: 3px; }
 .game-card .info .desc { font-size: 12px; color: var(--muted); font-weight: 600; line-height: 1.4; }
+
+/* ─── TIMER TRACK ─── */
 .timer-track { height: 7px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; margin: 8px 0 14px; flex-shrink: 0; }
 .timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .25s linear, background .3s; }
 .timer-fill.danger { background: linear-gradient(90deg, var(--red), #ff8a7a); }
+
+/* ─── QUIZ ─── */
 .q-text { font-size: clamp(19px, 5.5vw, 26px); font-weight: 800; line-height: 1.35; margin-bottom: 18px; }
 .options { display: flex; flex-direction: column; gap: 11px; }
 .opt {
@@ -91,6 +112,8 @@ body {
 .opt:disabled { cursor: default; }
 .opt.correct { background: rgba(57,255,143,.2); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 18px rgba(57,255,143,.35); }
 .opt.wrong   { background: rgba(255,71,87,.2);  border-color: var(--red);   color: #ffd0d3; box-shadow: 0 0 18px rgba(255,71,87,.3); }
+
+/* ─── VERO O FALSO ─── */
 .vf-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 4px; }
 .vf-text { font-size: clamp(20px, 5.8vw, 28px); font-weight: 800; line-height: 1.35; margin: 12px 0 18px; }
 .vf-feedback { min-height: 44px; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; border-radius: 12px; padding: 0 8px; }
@@ -106,6 +129,8 @@ body {
 .vf-btn.vero  { background: rgba(57,255,143,.12); border-color: var(--green); color: var(--green); }
 .vf-btn.falso { background: rgba(255,71,87,.12);  border-color: var(--red);   color: var(--red); }
 .vf-btn.hit   { transform: scale(.96); box-shadow: 0 0 28px currentColor; opacity: 1 !important; }
+
+/* ─── IDENTIKIT ─── */
 .idk-clues { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; margin-bottom: 14px; padding-top: 10px; }
 .idk-clue { background: rgba(255,255,255,.05); border-left: 4px solid var(--yellow); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; animation: fadeUp .3s ease; }
 .idk-points { font-size: 11px; font-weight: 800; color: var(--yellow); margin-bottom: 4px; letter-spacing: 1px; }
@@ -117,6 +142,43 @@ body {
 .idk-input-area input:focus { border-color: var(--yellow); }
 .idk-input-area button { padding: 0 18px; border-radius: 14px; border: none; background: var(--yellow); color: #000; font-weight: 900; font-size: 15px; cursor: pointer; transition: transform .1s; }
 .idk-input-area button:active { transform: scale(.95); }
+
+/* ─── FORMAZIONE ─── */
+.form-pitch {
+  background: #27ae60; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px;
+  flex: 1; min-height: 240px; display: flex; flex-direction: column; justify-content: space-around;
+  padding: 10px 0; position: relative; margin-bottom: 12px; overflow: hidden;
+}
+.form-pitch::before {
+  content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 2px solid rgba(255,255,255,0.2);
+}
+.form-pitch::after {
+  content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
+}
+.form-row { display: flex; justify-content: space-evenly; width: 100%; z-index: 1; }
+.form-slot {
+  width: 48px; height: 48px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.6);
+  background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: white; text-align: center; cursor: pointer;
+  line-height: 1.1; overflow: hidden; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+.form-slot.filled { background: var(--green); border: 2px solid white; color: #000; text-shadow: none; font-size: 9px; }
+.form-bench {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); gap: 8px;
+  max-height: 35%; overflow-y: auto; padding-bottom: 10px;
+}
+.bench-btn {
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 8px;
+  padding: 10px 4px; font-size: 11px; font-weight: 700; color: white; cursor: pointer;
+  transition: transform 0.1s, border-color 0.1s, background 0.1s;
+}
+.bench-btn.selected { border-color: var(--yellow); background: rgba(255,211,42,0.2); transform: scale(1.05); }
+.bench-btn.hidden { opacity: 0; pointer-events: none; }
+.bench-btn.error { border-color: var(--red); background: rgba(255,71,87,0.2); animation: shake 0.3s; }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } 100% { transform: translateX(0); } }
+
+/* ─── RESULT ─── */
 .result-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .vs-scores { display: flex; align-items: center; gap: 16px; margin: 8px 0; }
 .vs-num { font-size: 54px; font-weight: 900; line-height: 1; }
@@ -126,6 +188,7 @@ body {
 .verdict.win  { color: var(--green); }
 .verdict.lose { color: var(--red); }
 .verdict.draw { color: var(--blue); }
+
 @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 .fade-in { animation: fadeUp .4s ease both; }
 </style>
@@ -174,6 +237,7 @@ body {
       <div class="game-card" id="pickQuiz"><div class="icon">🏆</div><div class="info"><div class="name">Quiz Calcio</div><div class="desc">5 domande classiche · 10s · 1 pt</div></div></div>
       <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo blocca · +10 se giusto · +5 all'avversario se sbagli</div></div></div>
       <div class="game-card" id="pickIDK"><div class="icon">🕵️</div><div class="info"><div class="name">L'Identikit</div><div class="desc">Indovina il giocatore dagli indizi!</div></div></div>
+      <div class="game-card" id="pickForm"><div class="icon">🏟️</div><div class="info"><div class="name">La Formazione</div><div class="desc">Indovina gli 11 titolari storici e mettili in campo!</div></div></div>
     </div>
   </div>
 </div>
@@ -238,7 +302,26 @@ body {
   </div>
 </div>
 
-<!-- 7. RISULTATO -->
+<!-- 7. FORMAZIONE -->
+<div class="screen hidden" id="s-form">
+  <div class="hdr"><div class="logo"><em>⚽</em> FORMAZIONE</div><div class="pill" id="formProg">1 / 2</div></div>
+  <div class="score-bar">
+    <div class="pchip me"><div class="pname" id="formMeName">Tu</div><div class="pscore" id="formMeScore">0</div><div class="pstatus" id="formMeSt">0/11</div></div>
+    <div class="pchip opp"><div class="pname" id="formOppName">Avversario</div><div class="pscore" id="formOppScore">0</div><div class="pstatus" id="formOppSt">0/11</div></div>
+  </div>
+  <div class="timer-track"><div class="timer-fill" id="formTimerFill"></div></div>
+  <div style="text-align:center; font-weight:900; margin-bottom:10px; font-size: 16px; color: var(--yellow);" id="formTitle">Titolo Formazione</div>
+  
+  <div class="form-pitch" id="formPitch">
+    <!-- Slot campo generati via JS -->
+  </div>
+  
+  <div class="form-bench" id="formBench">
+    <!-- Bottoni panchina generati via JS -->
+  </div>
+</div>
+
+<!-- 8. RISULTATO -->
 <div class="screen hidden" id="s-result">
   <div class="result-center fade-in">
     <div style="font-size:54px;margin-bottom:8px;" id="rMedal">🏆</div>
@@ -303,10 +386,30 @@ const IDK_NAMES = [
   "Ronaldo Il Fenomeno","Alessandro Del Piero"
 ];
 
+// OBIETTIVO 2: Database di Prova Formazioni
+const FORMAZIONI_DB = [
+  {
+    title: "Italia - Finale Mondiali 2006",
+    module: "4-4-2",
+    layout: [[2], [4], [4], [1]], // Righe: Attaccanti, Centrocampisti, Difensori, Portiere
+    team: ["Totti", "Toni", "Perrotta", "Pirlo", "Gattuso", "Camoranesi", "Grosso", "Materazzi", "Cannavaro", "Zambrotta", "Buffon"],
+    bench: ["Totti", "Toni", "Perrotta", "Pirlo", "Gattuso", "Camoranesi", "Grosso", "Materazzi", "Cannavaro", "Zambrotta", "Buffon", "Del Piero", "Inzaghi", "Nesta", "De Rossi"]
+  },
+  {
+    title: "Inter - Finale Champions 2010",
+    module: "4-3-3",
+    layout: [[3], [3], [4], [1]],
+    team: ["Eto'o", "Milito", "Pandev", "Zanetti", "Sneijder", "Cambiasso", "Chivu", "Samuel", "Lucio", "Maicon", "J. Cesar"],
+    bench: ["Eto'o", "Milito", "Pandev", "Zanetti", "Sneijder", "Cambiasso", "Chivu", "Samuel", "Lucio", "Maicon", "J. Cesar", "Stankovic", "Balotelli", "Materazzi", "Motta"]
+  }
+];
+
 const Q_TIME       = 10;
 const Q_PER_MATCH  = 5;
 const VF_PER_MATCH = 5;
 const IDK_PER_MATCH = 3;
+const FORM_PER_MATCH = 2;
+const FORM_TIME = 60;
 // Punti IDK: 4 pt al 1° indizio, 3 al 2°, 2 al 3°, 1 al 4°
 const IDK_POINTS   = [4, 3, 2, 1];
 
@@ -336,15 +439,18 @@ let room = null, isMaster = false, myName = '', roomOff = null;
 let tickId = null, advanceTimer = null;
 let idkClueTimers = [];
 let lastIdx = -1, myAnswered = false, vfLocked = false;
-let qIdx = [], vfIdx = [], idkIdx = [];
-// Traccia per quale round il master ha già avviato l'avanzamento (evita doppi timer)
+let qIdx = [], vfIdx = [], idkIdx = [], formIdx = [];
 let advanceScheduledFor = -1;
+
+// Stato locale per Formazione
+let formLocalFound = new Set();
+let selectedBenchPlayer = null;
 
 /* ═══════════════════════════════════════════
    DOM HELPERS
 ═══════════════════════════════════════════ */
 const $  = id => document.getElementById(id);
-const SCREENS = ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-idk','s-result'];
+const SCREENS = ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-idk','s-form','s-result'];
 function show(id) { SCREENS.forEach(s => $(s).classList.add('hidden')); $(id).classList.remove('hidden'); }
 function genCode() { const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join(''); }
 function shuffle(n,total) { const a=[...Array(total).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,n); }
@@ -355,6 +461,7 @@ function resetLocals() {
   idkClueTimers.forEach(clearTimeout);
   idkClueTimers = [];
   lastIdx = -1; myAnswered = false; vfLocked = false; advanceScheduledFor = -1;
+  formLocalFound.clear(); selectedBenchPlayer = null;
 }
 
 /* ═══════════════════════════════════════════
@@ -409,6 +516,7 @@ function handleUpdate(data) {
   if (data.qIdx)   qIdx   = data.qIdx;
   if (data.vfIdx)  vfIdx  = data.vfIdx;
   if (data.idkIdx) idkIdx = data.idkIdx;
+  if (data.formIdx) formIdx = data.formIdx;
 
   if (isMaster && data.status === 'waiting' && pids.length === 2) {
     DB.ref('rooms/'+room).update({ status:'lobby' });
@@ -421,6 +529,7 @@ function handleUpdate(data) {
     case 'playing':     renderQuiz(data, me, opp); break;
     case 'vf_playing':  renderVF(data, me, opp);   break;
     case 'idk_playing': renderIDK(data, me, opp);  break;
+    case 'form_playing':renderForm(data, me, opp, oppId); break; // Nuovo Gioco Formazione
     case 'finished':    resetLocals(); renderResult(me, opp); break;
   }
 }
@@ -455,15 +564,17 @@ function startGame(mode, count, total, idxKey) {
   DB.ref('rooms/'+room).update({
     status:mode, currentIndex:0,
     [idxKey]: shuffle(count, total),
-    startedAt: SV, roomAns:null, scored:null
+    startedAt: SV, roomAns:null, scored:null, formAnswers:null, formFinished:null
   });
 }
 $('pickQuiz').onclick = () => startGame('playing',     Q_PER_MATCH,   QUIZ_DB.length, 'qIdx');
 $('pickVF').onclick   = () => startGame('vf_playing',  VF_PER_MATCH,  VF_DB.length,   'vfIdx');
 $('pickIDK').onclick  = () => startGame('idk_playing', IDK_PER_MATCH, IDK_DB.length,  'idkIdx');
+// OBIETTIVO 1: Bottone La Formazione collegato
+$('pickForm').onclick = () => startGame('form_playing', FORM_PER_MATCH, FORMAZIONI_DB.length, 'formIdx');
 
 /* ═══════════════════════════════════════════
-   QUIZ (invariato - funziona già bene)
+   QUIZ
 ═══════════════════════════════════════════ */
 function renderQuiz(data, me, opp) {
   show('s-quiz');
@@ -480,7 +591,7 @@ function renderQuiz(data, me, opp) {
 
   if (idx !== lastIdx) {
     lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA);
-    startTick(data.startedAt || now(), Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
+    startTick(data.startedAt || now(), Q_TIME, 'qTimerFill', null, () => {
       if (!myAnswered) {
         myAnswered = true; revealQuiz(idx, -1);
         DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:-1, ok:false });
@@ -536,26 +647,10 @@ function masterCheckQuiz(data, idx) {
 }
 
 /* ═══════════════════════════════════════════
-   VERO O FALSO — FIX SCORING
-   ─────────────────────────────────────────
-   PROBLEMA ORIGINALE:
-   1. Lo scoring ottimistico leggeva data.players[winnerId]?.score e aggiungeva
-      manualmente il delta, ma se Firebase era in ritardo il valore era già vecchio
-      → punteggi duplicati o errati.
-   2. L'uso di .update() diretto (non transazione) causava race condition se
-      entrambi i client leggevano lo stesso valore e scrivevano simultaneamente.
-
-   FIX:
-   - Rimosso lo scoring ottimistico: i punteggi mostrati sono SEMPRE quelli reali di Firebase.
-   - Usata .transaction() per garantire atomicità: il master incrementa sempre
-     partendo dal valore corrente nel DB, mai da una copia locale.
-   - advanceScheduledFor evita che l'aggiornamento di Firebase (dopo scored)
-     ri-triggeri un secondo advanceTimer per lo stesso round.
+   VERO O FALSO
 ═══════════════════════════════════════════ */
 function renderVF(data, me, opp) {
   show('s-vf');
-
-  // Punteggi REALI da Firebase (niente ottimismo → niente errori)
   $('vfMeName').textContent   = me?.name  || 'Tu';
   $('vfMeScore').textContent  = me?.score || 0;
   $('vfOppName').textContent  = opp?.name || '...';
@@ -567,7 +662,6 @@ function renderVF(data, me, opp) {
   const q   = VF_DB[vfIdx[idx]??idx];
   const ans = data.roomAns?.[idx] ?? null;
 
-  // ── Carica nuova domanda ──
   if (idx !== lastIdx) {
     lastIdx = idx; vfLocked = false;
     const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
@@ -580,17 +674,13 @@ function renderVF(data, me, opp) {
     $('vfOppSt').textContent = opp ? 'Chi risponde prima vince!' : '';
   }
 
-  // ── Gestione risposta ──
   if (ans) {
     $('vfV').disabled = $('vfF').disabled = true;
     const ok    = ans.v === q.a;
     const first = ans.pid === myId;
-
-    // Evidenzia il pulsante premuto
     const pressedBtn = ans.v ? $('vfV') : $('vfF');
     pressedBtn.classList.add('hit');
 
-    // Feedback testuale
     if (first) {
       $('vfFeedback').textContent = ok ? '⚡ Esatto! +10 punti 🎉' : '❌ Sbagliato! +5 punti all\'avversario';
       $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
@@ -600,22 +690,16 @@ function renderVF(data, me, opp) {
       $('vfFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
     }
 
-    // ── MASTER: assegna punteggio con transaction + schedula avanzamento ──
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
-      advanceScheduledFor = idx; // blocca ulteriori chiamate per questo round
-
-      // Trova il vincitore
+      advanceScheduledFor = idx; 
       const allPids = Object.keys(data.players||{});
       const loserId  = allPids.find(id => id !== ans.pid);
-      const winnerId = ok ? ans.pid : loserId; // se sbaglia, vince l'altro
+      const winnerId = ok ? ans.pid : loserId;
       const pts      = ok ? 10 : 5;
 
-      // Transaction: legge il valore corrente e aggiunge pts → nessuna race condition
       if (winnerId) {
         DB.ref('rooms/'+room+'/players/'+winnerId+'/score').transaction(s => (s||0) + pts);
       }
-
-      // Marca il round come già calcolato, poi avanza
       DB.ref('rooms/'+room+'/scored/'+idx).set(true);
 
       clearTimeout(advanceTimer);
@@ -634,26 +718,10 @@ $('vfF').onclick = () => {
 };
 
 /* ═══════════════════════════════════════════
-   IDENTIKIT — FIX SCORING + TIMING INDIZI
-   ─────────────────────────────────────────
-   PROBLEMA ORIGINALE:
-   1. Stesso problema di race condition nel punteggio (scrittura diretta non atomica).
-   2. Il calcolo `pts` nel click usava `$('idkClues').children.length` che dipende
-      da cosa è già stato renderizzato sul DOM locale → poteva differire tra i client.
-   3. I timer degli indizi rimanevano attivi anche dopo che qualcuno aveva risposto,
-      e i clue già mostrati non venivano correttamente bloccati se il round avanzava.
-
-   FIX:
-   - Punteggio: .transaction() come in VF.
-   - pts calcolato in base al numero di indizi VISIBILI al momento del click
-     (corretto perché è dati locali del giocatore che sta rispondendo).
-   - idkClueTimers puliti correttamente a ogni nuovo round.
-   - advanceScheduledFor per evitare double-advance.
+   IDENTIKIT
 ═══════════════════════════════════════════ */
 function renderIDK(data, me, opp) {
   show('s-idk');
-
-  // Punteggi REALI
   $('idkMeName').textContent   = me?.name  || 'Tu';
   $('idkMeScore').textContent  = me?.score || 0;
   $('idkOppName').textContent  = opp?.name || '...';
@@ -665,7 +733,6 @@ function renderIDK(data, me, opp) {
   const q   = IDK_DB[idkIdx[idx]??idx];
   const ans = data.roomAns?.[idx] ?? null;
 
-  // ── Carica nuovo round ──
   if (idx !== lastIdx) {
     lastIdx = idx; vfLocked = false;
     idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
@@ -675,22 +742,17 @@ function renderIDK(data, me, opp) {
     $('idkInp').disabled = $('idkBtn').disabled = false;
     $('idkAuto').style.display = 'none';
 
-    // Gli indizi appaiono ogni 3s a partire da startedAt
-    // Usiamo server time offset per sincronizzare i due client al millisecondo
     const base = data.startedAt || now();
     q.c.forEach((clue, i) => {
       const delay = Math.max(0, base + i*3000 - now());
       idkClueTimers.push(setTimeout(() => {
-        // Mostra il clue solo se la risposta non è ancora arrivata
-        if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1); // fallback
+        if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1);
         else showClue(clue, IDK_POINTS[i] ?? 1);
       }, delay));
     });
   }
 
-  // ── Gestione risposta ──
   if (ans) {
-    // Blocca input e cancella timer indizi non ancora scattati
     $('idkInp').disabled = $('idkBtn').disabled = true;
     idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
     $('idkAuto').style.display = 'none';
@@ -707,7 +769,6 @@ function renderIDK(data, me, opp) {
       $('idkFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
     }
 
-    // ── MASTER: transaction atomica + advance ──
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
       advanceScheduledFor = idx;
 
@@ -751,14 +812,143 @@ $('idkBtn').onclick = () => {
   const val = $('idkInp').value.trim();
   if (vfLocked || !val) return;
   vfLocked = true;
-  // pts = punti del PROSSIMO indizio che NON è ancora apparso
-  // (quanti indizi visibili = children.length, quindi sto usando IDK_POINTS[visibili])
-  const shown = $('idkClues').children.length; // 1..4
+  const shown = $('idkClues').children.length;
   const pts   = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1;
   DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c =>
     c === null ? { pid:myId, v:val, pts } : undefined
   );
 };
+
+/* ═══════════════════════════════════════════
+   FORMAZIONE (Nuovo Gioco)
+═══════════════════════════════════════════ */
+function renderForm(data, me, opp, oppId) {
+  show('s-form');
+  
+  $('formMeName').textContent   = me?.name  || 'Tu';
+  $('formMeScore').textContent  = me?.score || 0;
+  $('formOppName').textContent  = opp?.name || '...';
+  $('formOppScore').textContent = opp?.score || 0;
+
+  const idx = data.currentIndex || 0;
+  $('formProg').textContent = (idx+1)+' / '+FORM_PER_MATCH;
+  const q = FORMAZIONI_DB[formIdx[idx] ?? idx];
+
+  // Mostra il contatore di 11 per ogni giocatore OBIETTIVO 5
+  const myFoundCount = data.formAnswers?.[idx]?.[myId]?.count || 0;
+  const oppFoundCount = data.formAnswers?.[idx]?.[oppId]?.count || 0;
+  $('formMeSt').textContent  = `${myFoundCount}/11`;
+  $('formOppSt').textContent = `${oppFoundCount}/11`;
+
+  if (idx !== lastIdx) {
+    lastIdx = idx;
+    formLocalFound.clear();
+    selectedBenchPlayer = null;
+    buildFormUI(q, idx);
+
+    startTick(data.startedAt || now(), FORM_TIME, 'formTimerFill', null, () => {
+      // OBIETTIVO 6: Condizione vittoria per tempo scaduto
+      if (isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx);
+    });
+  }
+
+  // OBIETTIVO 6: Qualcuno ha vinto completando la formazione!
+  if (data.formFinished?.[idx] && isMaster && advanceScheduledFor !== idx) {
+    triggerFormAdvance(data, idx);
+  }
+}
+
+function triggerFormAdvance(data, idx) {
+  advanceScheduledFor = idx;
+  clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(() => nextRound('form_playing', idx, FORM_PER_MATCH), 2000);
+}
+
+// OBIETTIVO 3: UI Mobile-Friendly (Costruzione Campo e Panchina)
+function buildFormUI(q, idx) {
+  $('formTitle').textContent = q.title;
+  const pitch = $('formPitch');
+  pitch.innerHTML = '';
+
+  let playerIndex = 0;
+  q.layout.forEach(rowCounts => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'form-row';
+    for(let i=0; i<rowCounts[0]; i++) {
+      const expectedName = q.team[playerIndex];
+      const slot = document.createElement('div');
+      slot.className = 'form-slot';
+      slot.dataset.name = expectedName;
+      slot.textContent = '?';
+      slot.onclick = () => handleSlotClick(slot, expectedName, idx);
+      rowDiv.appendChild(slot);
+      playerIndex++;
+    }
+    pitch.appendChild(rowDiv);
+  });
+
+  const bench = $('formBench');
+  bench.innerHTML = '';
+  // Mescola la panchina locale
+  const shuffledBench = [...q.bench].sort(() => Math.random() - 0.5);
+  shuffledBench.forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'bench-btn';
+    btn.textContent = name;
+    btn.onclick = () => handleBenchClick(btn, name);
+    bench.appendChild(btn);
+  });
+}
+
+// OBIETTIVO 4: La Meccanica 'Tocca e Tocca'
+function handleBenchClick(btn, name) {
+  if (formLocalFound.has(name)) return;
+  // Deseleziona eventuali bottoni precedentemente scelti
+  document.querySelectorAll('.bench-btn').forEach(b => b.classList.remove('selected', 'error'));
+  
+  if (selectedBenchPlayer?.name === name) {
+    selectedBenchPlayer = null; // Toggle spegnimento
+  } else {
+    selectedBenchPlayer = { btn, name };
+    btn.classList.add('selected'); // 1. Il giocatore tocca un nome (si evidenzia)
+  }
+}
+
+function handleSlotClick(slot, expectedName, idx) {
+  // 2. Tocca uno slot vuoto sul campo
+  if (!selectedBenchPlayer || formLocalFound.has(expectedName)) return;
+
+  // 3. Il codice verifica se appartiene al ruolo
+  if (selectedBenchPlayer.name === expectedName) {
+    // 4. CORRETTO
+    formLocalFound.add(expectedName);
+    slot.classList.add('filled');
+    slot.textContent = expectedName;
+    selectedBenchPlayer.btn.classList.add('hidden'); // Nascondi dalla panchina
+    selectedBenchPlayer.btn.classList.remove('selected');
+    selectedBenchPlayer = null;
+
+    // OBIETTIVO 5: Multiplayer Real-Time e +2 punti
+    DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + 2);
+    DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => {
+      const newCount = (c||0) + 1;
+      // OBIETTIVO 6: Condizione di vittoria 11/11
+      if (newCount === 11) {
+        DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId);
+      }
+      return newCount;
+    });
+
+  } else {
+    // 5. SBAGLIATO
+    selectedBenchPlayer.btn.classList.add('error');
+    const benchBtnRef = selectedBenchPlayer.btn;
+    setTimeout(() => {
+      benchBtnRef.classList.remove('error', 'selected');
+    }, 400);
+    selectedBenchPlayer = null;
+  }
+}
 
 /* ═══════════════════════════════════════════
    AVANZAMENTO ROUND (solo master)
@@ -771,13 +961,15 @@ function nextRound(mode, idx, max) {
       currentIndex: idx+1,
       startedAt: SV,
       roomAns: null,
-      scored: null
+      scored: null,
+      formAnswers: null,
+      formFinished: null
     });
   }
 }
 
 /* ═══════════════════════════════════════════
-   TIMER BAR (solo Quiz)
+   TIMER BAR GLOBALE
 ═══════════════════════════════════════════ */
 function startTick(startedAt, duration, fillId, lblId, onEnd) {
   clearInterval(tickId);
@@ -808,7 +1000,7 @@ function renderResult(me, opp) {
 
 $('btnLobby').onclick = () => {
   if (isMaster) {
-    DB.ref('rooms/'+room).update({ status:'lobby', scored:null, roomAns:null, startedAt:null });
+    DB.ref('rooms/'+room).update({ status:'lobby', scored:null, roomAns:null, startedAt:null, formAnswers:null, formFinished:null });
   }
 };
 </script>
