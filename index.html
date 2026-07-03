@@ -36,6 +36,12 @@ body {
 }
 .screen.hidden { display: none; }
 
+/* ─── LOADER OVERLAY ─── */
+.loader-overlay {
+  position: absolute; inset: 0; background: rgba(18,18,18,0.9); z-index: 100;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
 /* ─── HEADER ─── */
 .hdr { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; margin-bottom: 4px; }
 .logo {
@@ -254,6 +260,7 @@ body {
 
 <!-- 4. QUIZ -->
 <div class="screen hidden" id="s-quiz">
+  <div class="loader-overlay hidden" id="ld-quiz"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> QUIZ</div><div class="pill" id="qProg">1 / 5</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="qMeName">Tu</div><div class="pscore" id="qMeScore">0</div><div class="pstatus" id="qMeSt">&nbsp;</div></div>
@@ -270,6 +277,7 @@ body {
 
 <!-- 5. VERO O FALSO -->
 <div class="screen hidden" id="s-vf">
+  <div class="loader-overlay hidden" id="ld-vf"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> VERO O FALSO</div><div class="pill" id="vfProg">1 / 5</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="vfMeName">Tu</div><div class="pscore" id="vfMeScore">0</div><div class="pstatus" id="vfMeSt">&nbsp;</div></div>
@@ -288,6 +296,7 @@ body {
 
 <!-- 6. IDENTIKIT -->
 <div class="screen hidden" id="s-idk">
+  <div class="loader-overlay hidden" id="ld-idk"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> IDENTIKIT</div><div class="pill" id="idkProg">1 / 3</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="idkMeName">Tu</div><div class="pscore" id="idkMeScore">0</div><div class="pstatus" id="idkMeSt">&nbsp;</div></div>
@@ -304,6 +313,7 @@ body {
 
 <!-- 7. FORMAZIONE -->
 <div class="screen hidden" id="s-form">
+  <div class="loader-overlay hidden" id="ld-form"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> FORMAZIONE</div><div class="pill" id="formProg">1 / 2</div></div>
   <div class="score-bar">
     <div class="pchip me"><div class="pname" id="formMeName">Tu</div><div class="pscore" id="formMeScore">0</div><div class="pstatus" id="formMeSt">0/11</div></div>
@@ -312,13 +322,8 @@ body {
   <div class="timer-track"><div class="timer-fill" id="formTimerFill"></div></div>
   <div style="text-align:center; font-weight:900; margin-bottom:10px; font-size: 16px; color: var(--yellow);" id="formTitle">Titolo Formazione</div>
   
-  <div class="form-pitch" id="formPitch">
-    <!-- Slot campo generati via JS -->
-  </div>
-  
-  <div class="form-bench" id="formBench">
-    <!-- Bottoni panchina generati via JS -->
-  </div>
+  <div class="form-pitch" id="formPitch"></div>
+  <div class="form-bench" id="formBench"></div>
 </div>
 
 <!-- 8. RISULTATO -->
@@ -346,7 +351,7 @@ body {
 'use strict';
 
 /* ═══════════════════════════════════════════
-   DATABASES
+   DATABASES LOCALI TEMPORANEI (Solo per migrazione)
 ═══════════════════════════════════════════ */
 const QUIZ_DB = [
   { q:"Quale squadra ha vinto più Scudetti nella storia della Serie A?", o:["Juventus","Inter","Milan","Roma"], c:0 },
@@ -380,18 +385,11 @@ const IDK_DB = [
   { n:"Cristiano Ronaldo",  c:["Ho iniziato la carriera nello Sporting Lisbona.","Ho vinto 5 Palloni d'Oro.","Sono il miglior marcatore della Champions League.","La mia esultanza più famosa è 'Siuuu'."] }
 ];
 
-const IDK_NAMES = [
-  "Zlatan Ibrahimovic","Francesco Totti","Cristiano Ronaldo","Lionel Messi",
-  "Paolo Maldini","Gianluigi Buffon","Diego Maradona","Pelé",
-  "Ronaldo Il Fenomeno","Alessandro Del Piero"
-];
-
-// OBIETTIVO 2: Database di Prova Formazioni
 const FORMAZIONI_DB = [
   {
     title: "Italia - Finale Mondiali 2006",
     module: "4-4-2",
-    layout: [[2], [4], [4], [1]], // Righe: Attaccanti, Centrocampisti, Difensori, Portiere
+    layout: [[2], [4], [4], [1]],
     team: ["Totti", "Toni", "Perrotta", "Pirlo", "Gattuso", "Camoranesi", "Grosso", "Materazzi", "Cannavaro", "Zambrotta", "Buffon"],
     bench: ["Totti", "Toni", "Perrotta", "Pirlo", "Gattuso", "Camoranesi", "Grosso", "Materazzi", "Cannavaro", "Zambrotta", "Buffon", "Del Piero", "Inzaghi", "Nesta", "De Rossi"]
   },
@@ -404,13 +402,14 @@ const FORMAZIONI_DB = [
   }
 ];
 
+const IDK_NAMES = ["Zlatan Ibrahimovic","Francesco Totti","Cristiano Ronaldo","Lionel Messi","Paolo Maldini","Gianluigi Buffon","Diego Maradona","Pelé","Ronaldo Il Fenomeno","Alessandro Del Piero"];
+
 const Q_TIME       = 10;
 const Q_PER_MATCH  = 5;
 const VF_PER_MATCH = 5;
 const IDK_PER_MATCH = 3;
 const FORM_PER_MATCH = 2;
 const FORM_TIME = 60;
-// Punti IDK: 4 pt al 1° indizio, 3 al 2°, 2 al 3°, 1 al 4°
 const IDK_POINTS   = [4, 3, 2, 1];
 
 /* ═══════════════════════════════════════════
@@ -430,10 +429,36 @@ DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0;
 const now = () => Date.now() + serverOffset;
 
 /* ═══════════════════════════════════════════
-   STATO LOCALE
+   MIGRAZIONE DATI (OBIETTIVO 1)
+═══════════════════════════════════════════ */
+window.uploadDataToFirebase = async function() {
+  console.log("Inizio migrazione dati verso Firebase...");
+  const updates = {};
+  QUIZ_DB.forEach((q, i) => updates[`gamedata/quiz/${i}`] = q);
+  updates['gamedata/counts/quiz'] = QUIZ_DB.length;
+
+  VF_DB.forEach((q, i) => updates[`gamedata/vf/${i}`] = q);
+  updates['gamedata/counts/vf'] = VF_DB.length;
+
+  IDK_DB.forEach((q, i) => updates[`gamedata/idk/${i}`] = q);
+  updates['gamedata/counts/idk'] = IDK_DB.length;
+
+  FORMAZIONI_DB.forEach((q, i) => updates[`gamedata/form/${i}`] = q);
+  updates['gamedata/counts/form'] = FORMAZIONI_DB.length;
+
+  await DB.ref().update(updates);
+  console.log("Migrazione completata! Database aggiornato al Lazy Loading.");
+  alert("Dati caricati su Firebase con successo!");
+};
+
+/* ═══════════════════════════════════════════
+   STATO LOCALE E CACHE (OBIETTIVO 3)
 ═══════════════════════════════════════════ */
 let myId = sessionStorage.getItem('pid');
 if (!myId) { myId = 'p' + Math.random().toString(36).slice(2,10); sessionStorage.setItem('pid', myId); }
+
+const localCache = { quiz: {}, vf: {}, idk: {}, form: {} };
+let activeFetches = {};
 
 let room = null, isMaster = false, myName = '', roomOff = null;
 let tickId = null, advanceTimer = null;
@@ -442,13 +467,9 @@ let lastIdx = -1, myAnswered = false, vfLocked = false;
 let qIdx = [], vfIdx = [], idkIdx = [], formIdx = [];
 let advanceScheduledFor = -1;
 
-// Stato locale per Formazione
 let formLocalFound = new Set();
 let selectedBenchPlayer = null;
 
-/* ═══════════════════════════════════════════
-   DOM HELPERS
-═══════════════════════════════════════════ */
 const $  = id => document.getElementById(id);
 const SCREENS = ['s-menu','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-vf','s-idk','s-form','s-result'];
 function show(id) { SCREENS.forEach(s => $(s).classList.add('hidden')); $(id).classList.remove('hidden'); }
@@ -462,6 +483,22 @@ function resetLocals() {
   idkClueTimers = [];
   lastIdx = -1; myAnswered = false; vfLocked = false; advanceScheduledFor = -1;
   formLocalFound.clear(); selectedBenchPlayer = null;
+}
+
+// Funzione Helper per il Lazy Loading OBIETTIVO 3
+async function fetchGameData(mode, dbIdx, loaderId) {
+  if (localCache[mode][dbIdx]) return localCache[mode][dbIdx];
+  const key = mode + '_' + dbIdx;
+  if (!activeFetches[key]) {
+    if ($(loaderId)) $(loaderId).classList.remove('hidden');
+    activeFetches[key] = DB.ref(`gamedata/${mode}/${dbIdx}`).once('value').then(snap => {
+      localCache[mode][dbIdx] = snap.val() || null;
+      if ($(loaderId)) $(loaderId).classList.add('hidden');
+      delete activeFetches[key];
+      return localCache[mode][dbIdx];
+    });
+  }
+  return activeFetches[key];
 }
 
 /* ═══════════════════════════════════════════
@@ -529,21 +566,19 @@ function handleUpdate(data) {
     case 'playing':     renderQuiz(data, me, opp); break;
     case 'vf_playing':  renderVF(data, me, opp);   break;
     case 'idk_playing': renderIDK(data, me, opp);  break;
-    case 'form_playing':renderForm(data, me, opp, oppId); break; // Nuovo Gioco Formazione
+    case 'form_playing':renderForm(data, me, opp, oppId); break;
     case 'finished':    resetLocals(); renderResult(me, opp); break;
   }
 }
 
 /* ═══════════════════════════════════════════
-   LOBBY
+   LOBBY E AVVIO ASINCRONO (OBIETTIVO 2)
 ═══════════════════════════════════════════ */
 function renderLobby(me, opp) {
   if (isMaster) {
     DB.ref('rooms/'+room+'/players').once('value', snap => {
       const ps = snap.val()||{};
-      Object.keys(ps).forEach(id =>
-        DB.ref('rooms/'+room+'/players/'+id).update({ score:0, answers:null })
-      );
+      Object.keys(ps).forEach(id => DB.ref('rooms/'+room+'/players/'+id).update({ score:0, answers:null }));
     });
   }
   resetLocals();
@@ -559,24 +594,35 @@ function renderLobby(me, opp) {
   show(isMaster ? 's-lobby-master' : 's-lobby-guest');
 }
 
-function startGame(mode, count, total, idxKey) {
+async function startGame(mode, count, idxKey, btnId) {
   if (!isMaster) return;
+  const btn = $(btnId);
+  const ogContent = btn.innerHTML;
+  btn.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;"><div class="spinner" style="width:24px;height:24px;margin:0;"></div></div>';
+  btn.style.pointerEvents = 'none';
+
+  const dbMode = mode === 'playing' ? 'quiz' : mode.split('_')[0];
+  const snap = await DB.ref('gamedata/counts/' + dbMode).once('value');
+  const total = snap.val() || count; 
+
   DB.ref('rooms/'+room).update({
-    status:mode, currentIndex:0,
+    status: mode, currentIndex: 0,
     [idxKey]: shuffle(count, total),
-    startedAt: SV, roomAns:null, scored:null, formAnswers:null, formFinished:null
+    startedAt: SV, roomAns: null, scored: null, formAnswers: null, formFinished: null
   });
+
+  btn.innerHTML = ogContent;
+  btn.style.pointerEvents = 'auto';
 }
-$('pickQuiz').onclick = () => startGame('playing',     Q_PER_MATCH,   QUIZ_DB.length, 'qIdx');
-$('pickVF').onclick   = () => startGame('vf_playing',  VF_PER_MATCH,  VF_DB.length,   'vfIdx');
-$('pickIDK').onclick  = () => startGame('idk_playing', IDK_PER_MATCH, IDK_DB.length,  'idkIdx');
-// OBIETTIVO 1: Bottone La Formazione collegato
-$('pickForm').onclick = () => startGame('form_playing', FORM_PER_MATCH, FORMAZIONI_DB.length, 'formIdx');
+$('pickQuiz').onclick = () => startGame('playing', Q_PER_MATCH, 'qIdx', 'pickQuiz');
+$('pickVF').onclick   = () => startGame('vf_playing', VF_PER_MATCH, 'vfIdx', 'pickVF');
+$('pickIDK').onclick  = () => startGame('idk_playing', IDK_PER_MATCH, 'idkIdx', 'pickIDK');
+$('pickForm').onclick = () => startGame('form_playing', FORM_PER_MATCH, 'formIdx', 'pickForm');
 
 /* ═══════════════════════════════════════════
-   QUIZ
+   QUIZ LAZY LOADING
 ═══════════════════════════════════════════ */
-function renderQuiz(data, me, opp) {
+async function renderQuiz(data, me, opp) {
   show('s-quiz');
   $('qMeName').textContent  = me?.name  || 'Tu';
   $('qMeScore').textContent = me?.score || 0;
@@ -585,13 +631,18 @@ function renderQuiz(data, me, opp) {
 
   const idx = data.currentIndex || 0;
   $('qProg').textContent = (idx+1)+' / '+Q_PER_MATCH;
+  const dbIdx = qIdx[idx] ?? idx;
+
+  const q = await fetchGameData('quiz', dbIdx, 'ld-quiz');
+  if (!q || data.currentIndex !== idx || data.status !== 'playing') return;
+
   const myA = me?.answers?.[idx], oppA = opp?.answers?.[idx];
   $('qMeSt').textContent  = myA  ? '✓ Risposto' : 'Scegli…';
   $('qOppSt').textContent = oppA ? '✓ Risposto' : '...';
 
   if (idx !== lastIdx) {
     lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA);
-    startTick(data.startedAt || now(), Q_TIME, 'qTimerFill', null, () => {
+    startTick(data.startedAt || now(), Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
       if (!myAnswered) {
         myAnswered = true; revealQuiz(idx, -1);
         DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:-1, ok:false });
@@ -605,7 +656,8 @@ function renderQuiz(data, me, opp) {
 }
 
 function loadQuiz(idx, existing) {
-  const q = QUIZ_DB[qIdx[idx]??idx];
+  const dbIdx = qIdx[idx] ?? idx;
+  const q = localCache.quiz[dbIdx];
   const card = $('qCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
   $('qText').textContent = q.q; $('qOpts').innerHTML = '';
   q.o.forEach((opt, oi) => {
@@ -617,14 +669,16 @@ function loadQuiz(idx, existing) {
 
 function submitQuiz(idx, sel) {
   if (myAnswered) return; myAnswered = true;
-  const ok = sel === QUIZ_DB[qIdx[idx]??idx].c;
+  const dbIdx = qIdx[idx] ?? idx;
+  const ok = sel === localCache.quiz[dbIdx].c;
   revealQuiz(idx, sel);
   DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
   if (ok) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+1);
 }
 
 function revealQuiz(idx, sel) {
-  const correct = QUIZ_DB[qIdx[idx]??idx].c;
+  const dbIdx = qIdx[idx] ?? idx;
+  const correct = localCache.quiz[dbIdx].c;
   $('qOpts').querySelectorAll('.opt').forEach((b,i) => {
     b.disabled = true;
     if (i===correct) b.classList.add('correct');
@@ -647,20 +701,31 @@ function masterCheckQuiz(data, idx) {
 }
 
 /* ═══════════════════════════════════════════
-   VERO O FALSO
+   VERO O FALSO LAZY LOADING
 ═══════════════════════════════════════════ */
-function renderVF(data, me, opp) {
+async function renderVF(data, me, opp) {
   show('s-vf');
   $('vfMeName').textContent   = me?.name  || 'Tu';
-  $('vfMeScore').textContent  = me?.score || 0;
   $('vfOppName').textContent  = opp?.name || '...';
-  $('vfOppScore').textContent = opp?.score || 0;
 
   const idx = data.currentIndex || 0;
   $('vfProg').textContent = (idx+1)+' / '+VF_PER_MATCH;
+  const dbIdx = vfIdx[idx] ?? idx;
 
-  const q   = VF_DB[vfIdx[idx]??idx];
+  const q = await fetchGameData('vf', dbIdx, 'ld-vf');
+  if (!q || data.currentIndex !== idx || data.status !== 'vf_playing') return;
+
   const ans = data.roomAns?.[idx] ?? null;
+
+  let ms = me?.score || 0;
+  let os = opp?.score || 0;
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v === q.a;
+    if (ans.pid === myId) { if (ok) ms+=10; else os+=5; }
+    else                  { if (ok) os+=10; else ms+=5; }
+  }
+  $('vfMeScore').textContent  = ms;
+  $('vfOppScore').textContent = os;
 
   if (idx !== lastIdx) {
     lastIdx = idx; vfLocked = false;
@@ -670,8 +735,6 @@ function renderVF(data, me, opp) {
     $('vfFeedback').style.color = '';
     $('vfV').disabled = $('vfF').disabled = false;
     $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
-    $('vfMeSt').textContent = 'Chi risponde prima vince!';
-    $('vfOppSt').textContent = opp ? 'Chi risponde prima vince!' : '';
   }
 
   if (ans) {
@@ -695,15 +758,17 @@ function renderVF(data, me, opp) {
       const allPids = Object.keys(data.players||{});
       const loserId  = allPids.find(id => id !== ans.pid);
       const winnerId = ok ? ans.pid : loserId;
-      const pts      = ok ? 10 : 5;
-
+      
+      let updates = {};
       if (winnerId) {
-        DB.ref('rooms/'+room+'/players/'+winnerId+'/score').transaction(s => (s||0) + pts);
+         const currentScore = data.players[winnerId]?.score || 0;
+         updates[`players/${winnerId}/score`] = currentScore + (ok ? 10 : 5);
       }
-      DB.ref('rooms/'+room+'/scored/'+idx).set(true);
+      updates[`scored/${idx}`] = true;
+      DB.ref('rooms/' + room).update(updates);
 
       clearTimeout(advanceTimer);
-      advanceTimer = setTimeout(() => nextRound('vf_playing', idx, VF_PER_MATCH), 1800);
+      advanceTimer = setTimeout(() => nextRound('vf_playing', idx, VF_PER_MATCH), 2000);
     }
   }
 }
@@ -718,20 +783,31 @@ $('vfF').onclick = () => {
 };
 
 /* ═══════════════════════════════════════════
-   IDENTIKIT
+   IDENTIKIT LAZY LOADING
 ═══════════════════════════════════════════ */
-function renderIDK(data, me, opp) {
+async function renderIDK(data, me, opp) {
   show('s-idk');
   $('idkMeName').textContent   = me?.name  || 'Tu';
-  $('idkMeScore').textContent  = me?.score || 0;
   $('idkOppName').textContent  = opp?.name || '...';
-  $('idkOppScore').textContent = opp?.score || 0;
 
   const idx = data.currentIndex || 0;
   $('idkProg').textContent = (idx+1)+' / '+IDK_PER_MATCH;
+  const dbIdx = idkIdx[idx] ?? idx;
 
-  const q   = IDK_DB[idkIdx[idx]??idx];
+  const q = await fetchGameData('idk', dbIdx, 'ld-idk');
+  if (!q || data.currentIndex !== idx || data.status !== 'idk_playing') return;
+
   const ans = data.roomAns?.[idx] ?? null;
+
+  let ms = me?.score || 0;
+  let os = opp?.score || 0;
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v.toLowerCase() === q.n.toLowerCase();
+    if (ans.pid === myId) { if(ok) ms += ans.pts; else os += ans.pts; }
+    else                  { if(ok) os += ans.pts; else ms += ans.pts; }
+  }
+  $('idkMeScore').textContent  = ms;
+  $('idkOppScore').textContent = os;
 
   if (idx !== lastIdx) {
     lastIdx = idx; vfLocked = false;
@@ -776,13 +852,16 @@ function renderIDK(data, me, opp) {
       const loserId  = allPids.find(id => id !== ans.pid);
       const winnerId = ok ? ans.pid : loserId;
 
+      let updates = {};
       if (winnerId) {
-        DB.ref('rooms/'+room+'/players/'+winnerId+'/score').transaction(s => (s||0) + ans.pts);
+         const currentScore = data.players[winnerId]?.score || 0;
+         updates[`players/${winnerId}/score`] = currentScore + ans.pts;
       }
-      DB.ref('rooms/'+room+'/scored/'+idx).set(true);
+      updates[`scored/${idx}`] = true;
+      DB.ref('rooms/' + room).update(updates);
 
       clearTimeout(advanceTimer);
-      advanceTimer = setTimeout(() => nextRound('idk_playing', idx, IDK_PER_MATCH), 2200);
+      advanceTimer = setTimeout(() => nextRound('idk_playing', idx, IDK_PER_MATCH), 2500);
     }
   }
 }
@@ -820,11 +899,10 @@ $('idkBtn').onclick = () => {
 };
 
 /* ═══════════════════════════════════════════
-   FORMAZIONE (Nuovo Gioco)
+   FORMAZIONE LAZY LOADING
 ═══════════════════════════════════════════ */
-function renderForm(data, me, opp, oppId) {
+async function renderForm(data, me, opp, oppId) {
   show('s-form');
-  
   $('formMeName').textContent   = me?.name  || 'Tu';
   $('formMeScore').textContent  = me?.score || 0;
   $('formOppName').textContent  = opp?.name || '...';
@@ -832,9 +910,11 @@ function renderForm(data, me, opp, oppId) {
 
   const idx = data.currentIndex || 0;
   $('formProg').textContent = (idx+1)+' / '+FORM_PER_MATCH;
-  const q = FORMAZIONI_DB[formIdx[idx] ?? idx];
+  const dbIdx = formIdx[idx] ?? idx;
 
-  // Mostra il contatore di 11 per ogni giocatore OBIETTIVO 5
+  const q = await fetchGameData('form', dbIdx, 'ld-form');
+  if (!q || data.currentIndex !== idx || data.status !== 'form_playing') return;
+
   const myFoundCount = data.formAnswers?.[idx]?.[myId]?.count || 0;
   const oppFoundCount = data.formAnswers?.[idx]?.[oppId]?.count || 0;
   $('formMeSt').textContent  = `${myFoundCount}/11`;
@@ -847,12 +927,10 @@ function renderForm(data, me, opp, oppId) {
     buildFormUI(q, idx);
 
     startTick(data.startedAt || now(), FORM_TIME, 'formTimerFill', null, () => {
-      // OBIETTIVO 6: Condizione vittoria per tempo scaduto
       if (isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx);
     });
   }
 
-  // OBIETTIVO 6: Qualcuno ha vinto completando la formazione!
   if (data.formFinished?.[idx] && isMaster && advanceScheduledFor !== idx) {
     triggerFormAdvance(data, idx);
   }
@@ -864,7 +942,6 @@ function triggerFormAdvance(data, idx) {
   advanceTimer = setTimeout(() => nextRound('form_playing', idx, FORM_PER_MATCH), 2000);
 }
 
-// OBIETTIVO 3: UI Mobile-Friendly (Costruzione Campo e Panchina)
 function buildFormUI(q, idx) {
   $('formTitle').textContent = q.title;
   const pitch = $('formPitch');
@@ -889,7 +966,6 @@ function buildFormUI(q, idx) {
 
   const bench = $('formBench');
   bench.innerHTML = '';
-  // Mescola la panchina locale
   const shuffledBench = [...q.bench].sort(() => Math.random() - 0.5);
   shuffledBench.forEach(name => {
     const btn = document.createElement('button');
@@ -900,39 +976,32 @@ function buildFormUI(q, idx) {
   });
 }
 
-// OBIETTIVO 4: La Meccanica 'Tocca e Tocca'
 function handleBenchClick(btn, name) {
   if (formLocalFound.has(name)) return;
-  // Deseleziona eventuali bottoni precedentemente scelti
   document.querySelectorAll('.bench-btn').forEach(b => b.classList.remove('selected', 'error'));
   
   if (selectedBenchPlayer?.name === name) {
-    selectedBenchPlayer = null; // Toggle spegnimento
+    selectedBenchPlayer = null;
   } else {
     selectedBenchPlayer = { btn, name };
-    btn.classList.add('selected'); // 1. Il giocatore tocca un nome (si evidenzia)
+    btn.classList.add('selected');
   }
 }
 
 function handleSlotClick(slot, expectedName, idx) {
-  // 2. Tocca uno slot vuoto sul campo
   if (!selectedBenchPlayer || formLocalFound.has(expectedName)) return;
 
-  // 3. Il codice verifica se appartiene al ruolo
   if (selectedBenchPlayer.name === expectedName) {
-    // 4. CORRETTO
     formLocalFound.add(expectedName);
     slot.classList.add('filled');
     slot.textContent = expectedName;
-    selectedBenchPlayer.btn.classList.add('hidden'); // Nascondi dalla panchina
+    selectedBenchPlayer.btn.classList.add('hidden');
     selectedBenchPlayer.btn.classList.remove('selected');
     selectedBenchPlayer = null;
 
-    // OBIETTIVO 5: Multiplayer Real-Time e +2 punti
     DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + 2);
     DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => {
       const newCount = (c||0) + 1;
-      // OBIETTIVO 6: Condizione di vittoria 11/11
       if (newCount === 11) {
         DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId);
       }
@@ -940,7 +1009,6 @@ function handleSlotClick(slot, expectedName, idx) {
     });
 
   } else {
-    // 5. SBAGLIATO
     selectedBenchPlayer.btn.classList.add('error');
     const benchBtnRef = selectedBenchPlayer.btn;
     setTimeout(() => {
