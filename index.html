@@ -96,7 +96,7 @@ body {
 .timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .25s linear, background .3s; }
 .timer-fill.danger { background: linear-gradient(90deg, var(--red), #ff8a7a); }
 
-/* ─── QUIZ & CARRIERA ─── */
+/* ─── QUIZ ─── */
 .q-text { font-size: clamp(19px, 5.5vw, 26px); font-weight: 800; line-height: 1.35; margin-bottom: 18px; }
 .options { display: flex; flex-direction: column; gap: 11px; }
 .opt { background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); color: var(--text); padding: 17px 16px; border-radius: 15px; font-size: clamp(14px, 4vw, 16px); font-weight: 600; text-align: left; cursor: pointer; min-height: 56px; transition: background .15s, border-color .15s; }
@@ -104,11 +104,14 @@ body {
 .opt.correct { background: rgba(57,255,143,.2); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 18px rgba(57,255,143,.35); }
 .opt.wrong   { background: rgba(255,71,87,.2);  border-color: var(--red);   color: #ffd0d3; box-shadow: 0 0 18px rgba(255,71,87,.3); }
 
-/* ─── CARRIERA UI (Teams Flow) ─── */
+/* ─── CARRIERA UI ─── */
 .carr-teams { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
 .carr-team { background: rgba(0,229,255,.1); border: 1.5px solid var(--blue); color: var(--blue); padding: 8px 14px; border-radius: 12px; font-size: 14px; font-weight: 800; }
 .carr-arrow { color: var(--muted); font-size: 18px; display: flex; align-items: center; justify-content: center; }
-.carr-input-area { display: flex; gap: 10px; flex-shrink: 0; width: 100%; }
+.carr-input-area { position: relative; display: flex; gap: 10px; flex-shrink: 0; width: 100%; }
+.carr-autocomplete { position: absolute; bottom: 100%; left: 0; width: calc(100% - 90px); max-height: 200px; background: #1e2321; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); overflow-y: auto; display: none; z-index: 10; margin-bottom: 8px; box-shadow: 0 -5px 20px rgba(0,0,0,.5); }
+.carr-ac-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.05); font-weight: 600; cursor: pointer; }
+.carr-ac-item:active { background: rgba(255,255,255,.1); }
 .carr-input-area input { flex: 1; padding: 15px; border-radius: 14px; border: 2px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: white; font-size: 16px; outline: none; }
 .carr-input-area input:focus { border-color: var(--blue); }
 .carr-input-area button { padding: 0 18px; border-radius: 14px; border: none; background: var(--blue); color: #000; font-weight: 900; font-size: 15px; cursor: pointer; transition: transform .1s; }
@@ -130,7 +133,10 @@ body {
 .idk-clues { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; margin-bottom: 14px; padding-top: 10px; }
 .idk-clue { background: rgba(255,255,255,.05); border-left: 4px solid var(--yellow); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; animation: fadeUp .3s ease; }
 .idk-points { font-size: 11px; font-weight: 800; color: var(--yellow); margin-bottom: 4px; letter-spacing: 1px; }
-.idk-input-area { display: flex; gap: 10px; flex-shrink: 0; }
+.idk-input-area { position: relative; display: flex; gap: 10px; flex-shrink: 0; }
+.idk-autocomplete { position: absolute; bottom: 100%; left: 0; width: calc(100% - 90px); max-height: 200px; background: #1e2321; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); overflow-y: auto; display: none; z-index: 10; margin-bottom: 8px; box-shadow: 0 -5px 20px rgba(0,0,0,.5); }
+.idk-ac-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.05); font-weight: 600; cursor: pointer; }
+.idk-ac-item:active { background: rgba(255,255,255,.1); }
 .idk-input-area input { flex: 1; padding: 15px; border-radius: 14px; border: 2px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: white; font-size: 16px; outline: none; }
 .idk-input-area input:focus { border-color: var(--yellow); }
 .idk-input-area button { padding: 0 18px; border-radius: 14px; border: none; background: var(--yellow); color: #000; font-weight: 900; font-size: 15px; cursor: pointer; transition: transform .1s; }
@@ -167,6 +173,7 @@ body {
 <body>
 <div class="glow"></div>
 
+<!-- 1. MENU: INSERIMENTO NOME -->
 <div class="screen" id="s-menu-name">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
@@ -182,6 +189,7 @@ body {
   </div>
 </div>
 
+<!-- 2. MENU: INSERIMENTO CODICE -->
 <div class="screen hidden" id="s-menu-code">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
@@ -197,6 +205,7 @@ body {
   </div>
 </div>
 
+<!-- 3. WAITING ROOM -->
 <div class="screen hidden" id="s-wait">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <p class="label-xs" style="margin:0 0 4px;">Condividi il codice</p>
@@ -209,6 +218,7 @@ body {
   </div>
 </div>
 
+<!-- 4A. LOBBY MASTER -->
 <div class="screen hidden" id="s-lobby-master">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lmCode">----</div></div>
   <div style="margin-top:18px;">
@@ -234,6 +244,7 @@ body {
   </div>
 </div>
 
+<!-- 4B. LOBBY GUEST -->
 <div class="screen hidden" id="s-lobby-guest">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lgCode">----</div></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
@@ -243,6 +254,7 @@ body {
   </div>
 </div>
 
+<!-- 5. QUIZ -->
 <div class="screen hidden" id="s-quiz">
   <div class="loader-overlay hidden" id="ld-quiz"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> QUIZ</div><div class="pill" id="qProg">- / -</div></div>
@@ -255,10 +267,11 @@ body {
     <div class="q-text" id="qText"></div><div class="options" id="qOpts"></div>
   </div>
   <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;">
-    <span id="qTimerLbl">10s</span>
+    <span id="qTimerLbl">--</span>
   </div>
 </div>
 
+<!-- 6. LA CARRIERA -->
 <div class="screen hidden" id="s-carr">
   <div class="loader-overlay hidden" id="ld-carr"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> LA CARRIERA</div><div class="pill" id="carrProg">- / -</div></div>
@@ -273,11 +286,13 @@ body {
     <div class="vf-feedback" id="carrFeedback" style="min-height:24px;font-size:14px;margin-bottom:16px;"></div>
   </div>
   <div class="carr-input-area">
+    <div class="carr-autocomplete" id="carrAuto"></div>
     <input type="text" id="carrInp" placeholder="Nome giocatore..." autocomplete="off">
     <button id="carrBtn">INVIA</button>
   </div>
 </div>
 
+<!-- 7. VERO O FALSO -->
 <div class="screen hidden" id="s-vf">
   <div class="loader-overlay hidden" id="ld-vf"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> VERO O FALSO</div><div class="pill" id="vfProg">- / -</div></div>
@@ -296,6 +311,7 @@ body {
   </div>
 </div>
 
+<!-- 8. IDENTIKIT -->
 <div class="screen hidden" id="s-idk">
   <div class="loader-overlay hidden" id="ld-idk"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> IDENTIKIT</div><div class="pill" id="idkProg">- / -</div></div>
@@ -306,11 +322,13 @@ body {
   <div class="idk-clues" id="idkClues"></div>
   <div class="vf-feedback" id="idkFeedback" style="min-height:24px;font-size:14px;margin-bottom:8px;"></div>
   <div class="idk-input-area">
+    <div class="idk-autocomplete" id="idkAuto"></div>
     <input type="text" id="idkInp" placeholder="Nome giocatore..." autocomplete="off">
     <button id="idkBtn">INVIA</button>
   </div>
 </div>
 
+<!-- 9. FORMAZIONE -->
 <div class="screen hidden" id="s-form">
   <div class="loader-overlay hidden" id="ld-form"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> FORMAZIONE</div><div class="pill" id="formProg">- / -</div></div>
@@ -325,6 +343,7 @@ body {
   <div class="form-bench" id="formBench"></div>
 </div>
 
+<!-- 10. RISULTATO -->
 <div class="screen hidden" id="s-result">
   <div class="result-center fade-in">
     <div style="font-size:54px;margin-bottom:8px;" id="rMedal">🏆</div>
@@ -348,32 +367,54 @@ body {
 <script>
 'use strict';
 
-/* ═══════════════════════════════════════════
-   DATABASES LOCALI TEMPORANEI (Solo fallback test)
-═══════════════════════════════════════════ */
-const CARR_DB = [
-  { p: "Paulo Dybala", t: ["Instituto", "Palermo", "Juventus", "Roma"] },
-  { p: "Zlatan Ibrahimovic", t: ["Ajax", "Juventus", "Inter", "Barcellona", "Milan", "PSG"] }
-];
-const Q_TIME    = 10;
-const FORM_TIME = 60;
-const IDK_POINTS= [4, 3, 2, 1];
+// =========================================================================
+// ⚙️ IMPOSTAZIONI DEI GIOCHI: MODIFICA QUI TEMPI E PUNTEGGI
+// =========================================================================
 
-// Lobby Settings
+// 1. IL QUIZ
+const QUIZ_TIME     = 10; // Secondi a disposizione per rispondere
+const QUIZ_PTS_WIN  = 1;  // Punti se indovini
+
+// 2. VERO O FALSO
+const VF_TIME       = 10; // Secondi prima che scada se nessuno preme
+const VF_PTS_WIN    = 10; // Punti a chi preme per primo e indovina
+const VF_PTS_LOSE   = 5;  // Punti che vanno ALL'AVVERSARIO se chi preme sbaglia
+
+// 3. LA CARRIERA
+const CARR_TIME     = 15; // Secondi per scrivere il nome
+const CARR_PTS_WIN  = 2;  // Punti se indovini
+const CARR_PTS_LOSE = 2;  // Punti che vanno ALL'AVVERSARIO se sbagli
+
+// 4. L'IDENTIKIT
+const IDK_TIME      = 15; // Secondi a disposizione totali
+const IDK_POINTS    = [4, 3, 2, 1]; // Punti in base all'indizio svelato (dal 1° al 4°)
+
+// 5. LA FORMAZIONE
+const FORM_TIME     = 60; // Secondi a disposizione
+const FORM_PTS_PER_P= 2;  // Punti assegnati per ogni giocatore inserito correttamente
+
+// =========================================================================
+// 📖 DIZIONARIO CALCIATORI (Per Autocompletamento "Carriera" e "Identikit")
+// =========================================================================
+const PLAYER_NAMES = [
+  "Zlatan Ibrahimovic", "Francesco Totti", "Cristiano Ronaldo", "Lionel Messi",
+  "Paolo Maldini", "Gianluigi Buffon", "Diego Maradona", "Pelé",
+  "Ronaldo Il Fenomeno", "Alessandro Del Piero", "Paulo Dybala", "Javier Pastore",
+  "Franco Vazquez", "Edinson Cavani", "Thiago Silva", "Andrea Pirlo", "Javier Zanetti"
+];
+// =========================================================================
+
+// Configurazione Lobby
 let currentRoundsCount = 5; 
 
 /* ═══════════════════════════════════════════
-   AUDIO ENGINE (Zero Dependencies)
+   AUDIO ENGINE
 ═══════════════════════════════════════════ */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let aCtx = null;
 
 function initAudio() {
-  if (!aCtx) {
-    aCtx = new AudioCtx();
-  } else if (aCtx.state === 'suspended') {
-    aCtx.resume();
-  }
+  if (!aCtx) { aCtx = new AudioCtx(); } else if (aCtx.state === 'suspended') { aCtx.resume(); }
 }
 
 function playTone(freq, type, duration, vol=0.1) {
@@ -385,10 +426,8 @@ function playTone(freq, type, duration, vol=0.1) {
     osc.frequency.setValueAtTime(freq, aCtx.currentTime);
     gain.gain.setValueAtTime(vol, aCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(aCtx.destination);
-    osc.start();
-    osc.stop(aCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(aCtx.destination);
+    osc.start(); osc.stop(aCtx.currentTime + duration);
   } catch(e) {}
 }
 
@@ -413,16 +452,6 @@ const SV = firebase.database.ServerValue.TIMESTAMP;
 let serverOffset = 0;
 DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
 const now = () => Date.now() + serverOffset;
-
-// MIGRATION SCRIPT UPDATE (aggiunto carr)
-window.uploadDataToFirebase = async function() {
-  console.log("Migrazione in corso...");
-  const updates = {};
-  CARR_DB.forEach((q, i) => updates[`gamedata/carr/${i}`] = q);
-  updates['gamedata/counts/carr'] = CARR_DB.length;
-  await DB.ref().update(updates);
-  console.log("Fatto!");
-};
 
 /* ═══════════════════════════════════════════
    STATO LOCALE E CACHE
@@ -470,7 +499,7 @@ async function fetchGameData(mode, dbIdx, loaderId) {
    MENU REDESIGN
 ═══════════════════════════════════════════ */
 $('btnGoCreate').addEventListener('click', async () => {
-  initAudio(); // Inizializza audio
+  initAudio();
   myName = $('iName').value.trim();
   if (!myName) { $('menuNameErr').textContent = 'Inserisci il tuo nome.'; return; }
   $('menuNameErr').textContent = '';
@@ -490,7 +519,7 @@ $('btnGoJoin').addEventListener('click', () => {
   myName = $('iName').value.trim();
   if (!myName) { $('menuNameErr').textContent = 'Inserisci il tuo nome.'; return; }
   $('menuNameErr').textContent = '';
-  show('s-menu-code'); // Mostra il secondo step
+  show('s-menu-code');
 });
 
 $('btnBackToName').addEventListener('click', () => { show('s-menu-name'); });
@@ -572,7 +601,6 @@ function renderLobby(me, opp) {
   show(isMaster ? 's-lobby-master' : 's-lobby-guest');
 }
 
-// Funzione globale chiamata dai bottoni della lobby
 window.setRounds = function(n) {
   currentRoundsCount = n;
   document.querySelectorAll('.r-btn').forEach(b => b.classList.toggle('active', parseInt(b.innerText) === n));
@@ -589,7 +617,6 @@ async function startGame(mode, idxKey, btnId) {
   const snap = await DB.ref('gamedata/counts/' + dbMode).once('value');
   const total = snap.val() || 5; 
   
-  // Limita i round se il database ha meno domande di quelle richieste
   const actualRounds = Math.min(currentRoundsCount, total);
 
   DB.ref('rooms/'+room).update({
@@ -617,7 +644,6 @@ function startTick(startedAt, duration, fillId, lblId, onEnd) {
     const rem = Math.max(duration - (now()-startedAt)/1000, 0);
     const lbl=$(lblId), fill=$(fillId);
     
-    // Suono degli ultimi 3 secondi
     const currentSec = Math.ceil(rem);
     if (currentSec <= 3 && currentSec > 0 && currentSec !== lastSec) { sfx.tick(); lastSec = currentSec; }
 
@@ -626,6 +652,20 @@ function startTick(startedAt, duration, fillId, lblId, onEnd) {
     if (rem <= 0) { clearInterval(tickId); onEnd?.(); }
   };
   tick(); tickId = setInterval(tick, 100);
+}
+
+// Funzione condivisa master timeout (Quiz e Carriera)
+let quizAdvancing = false;
+function masterCheckQuiz(data, idx, modeStr, durationLimit) {
+  if (quizAdvancing) return;
+  const players = data.players||{}, ids = Object.keys(players);
+  if (ids.length < 2) return;
+  const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
+  const timeUp  = data.startedAt && (now() > data.startedAt + durationLimit*1000 + 400);
+  if (allDone || timeUp) {
+    quizAdvancing = true; clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(() => { quizAdvancing=false; nextRound(modeStr, idx, currentRoundsCount); }, allDone ? 1200 : 300);
+  }
 }
 
 /* ═══════════════════════════════════════════
@@ -648,13 +688,13 @@ async function renderQuiz(data, me, opp) {
 
   if (idx !== lastIdx) {
     lastIdx = idx; myAnswered = !!myA; loadQuiz(idx, myA);
-    startTick(data.startedAt || now(), Q_TIME, 'qTimerFill', 'qTimerLbl', () => {
+    startTick(data.startedAt || now(), QUIZ_TIME, 'qTimerFill', 'qTimerLbl', () => {
       if (!myAnswered) { myAnswered = true; revealQuiz(idx, -1); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:-1, ok:false }); }
     });
   } else if (myA && !myAnswered) {
     myAnswered = true; revealQuiz(idx, myA.sel);
   }
-  if (isMaster) masterCheckQuiz(data, idx, 'playing');
+  if (isMaster) masterCheckQuiz(data, idx, 'playing', QUIZ_TIME);
 }
 
 function loadQuiz(idx, existing) {
@@ -674,7 +714,11 @@ function submitQuiz(idx, sel) {
   if(ok) sfx.correct(); else sfx.wrong();
   revealQuiz(idx, sel);
   DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
-  if (ok) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+1);
+  
+  if (ok && QUIZ_PTS_WIN > 0) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+QUIZ_PTS_WIN);
+  if (!ok && QUIZ_PTS_LOSE > 0) {
+    // Logica opzionale se vuoi togliere punti o darli all'avversario nel quiz standard
+  }
 }
 
 function revealQuiz(idx, sel) {
@@ -683,19 +727,6 @@ function revealQuiz(idx, sel) {
     b.disabled = true;
     if (i===correct) b.classList.add('correct'); else if (i===sel) b.classList.add('wrong');
   });
-}
-
-let quizAdvancing = false;
-function masterCheckQuiz(data, idx, modeStr) {
-  if (quizAdvancing) return;
-  const players = data.players||{}, ids = Object.keys(players);
-  if (ids.length < 2) return;
-  const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
-  const timeUp  = data.startedAt && (now() > data.startedAt + Q_TIME*1000 + 400);
-  if (allDone || timeUp) {
-    quizAdvancing = true; clearTimeout(advanceTimer);
-    advanceTimer = setTimeout(() => { quizAdvancing=false; nextRound(modeStr, idx, currentRoundsCount); }, allDone ? 1200 : 300);
-  }
 }
 
 /* ═══════════════════════════════════════════
@@ -718,7 +749,7 @@ async function renderCarr(data, me, opp) {
 
   if (ans && !data.scored?.[idx]) {
     const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
-    if (ans.pid === myId) { if(ok) ms += 2; else os += 2; } else { if(ok) os += 2; else ms += 2; }
+    if (ans.pid === myId) { if(ok) ms += CARR_PTS_WIN; else os += CARR_PTS_LOSE; } else { if(ok) os += CARR_PTS_WIN; else ms += CARR_PTS_LOSE; }
   }
   $('carrMeScore').textContent = ms; $('carrOppScore').textContent = os;
 
@@ -726,8 +757,9 @@ async function renderCarr(data, me, opp) {
     lastIdx = idx; vfLocked = false;
     $('carrInp').value = ''; $('carrFeedback').textContent = '';
     $('carrInp').disabled = $('carrBtn').disabled = false;
+    $('carrAuto').style.display = 'none';
     loadCarr(idx);
-    startTick(data.startedAt || now(), Q_TIME, 'carrTimerFill', null, () => {
+    startTick(data.startedAt || now(), CARR_TIME, 'carrTimerFill', null, () => {
       if (!ans && isMaster && advanceScheduledFor !== idx) {
          advanceScheduledFor = idx;
          clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('carr_playing', idx, currentRoundsCount), 1000);
@@ -737,6 +769,7 @@ async function renderCarr(data, me, opp) {
 
   if (ans) {
     $('carrInp').disabled = $('carrBtn').disabled = true;
+    $('carrAuto').style.display = 'none';
     clearInterval(tickId);
     
     const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
@@ -744,12 +777,12 @@ async function renderCarr(data, me, opp) {
 
     if (first) {
       if(ok) sfx.correct(); else sfx.wrong();
-      $('carrFeedback').textContent = ok ? `Esatto! È ${q.p}! +2 pt 🎉` : `Sbagliato! Era ${q.p}. +2 pt all'avversario`;
+      $('carrFeedback').textContent = ok ? `Esatto! È ${q.p}! +${CARR_PTS_WIN} pt 🎉` : `Sbagliato! Era ${q.p}. +${CARR_PTS_LOSE} pt all'avversario`;
       $('carrFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
     } else {
       if(!ok) sfx.correct(); else sfx.wrong();
       const oppName = opp?.name || 'L\'avversario';
-      $('carrFeedback').textContent = ok ? `${oppName} ha indovinato: ${q.p}! +2 pt` : `${oppName} ha sbagliato (era ${q.p})! +2 pt a te`;
+      $('carrFeedback').textContent = ok ? `${oppName} ha indovinato: ${q.p}! +${CARR_PTS_WIN} pt` : `${oppName} ha sbagliato (era ${q.p})! +${CARR_PTS_LOSE} pt a te`;
       $('carrFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
     }
 
@@ -758,7 +791,13 @@ async function renderCarr(data, me, opp) {
       const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
       const winnerId = ok ? ans.pid : loserId;
       let updates = {};
-      if (winnerId) updates[`players/${winnerId}/score`] = (data.players[winnerId]?.score || 0) + 2;
+      
+      if (ok) {
+        updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + CARR_PTS_WIN;
+      } else {
+        if (loserId) updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + CARR_PTS_LOSE;
+      }
+
       updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
       clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('carr_playing', idx, currentRoundsCount), 3000);
     }
@@ -779,6 +818,20 @@ function loadCarr(idx) {
     }
   });
 }
+
+$('carrInp').oninput = function() {
+  const v = this.value.toLowerCase(), ac=$('carrAuto'); ac.innerHTML='';
+  if (!v) { ac.style.display='none'; return; }
+  const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
+  if (matches.length) {
+    ac.style.display='block';
+    matches.forEach(n => {
+      const d = document.createElement('div'); d.className='carr-ac-item'; d.textContent=n;
+      d.onclick = () => { $('carrInp').value=n; ac.style.display='none'; };
+      ac.appendChild(d);
+    });
+  } else { ac.style.display='none'; }
+};
 
 $('carrBtn').onclick = () => {
   const val = $('carrInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
@@ -803,7 +856,7 @@ async function renderVF(data, me, opp) {
   
   if (ans && !data.scored?.[idx]) {
     const ok = ans.v === q.a;
-    if (ans.pid === myId) { if (ok) ms+=10; else os+=5; } else { if (ok) os+=10; else ms+=5; }
+    if (ans.pid === myId) { if (ok) ms+=VF_PTS_WIN; else os+=VF_PTS_LOSE; } else { if (ok) os+=VF_PTS_WIN; else ms+=VF_PTS_LOSE; }
   }
   $('vfMeScore').textContent = ms; $('vfOppScore').textContent = os;
 
@@ -812,30 +865,44 @@ async function renderVF(data, me, opp) {
     const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
     $('vfText').textContent = q.s; $('vfFeedback').textContent = ''; $('vfV').disabled = $('vfF').disabled = false;
     $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
+
+    startTick(data.startedAt || now(), VF_TIME, null, null, () => {
+      if (!ans && isMaster && advanceScheduledFor !== idx) {
+         advanceScheduledFor = idx;
+         clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 1000);
+      }
+    });
   }
 
   if (ans) {
     $('vfV').disabled = $('vfF').disabled = true;
+    clearInterval(tickId);
+
     const ok = ans.v === q.a; const first = ans.pid === myId;
     const pressedBtn = ans.v ? $('vfV') : $('vfF'); pressedBtn.classList.add('hit');
 
     if (first) {
       if(ok) sfx.correct(); else sfx.wrong();
-      $('vfFeedback').textContent = ok ? '⚡ Esatto! +10 punti 🎉' : '❌ Sbagliato! +5 punti all\'avversario';
+      $('vfFeedback').textContent = ok ? `⚡ Esatto! +${VF_PTS_WIN} punti 🎉` : `❌ Sbagliato! +${VF_PTS_LOSE} punti all'avversario`;
       $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
     } else {
       if(!ok) sfx.correct(); else sfx.wrong();
       const oppName = opp?.name || 'L\'avversario';
-      $('vfFeedback').textContent = ok ? `⚡ ${oppName} ha risposto prima!` : `✅ ${oppName} ha sbagliato! +5 pt a te`;
+      $('vfFeedback').textContent = ok ? `⚡ ${oppName} ha risposto prima!` : `✅ ${oppName} ha sbagliato! +${VF_PTS_LOSE} pt a te`;
       $('vfFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
     }
 
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
       advanceScheduledFor = idx; 
       const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
-      const winnerId = ok ? ans.pid : loserId;
       let updates = {};
-      if (winnerId) updates[`players/${winnerId}/score`] = (data.players[winnerId]?.score || 0) + (ok ? 10 : 5);
+      
+      if (ok) {
+        updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + VF_PTS_WIN;
+      } else {
+        if (loserId) updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + VF_PTS_LOSE;
+      }
+
       updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
       clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 2000);
     }
@@ -870,18 +937,26 @@ async function renderIDK(data, me, opp) {
     lastIdx = idx; vfLocked = false;
     idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
     $('idkClues').innerHTML = ''; $('idkInp').value = ''; $('idkFeedback').textContent = '';
-    $('idkInp').disabled = $('idkBtn').disabled = false;
+    $('idkInp').disabled = $('idkBtn').disabled = false; $('idkAuto').style.display = 'none';
 
     const base = data.startedAt || now();
     q.c.forEach((clue, i) => {
-      const delay = Math.max(0, base + i*3000 - now());
+      const delay = Math.max(0, base + i*(IDK_TIME/4)*1000 - now());
       idkClueTimers.push(setTimeout(() => { if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1); else showClue(clue, IDK_POINTS[i] ?? 1); }, delay));
+    });
+
+    startTick(data.startedAt || now(), IDK_TIME, null, null, () => {
+      if (!ans && isMaster && advanceScheduledFor !== idx) {
+         advanceScheduledFor = idx;
+         clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 1000);
+      }
     });
   }
 
   if (ans) {
     $('idkInp').disabled = $('idkBtn').disabled = true;
-    idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
+    idkClueTimers.forEach(clearTimeout); idkClueTimers = []; $('idkAuto').style.display = 'none';
+    clearInterval(tickId);
 
     const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase(); const first = ans.pid === myId;
 
@@ -913,6 +988,20 @@ function showClue(text, pts) {
   d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`;
   $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight;
 }
+
+$('idkInp').oninput = function() {
+  const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML='';
+  if (!v) { ac.style.display='none'; return; }
+  const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
+  if (matches.length) {
+    ac.style.display='block';
+    matches.forEach(n => {
+      const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n;
+      d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; };
+      ac.appendChild(d);
+    });
+  } else { ac.style.display='none'; }
+};
 
 $('idkBtn').onclick = () => {
   const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
@@ -982,7 +1071,7 @@ function handleSlotClick(slot, expectedName, idx) {
     sfx.correct(); // Suono corretto
     formLocalFound.add(expectedName); slot.classList.add('filled'); slot.textContent = expectedName;
     selectedBenchPlayer.btn.classList.add('hidden'); selectedBenchPlayer.btn.classList.remove('selected'); selectedBenchPlayer = null;
-    DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + 2);
+    DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + FORM_PTS_PER_P);
     DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => { const newCount = (c||0) + 1; if (newCount === 11) DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId); return newCount; });
   } else {
     sfx.wrong(); // Suono sbagliato
