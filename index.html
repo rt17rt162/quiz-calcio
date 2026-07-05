@@ -96,7 +96,7 @@ body {
 .timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .25s linear, background .3s; }
 .timer-fill.danger { background: linear-gradient(90deg, var(--red), #ff8a7a); }
 
-/* ─── QUIZ ─── */
+/* ─── QUIZ & CARRIERA ─── */
 .q-text { font-size: clamp(19px, 5.5vw, 26px); font-weight: 800; line-height: 1.35; margin-bottom: 18px; }
 .options { display: flex; flex-direction: column; gap: 11px; }
 .opt { background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); color: var(--text); padding: 17px 16px; border-radius: 15px; font-size: clamp(14px, 4vw, 16px); font-weight: 600; text-align: left; cursor: pointer; min-height: 56px; transition: background .15s, border-color .15s; }
@@ -104,7 +104,7 @@ body {
 .opt.correct { background: rgba(57,255,143,.2); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 18px rgba(57,255,143,.35); }
 .opt.wrong   { background: rgba(255,71,87,.2);  border-color: var(--red);   color: #ffd0d3; box-shadow: 0 0 18px rgba(255,71,87,.3); }
 
-/* ─── CARRIERA UI ─── */
+/* ─── CARRIERA UI (Teams Flow) ─── */
 .carr-teams { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
 .carr-team { background: rgba(0,229,255,.1); border: 1.5px solid var(--blue); color: var(--blue); padding: 8px 14px; border-radius: 12px; font-size: 14px; font-weight: 800; }
 .carr-arrow { color: var(--muted); font-size: 18px; display: flex; align-items: center; justify-content: center; }
@@ -189,7 +189,7 @@ body {
   </div>
 </div>
 
-<!-- 2. MENU: INSERIMENTO CODICE -->
+<!-- 2. MENU: INSERIMENTO CODICE (Solo per chi si unisce) -->
 <div class="screen hidden" id="s-menu-code">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
@@ -205,7 +205,7 @@ body {
   </div>
 </div>
 
-<!-- 3. WAITING ROOM -->
+<!-- 3. WAITING ROOM (Condividi Codice) -->
 <div class="screen hidden" id="s-wait">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <p class="label-xs" style="margin:0 0 4px;">Condividi il codice</p>
@@ -394,14 +394,9 @@ const FORM_TIME     = 60; // Secondi a disposizione
 const FORM_PTS_PER_P= 2;  // Punti assegnati per ogni giocatore inserito correttamente
 
 // =========================================================================
-// 📖 DIZIONARIO CALCIATORI (Per Autocompletamento "Carriera" e "Identikit")
+// 📖 IL DIZIONARIO AUTOMATICO (NON MODIFICARE A MANO)
 // =========================================================================
-const PLAYER_NAMES = [
-  "Zlatan Ibrahimovic", "Francesco Totti", "Cristiano Ronaldo", "Lionel Messi",
-  "Paolo Maldini", "Gianluigi Buffon", "Diego Maradona", "Pelé",
-  "Ronaldo Il Fenomeno", "Alessandro Del Piero", "Paulo Dybala", "Javier Pastore",
-  "Franco Vazquez", "Edinson Cavani", "Thiago Silva", "Andrea Pirlo", "Javier Zanetti"
-];
+let PLAYER_NAMES = []; // Partirà vuoto, si riempirà da solo in background all'avvio del sito
 // =========================================================================
 
 // Configurazione Lobby
@@ -438,7 +433,7 @@ const sfx = {
 };
 
 /* ═══════════════════════════════════════════
-   FIREBASE INIT
+   FIREBASE INIT & PREFETCH BACKGROUND
 ═══════════════════════════════════════════ */
 firebase.initializeApp({
   apiKey: "AIzaSyDIyhNTyBCSEzSczT7dxyPej5iW6v2FWog",
@@ -452,6 +447,32 @@ const SV = firebase.database.ServerValue.TIMESTAMP;
 let serverOffset = 0;
 DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
 const now = () => Date.now() + serverOffset;
+
+// 🥷 IL TRUCCO NINJA: Scarica i nomi in background appena apri il sito
+async function fetchAutocompleteNames() {
+  try {
+    const [idkSnap, carrSnap] = await Promise.all([
+      DB.ref('gamedata/idk').once('value'),
+      DB.ref('gamedata/carr').once('value')
+    ]);
+    
+    const namesSet = new Set();
+    
+    if (idkSnap.exists()) {
+      Object.values(idkSnap.val()).forEach(item => { if (item && item.n) namesSet.add(item.n.trim()); });
+    }
+    if (carrSnap.exists()) {
+      Object.values(carrSnap.val()).forEach(item => { if (item && item.p) namesSet.add(item.p.trim()); });
+    }
+    
+    PLAYER_NAMES = Array.from(namesSet);
+    console.log(`✅ Autocompletamento pronto! Nomi caricati: ${PLAYER_NAMES.length}`);
+  } catch (e) {
+    console.error("Errore nel pre-caricamento dei nomi:", e);
+  }
+}
+// Avvia il caricamento silenzioso SUBITO all'avvio della pagina
+fetchAutocompleteNames();
 
 /* ═══════════════════════════════════════════
    STATO LOCALE E CACHE
@@ -635,7 +656,7 @@ $('pickIDK').onclick  = () => startGame('idk_playing', 'idkIdx', 'pickIDK');
 $('pickForm').onclick = () => startGame('form_playing', 'formIdx', 'pickForm');
 
 /* ═══════════════════════════════════════════
-   TIMER GLOBALE (CON SUONO TIK TOK)
+   TIMER GLOBALE
 ═══════════════════════════════════════════ */
 function startTick(startedAt, duration, fillId, lblId, onEnd) {
   clearInterval(tickId);
@@ -654,7 +675,7 @@ function startTick(startedAt, duration, fillId, lblId, onEnd) {
   tick(); tickId = setInterval(tick, 100);
 }
 
-// Funzione condivisa master timeout (Quiz e Carriera)
+// Funzione condivisa master timeout (Quiz)
 let quizAdvancing = false;
 function masterCheckQuiz(data, idx, modeStr, durationLimit) {
   if (quizAdvancing) return;
@@ -716,9 +737,6 @@ function submitQuiz(idx, sel) {
   DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
   
   if (ok && QUIZ_PTS_WIN > 0) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+QUIZ_PTS_WIN);
-  if (!ok && QUIZ_PTS_LOSE > 0) {
-    // Logica opzionale se vuoi togliere punti o darli all'avversario nel quiz standard
-  }
 }
 
 function revealQuiz(idx, sel) {
