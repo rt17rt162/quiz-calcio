@@ -931,11 +931,13 @@ $('vfV').onclick = () => { if (vfLocked) return; vfLocked = true; DB.ref('rooms/
 $('vfF').onclick = () => { if (vfLocked) return; vfLocked = true; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? { pid:myId, v:false } : undefined); };
 
 /* ═══════════════════════════════════════════
-   IDENTIKIT LAZY LOADING
+   IDENTIKIT LAZY LOADING (VERSIONE CORRETTA)
 ═══════════════════════════════════════════ */
 async function renderIDK(data, me, opp) {
   show('s-idk');
-  $('idkMeName').textContent = me?.name||'Tu'; $('idkOppName').textContent = opp?.name||'...';
+  $('idkMeName').textContent = me?.name||'Tu'; $('idkMeScore').textContent = me?.score||0;
+  $('idkOppName').textContent = opp?.name||'...'; $('idkOppScore').textContent = opp?.score||0;
+
   const idx = data.currentIndex || 0;
   $('idkProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = idkIdx[idx] ?? idx;
@@ -944,6 +946,8 @@ async function renderIDK(data, me, opp) {
   if (!q || data.currentIndex !== idx || data.status !== 'idk_playing') return;
 
   const ans = data.roomAns?.[idx] ?? null;
+  const timeIsUp = (now() > (data.startedAt + IDK_TIME*1000));
+
   let ms = me?.score || 0; let os = opp?.score || 0;
   if (ans && !data.scored?.[idx]) {
     const ok = ans.v.toLowerCase() === q.n.toLowerCase();
@@ -962,70 +966,38 @@ async function renderIDK(data, me, opp) {
       const delay = Math.max(0, base + i*(IDK_TIME/4)*1000 - now());
       idkClueTimers.push(setTimeout(() => { if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1); else showClue(clue, IDK_POINTS[i] ?? 1); }, delay));
     });
-
-    startTick(data.startedAt || now(), IDK_TIME, null, null, () => {
-      if (!ans && isMaster && advanceScheduledFor !== idx) {
-         advanceScheduledFor = idx;
-         clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 1000);
-      }
-    });
   }
 
-  if (ans) {
+  // LOGICA RIVELAZIONE
+  if (ans || timeIsUp) {
     $('idkInp').disabled = $('idkBtn').disabled = true;
     idkClueTimers.forEach(clearTimeout); idkClueTimers = []; $('idkAuto').style.display = 'none';
-    clearInterval(tickId);
-
-    const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase(); const first = ans.pid === myId;
-
-    if (first) {
-      if(ok) sfx.correct(); else sfx.wrong();
-      $('idkFeedback').textContent = ok ? `Esatto! +${ans.pts} pt 🎉` : `Sbagliato! +${ans.pts} pt all'avversario`;
-      $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
-    } else {
-      if(!ok) sfx.correct(); else sfx.wrong();
-      const oppName = opp?.name || 'L\'avversario';
-      $('idkFeedback').textContent = ok ? `${oppName} ha indovinato! +${ans.pts} pt` : `${oppName} ha sbagliato! +${ans.pts} pt a te`;
-      $('idkFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
+    
+    if (ans) {
+        const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase(); const first = ans.pid === myId;
+        if (first) {
+          if(ok) sfx.correct(); else sfx.wrong();
+          $('idkFeedback').textContent = ok ? `Esatto! +${ans.pts} pt 🎉` : `Sbagliato! +${ans.pts} pt all'avversario`;
+          $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+        } else {
+          const oppName = opp?.name || 'L\'avversario';
+          if(!ok) sfx.correct(); else sfx.wrong();
+          $('idkFeedback').textContent = ok ? `${oppName} ha indovinato! +${ans.pts} pt` : `${oppName} ha sbagliato! +${ans.pts} pt a te`;
+          $('idkFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
+        }
+    } else if (timeIsUp && !data.scored?.[idx]) {
+        $('idkFeedback').textContent = `Tempo scaduto! Era: ${q.n}`;
+        $('idkFeedback').style.color = 'var(--yellow)';
     }
 
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
       advanceScheduledFor = idx;
-      const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
-      const winnerId = ok ? ans.pid : loserId;
-      let updates = {};
-      if (winnerId) updates[`players/${winnerId}/score`] = (data.players[winnerId]?.score || 0) + ans.pts;
-      updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
-      clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 2500);
+      let updates = { [`scored/${idx}`]: true };
+      DB.ref('rooms/' + room).update(updates);
+      clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 3000);
     }
   }
 }
-
-function showClue(text, pts) {
-  const d = document.createElement('div'); d.className='idk-clue';
-  d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`;
-  $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight;
-}
-
-$('idkInp').oninput = function() {
-  const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML='';
-  if (!v) { ac.style.display='none'; return; }
-  const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
-  if (matches.length) {
-    ac.style.display='block';
-    matches.forEach(n => {
-      const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n;
-      d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; };
-      ac.appendChild(d);
-    });
-  } else { ac.style.display='none'; }
-};
-
-$('idkBtn').onclick = () => {
-  const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
-  const shown = $('idkClues').children.length; const pts = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1;
-  DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val, pts } : undefined);
-};
 
 /* ═══════════════════════════════════════════
    FORMAZIONE LAZY LOADING
