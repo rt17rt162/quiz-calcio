@@ -30,16 +30,14 @@
       <option value="vf">Vero o Falso</option>
       <option value="idk">L'Identikit</option>
       <option value="form">La Formazione</option>
+      <option value="carr">La Carriera (Nuovo)</option>
     </select>
   </div>
 
   <div class="box">
     <label style="font-weight: bold; color: var(--blue);">2. Incolla i Dati JSON:</label>
     <p style="font-size: 12px; color: var(--muted);">Assicurati di incollare un ARRAY VALIDO generato dall'IA (deve iniziare con <b>[</b> e finire con <b>]</b>).</p>
-    <textarea id="jsonInput" placeholder='Esempio:
-[
-  { "q": "Chi ha vinto il mondiale 2006?", "o": ["Italia", "Francia", "Germania", "Brasile"], "c": 0 }
-]'></textarea>
+    <textarea id="jsonInput" placeholder='Seleziona un gioco per vedere un esempio di formato JSON'></textarea>
     
     <button id="uploadBtn">Aggiungi al Database 🚀</button>
     <div id="log"></div>
@@ -79,8 +77,23 @@
       <li><b>Vero o Falso:</b> ${counts.vf || 0} domande</li>
       <li><b>Identikit:</b> ${counts.idk || 0} giocatori</li>
       <li><b>Formazioni:</b> ${counts.form || 0} formazioni</li>
+      <li><b>Carriere:</b> ${counts.carr || 0} carriere</li>
     `;
   });
+
+  // Placeholder dinamici in base al gioco scelto
+  const placeholders = {
+    quiz: '[\n  { "q": "Chi ha vinto il mondiale 2006?", "o": ["Italia", "Francia", "Germania", "Brasile"], "c": 0 }\n]',
+    vf: '[\n  { "s": "Maldini ha giocato nella Juve.", "a": false }\n]',
+    idk: '[\n  { "n": "Totti", "c": ["Solo una maglia", "Cucchiaio", "Mondiale 2006", "Pupone"] }\n]',
+    form: '[\n  { "title": "Italia 2006", "module": "4-4-2", "layout": [[2], [4], [4], [1]], "team": ["Totti", "Toni", "Perrotta", "Pirlo", "Gattuso", "Camoranesi", "Grosso", "Materazzi", "Cannavaro", "Zambrotta", "Buffon"], "bench": ["Totti", "Toni", "Pirlo", "Grosso", "Cannavaro", "Buffon", "Inzaghi", "Del Piero", "De Rossi", "Oddo", "Peruzzi", "Barone", "Zaccardo", "Gilardino", "Iaquinta"] }\n]',
+    carr: '[\n  { "p": "Dybala", "t": ["Instituto", "Palermo", "Juventus", "Roma"], "o": ["Dybala", "Pastore", "Vazquez", "Cavani"], "c": 0 }\n]'
+  };
+
+  document.getElementById('gameMode').addEventListener('change', function() {
+    document.getElementById('jsonInput').placeholder = placeholders[this.value] || '';
+  });
+  document.getElementById('jsonInput').placeholder = placeholders['quiz'];
 
   document.getElementById('uploadBtn').addEventListener('click', async () => {
     const mode = document.getElementById('gameMode').value;
@@ -101,22 +114,19 @@
     document.getElementById('uploadBtn').textContent = "Caricamento in corso...";
 
     try {
-      // 1. Leggi il contatore attuale
       const countSnap = await DB.ref('gamedata/counts/' + mode).once('value');
       const currentCount = countSnap.val() || 0;
 
-      // 2. Prepara gli aggiornamenti (accodandoli a quelli esistenti)
       const updates = {};
       newData.forEach((item, index) => {
         updates[`gamedata/${mode}/${currentCount + index}`] = item;
       });
       updates[`gamedata/counts/${mode}`] = currentCount + newData.length;
 
-      // 3. Invia tutto a Firebase in un colpo solo
       await DB.ref().update(updates);
 
       showLog(`Successo! Aggiunti ${newData.length} nuovi elementi a "${mode}".`);
-      document.getElementById('jsonInput').value = ''; // Pulisci la casella
+      document.getElementById('jsonInput').value = '';
     } catch (e) {
       showLog("Errore durante il caricamento su Firebase: " + e.message, true);
     } finally {
