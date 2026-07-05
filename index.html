@@ -998,6 +998,33 @@ async function renderIDK(data, me, opp) {
   }
 }
 
+function showClue(text, pts) {
+  const d = document.createElement('div'); d.className='idk-clue';
+  d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`;
+  $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight;
+}
+
+$('idkInp').oninput = function() {
+  const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML='';
+  if (!v) { ac.style.display='none'; return; }
+  const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
+  if (matches.length) {
+    ac.style.display='block';
+    matches.forEach(n => {
+      const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n;
+      d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; };
+      ac.appendChild(d);
+    });
+  } else { ac.style.display='none'; }
+};
+
+$('idkBtn').onclick = () => {
+  const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
+  const shown = $('idkClues').children.length; const pts = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1;
+  DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val, pts } : undefined);
+};
+
+
 /* ═══════════════════════════════════════════
    FORMAZIONE LAZY LOADING
 ═══════════════════════════════════════════ */
