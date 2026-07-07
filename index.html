@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>Party Calcio 1vs1</title>
 <style>
-/* ─── RESET & BASE ─── */
 :root {
   --bg: #121212; --card: #1a1a1a; --blue: #00e5ff;
   --green: #39ff8f; --red: #ff4757; --yellow: #ffd32a;
@@ -18,8 +17,6 @@ body {
   font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
   position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh; overflow: hidden;
 }
-
-/* ─── GLOW BACKGROUND ─── */
 .glow {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background:
@@ -27,7 +24,6 @@ body {
     radial-gradient(ellipse at 85% 100%, rgba(57,255,143,.15) 0%, transparent 50%);
 }
 
-/* ─── SCREENS & LOADERS ─── */
 .screen {
   position: absolute; inset: 0; z-index: 1;
   display: flex; flex-direction: column;
@@ -41,15 +37,13 @@ body {
 }
 .loader-overlay.hidden { display: none; }
 
-/* ─── HEADER & TYPOGRAPHY ─── */
 .hdr { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; margin-bottom: 4px; }
 .logo { font-size: 14px; font-weight: 900; letter-spacing: .5px; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .logo em { font-style: normal; -webkit-text-fill-color: initial; }
 .pill { font-size: 12px; font-weight: 700; color: var(--muted); background: rgba(255,255,255,.06); padding: 5px 12px; border-radius: 99px; }
-.label-xs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); text-align: center; margin-bottom: 6px;}
-.title-lg { font-size: clamp(22px, 7vw, 30px); font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0 0 32px 0; text-align: center;}
+.label-xs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+.title-lg { font-size: clamp(22px, 7vw, 30px); font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0; }
 
-/* ─── INPUTS & BUTTONS ─── */
 .field { width: 100%; margin-bottom: 14px; }
 .field label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
 .field input { width: 100%; padding: 15px 16px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); color: var(--text); font-size: 17px; font-weight: 600; outline: none; transition: border-color .2s; }
@@ -58,25 +52,18 @@ body {
 .btn:active { transform: scale(.97); }
 .btn:disabled { opacity: .45; cursor: default; transform: none; }
 .btn-main { background: linear-gradient(135deg, var(--blue), var(--green)); color: #080e0b; box-shadow: 0 8px 28px rgba(0,229,255,.25); }
+.btn-outline { background: transparent; color: white; border: 2px solid var(--blue); }
 .btn-ghost { background: rgba(255,255,255,.05); color: var(--text); border: 1.5px solid rgba(255,255,255,.12); }
-.btn-lock { background: rgba(255,255,255,.02); color: var(--muted); border: 1.5px solid rgba(255,255,255,.05); cursor: not-allowed; }
 .err { font-size: 13px; font-weight: 600; color: var(--red); min-height: 18px; margin-top: 12px; text-align:center; }
 .spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,.1); border-top-color: var(--green); animation: spin .85s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── ROUNDS SELECTOR (LOBBY) ─── */
 .rounds-selector { display: flex; gap: 8px; margin-bottom: 24px; background: rgba(255,255,255,.04); padding: 6px; border-radius: 14px; border: 1.5px solid rgba(255,255,255,.08); }
 .r-btn { flex: 1; padding: 10px; border-radius: 10px; background: transparent; border: none; color: var(--muted); font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.2s; }
 .r-btn.active { background: var(--blue); color: #000; box-shadow: 0 4px 15px rgba(0,229,255,.3); }
-
-/* ─── WAITING ROOM & PLAYERS ─── */
-.code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0; }
+.code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0 28px; }
 .code-val { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue); line-height: 1.1; }
 .code-hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
-.waiting-players { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; width: 100%; max-width: 340px; }
-.w-player-block { background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); padding: 12px 18px; border-radius: 12px; font-size: 15px; font-weight: 800; color: white; animation: fadeUp .3s ease; }
-.w-player-block.me { border-color: var(--blue); background: rgba(0,229,255,.1); color: var(--blue); }
-
 .score-bar { display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0; }
 .pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; transition: transform 0.2s; }
 .pchip.me  { border-color: rgba(0,229,255,.4); }
@@ -87,7 +74,6 @@ body {
 .pchip.opp .pscore { color: var(--green); }
 .pchip .pstatus { font-size: 10px; color: var(--muted); margin-top: 2px; }
 
-/* ─── GAME CARDS (LOBBY) ─── */
 .game-grid { display: flex; flex-direction: column; gap: 14px; }
 .game-card { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,.04); border: 1.5px solid rgba(255,255,255,.1); border-radius: 18px; padding: 20px 18px; cursor: pointer; transition: transform .12s, border-color .2s, background .2s; }
 .game-card:active { transform: scale(.97); }
@@ -96,36 +82,23 @@ body {
 .game-card .info .name { font-size: 18px; font-weight: 900; margin-bottom: 3px; }
 .game-card .info .desc { font-size: 12px; color: var(--muted); font-weight: 600; line-height: 1.4; }
 
-/* ─── TIMER TRACK ─── */
 .timer-track { height: 7px; background: rgba(255,255,255,.08); border-radius: 99px; overflow: hidden; margin: 8px 0 14px; flex-shrink: 0; }
 .timer-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--blue), var(--green)); transition: width .25s linear, background .3s; }
 .timer-fill.danger { background: linear-gradient(90deg, var(--red), #ff8a7a); }
 
-/* ─── QUIZ & CARRIERA ─── */
 .q-text { font-size: clamp(19px, 5.5vw, 26px); font-weight: 800; line-height: 1.35; margin-bottom: 18px; }
 .options { display: flex; flex-direction: column; gap: 11px; }
 .opt { background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); color: var(--text); padding: 17px 16px; border-radius: 15px; font-size: clamp(14px, 4vw, 16px); font-weight: 600; text-align: left; cursor: pointer; min-height: 56px; transition: background .15s, border-color .15s; }
 .opt:disabled { cursor: default; }
 .opt.correct { background: rgba(57,255,143,.2); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 18px rgba(57,255,143,.35); }
 .opt.wrong   { background: rgba(255,71,87,.2);  border-color: var(--red);   color: #ffd0d3; box-shadow: 0 0 18px rgba(255,71,87,.3); }
-
-/* ─── CARRIERA UI ─── */
 .carr-teams { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
 .carr-team { background: rgba(0,229,255,.1); border: 1.5px solid var(--blue); color: var(--blue); padding: 8px 14px; border-radius: 12px; font-size: 14px; font-weight: 800; }
 .carr-arrow { color: var(--muted); font-size: 18px; display: flex; align-items: center; justify-content: center; }
-.carr-input-area { position: relative; display: flex; gap: 10px; flex-shrink: 0; width: 100%; }
-.carr-autocomplete { position: absolute; bottom: 100%; left: 0; width: calc(100% - 90px); max-height: 200px; background: #1e2321; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); overflow-y: auto; display: none; z-index: 10; margin-bottom: 8px; box-shadow: 0 -5px 20px rgba(0,0,0,.5); }
-.carr-ac-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.05); font-weight: 600; cursor: pointer; }
-.carr-ac-item:active { background: rgba(255,255,255,.1); }
-.carr-input-area input { flex: 1; padding: 15px; border-radius: 14px; border: 2px solid rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: white; font-size: 16px; outline: none; }
-.carr-input-area input:focus { border-color: var(--blue); }
-.carr-input-area button { padding: 0 18px; border-radius: 14px; border: none; background: var(--blue); color: #000; font-weight: 900; font-size: 15px; cursor: pointer; transition: transform .1s; }
-.carr-input-area button:active { transform: scale(.95); }
 
-/* ─── VERO O FALSO ─── */
 .vf-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 4px; }
 .vf-text { font-size: clamp(20px, 5.8vw, 28px); font-weight: 800; line-height: 1.35; margin: 12px 0 18px; }
-.vf-feedback { min-height: 44px; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; border-radius: 12px; padding: 0 8px; }
+.vf-feedback { min-height: 44px; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; border-radius: 12px; padding: 0 8px; text-align: center;}
 .vf-btns { display: flex; gap: 14px; flex-shrink: 0; }
 .vf-btn { flex: 1; border: 2px solid; border-radius: 20px; padding: 22px 8px; font-size: 20px; font-weight: 900; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: transform .1s, box-shadow .15s, opacity .15s; }
 .vf-btn span { font-size: 14px; font-weight: 700; }
@@ -134,11 +107,10 @@ body {
 .vf-btn.falso { background: rgba(255,71,87,.12);  border-color: var(--red);   color: var(--red); }
 .vf-btn.hit   { transform: scale(.96); box-shadow: 0 0 28px currentColor; opacity: 1 !important; }
 
-/* ─── IDENTIKIT ─── */
 .idk-clues { flex: 1; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; margin-bottom: 14px; padding-top: 10px; }
 .idk-clue { background: rgba(255,255,255,.05); border-left: 4px solid var(--yellow); padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 600; animation: fadeUp .3s ease; }
 .idk-points { font-size: 11px; font-weight: 800; color: var(--yellow); margin-bottom: 4px; letter-spacing: 1px; }
-.idk-input-area { position: relative; display: flex; gap: 10px; flex-shrink: 0; }
+.idk-input-area { position: relative; display: flex; gap: 10px; flex-shrink: 0; width: 100%; }
 .idk-autocomplete { position: absolute; bottom: 100%; left: 0; width: calc(100% - 90px); max-height: 200px; background: #1e2321; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); overflow-y: auto; display: none; z-index: 10; margin-bottom: 8px; box-shadow: 0 -5px 20px rgba(0,0,0,.5); }
 .idk-ac-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.05); font-weight: 600; cursor: pointer; }
 .idk-ac-item:active { background: rgba(255,255,255,.1); }
@@ -147,7 +119,6 @@ body {
 .idk-input-area button { padding: 0 18px; border-radius: 14px; border: none; background: var(--yellow); color: #000; font-weight: 900; font-size: 15px; cursor: pointer; transition: transform .1s; }
 .idk-input-area button:active { transform: scale(.95); }
 
-/* ─── FORMAZIONE ─── */
 .form-pitch { background: #27ae60; border: 2px solid rgba(255,255,255,0.3); border-radius: 12px; flex: 1; min-height: 240px; display: flex; flex-direction: column; justify-content: space-around; padding: 10px 0; position: relative; margin-bottom: 12px; overflow: hidden; }
 .form-pitch::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; border-top: 2px solid rgba(255,255,255,0.2); }
 .form-pitch::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; }
@@ -159,13 +130,14 @@ body {
 .bench-btn.selected { border-color: var(--yellow); background: rgba(255,211,42,0.2); transform: scale(1.05); }
 .bench-btn.hidden { opacity: 0; pointer-events: none; }
 .bench-btn.error { border-color: var(--red); background: rgba(255,71,87,0.2); animation: shake 0.3s; }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-4px); } 100% { transform: translateX(0); } }
 
-/* ─── RESULT ─── */
 .result-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .vs-scores { display: flex; align-items: center; gap: 16px; margin: 8px 0; }
 .vs-num { font-size: 54px; font-weight: 900; line-height: 1; }
 .vs-num.me  { color: var(--blue); }
 .vs-num.opp { color: var(--green); }
+.vs-div { font-size: 18px; color: var(--muted); font-weight: 700; }
 .verdict { font-size: 17px; font-weight: 900; margin-bottom: 28px; }
 .verdict.win  { color: var(--green); }
 .verdict.lose { color: var(--red); }
@@ -178,81 +150,77 @@ body {
 <body>
 <div class="glow"></div>
 
-<!-- ════ 1. MENU: NOME ════ -->
 <div class="screen" id="s-menu-name">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
-      <p class="label-xs">⚽ Party Calcio</p>
-      <h1 class="title-lg">Chi sei?</h1>
-      <div class="field">
-        <input id="iName" type="text" placeholder="Es. Marco" maxlength="14" autocomplete="off" style="text-align:center;">
-      </div>
+      <p class="label-xs" style="text-align:center;margin:0 0 6px;">⚽ Party Calcio</p>
+      <h1 class="title-lg" style="text-align:center;margin:0 0 32px;">Chi sei?</h1>
+      <div class="field"><label for="iName">Il tuo nome</label><input id="iName" type="text" placeholder="Es. Marco" maxlength="14" autocomplete="off" style="text-align:center;"></div>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
-        <button class="btn btn-main" id="btnGoMode">Avanti</button>
+        <button class="btn btn-main" id="btnNameNext">Avanti</button>
       </div>
       <p class="err" id="menuNameErr"></p>
     </div>
   </div>
 </div>
 
-<!-- ════ 2. MENU: SCELTA MODALITÀ ════ -->
 <div class="screen hidden" id="s-menu-mode">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
-      <p class="label-xs">Scegli come giocare</p>
-      <h1 class="title-lg">Modalità</h1>
+      <p class="label-xs" style="text-align:center;margin:0 0 6px;">Scegli come giocare</p>
+      <h1 class="title-lg" style="text-align:center;margin:0 0 32px;">Modalità</h1>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
-        <button class="btn btn-main" id="btnGoSolo">👤 Gioca da Solo</button>
-        <button class="btn btn-ghost" id="btnGoCreate">➕ Crea Nuova Stanza</button>
-        <button class="btn btn-ghost" id="btnGoJoin">🤝 Unisciti a un Amico</button>
-        <button class="btn btn-lock" disabled>🏆 Torneo (Presto...)</button>
+        <button class="btn btn-main" id="btnModeSolo" style="background:var(--card);color:white;border:1.5px solid var(--green);">👤 Gioca da Solo</button>
+        <button class="btn btn-main" id="btnModeCreate">👥 Crea Stanza Multiplayer</button>
+        <button class="btn btn-ghost" id="btnModeJoin">🤝 Unisciti a un Amico</button>
+        <button class="btn btn-ghost" disabled style="opacity:0.3;">🏆 Torneo (Presto)</button>
+        <button class="btn btn-ghost" id="btnBackToName" style="border:none; padding:10px; font-size:14px; margin-top:10px;">← Cambia Nome</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════ 3. MENU: INSERIMENTO CODICE ════ -->
 <div class="screen hidden" id="s-menu-code">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
-      <p class="label-xs">Entra in gioco</p>
-      <h1 class="title-lg">Inserisci Codice</h1>
+      <p class="label-xs" style="text-align:center;margin:0 0 6px;">Entra in gioco</p>
+      <h1 class="title-lg" style="text-align:center;margin:0 0 32px;">Inserisci Codice</h1>
       <div class="field"><input id="iCode" type="text" placeholder="Es. A3BX" maxlength="4" autocomplete="off" oninput="this.value=this.value.toUpperCase()" style="text-align:center; font-size:24px; letter-spacing:4px;"></div>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
         <button class="btn btn-main" id="btnJoinConfirm">Entra nella Stanza</button>
-        <button class="btn btn-ghost" onclick="show('s-menu-mode')" style="border:none; padding:10px; font-size:14px;">← Torna indietro</button>
+        <button class="btn btn-ghost" id="btnBackToMode" style="border:none; padding:10px; font-size:14px;">← Torna alle modalità</button>
       </div>
       <p class="err" id="menuCodeErr"></p>
     </div>
   </div>
 </div>
 
-<!-- ════ 4. WAITING ROOM (SALA D'ATTESA) ════ -->
 <div class="screen hidden" id="s-wait">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <p class="label-xs" style="margin:0 0 4px;">Codice Stanza</p>
-    <div class="code-box" style="margin: 10px 0 20px;">
+    <div class="code-box">
       <div class="code-val" id="wCode">----</div>
+      <div class="code-hint">Fai inserire questo codice all'avversario</div>
     </div>
-    <p class="label-xs">Giocatori Connessi</p>
-    <div class="waiting-players" id="wPlayersList"></div>
-    <div class="spinner" id="wSpinner"></div>
-    <p style="font-size:15px;color:var(--muted);font-weight:600;" id="wStatusText">In attesa di altri giocatori...</p>
     
-    <div style="width:100%; max-width:340px; margin-top:20px;">
-        <button class="btn btn-main hidden" id="btnStartLobby">Vai alla scelta giochi ➔</button>
-    </div>
+    <p class="label-xs" style="margin:0 0 8px;">Giocatori connessi:</p>
+    <div id="wPlayers" style="display:flex; flex-direction:column; gap:8px; margin-bottom:24px; width:100%; max-width:240px;"></div>
+
+    <div class="spinner" id="wSpinner"></div>
+    <p style="font-size:15px;color:var(--muted);font-weight:600;" id="wText">In attesa dell'avversario...</p>
+    
+    <button class="btn btn-main hidden" id="btnMasterGoLobby" style="margin-top:15px; max-width:240px;">Vai alla scelta giochi ➔</button>
+    <button class="btn btn-ghost" id="btnLeaveWait" style="border:none; padding:10px; font-size:14px; margin-top:20px;">← Esci e Torna al Menu</button>
   </div>
 </div>
 
-<!-- ════ 5A. LOBBY MASTER / SOLO ════ -->
 <div class="screen hidden" id="s-lobby-master">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lmCode">----</div></div>
   <div style="margin-top:18px;">
-    <p class="label-xs" style="margin:0 0 6px;">Giocatori pronti</p>
+    <p class="label-xs" style="margin:0 0 6px;">Giocatori connessi</p>
     <div style="display:flex;gap:10px;margin-bottom:24px;" id="lmPlayers"></div>
     
-    <p class="label-xs" style="margin:0 0 4px;">1. Scegli i round</p>
+    <p class="label-xs" style="margin:0 0 4px;">1. Scegli i Round</p>
     <div class="rounds-selector">
       <button class="r-btn" onclick="setRounds(3)">3</button>
       <button class="r-btn active" onclick="setRounds(5)">5</button>
@@ -260,30 +228,31 @@ body {
       <button class="r-btn" onclick="setRounds(15)">15</button>
     </div>
 
-    <p class="label-xs" style="margin:0 0 4px;">2. Scegli il gioco</p>
+    <p class="label-xs" style="margin:0 0 4px;">2. Avvia il mini-gioco</p>
     <div class="game-grid">
       <div class="game-card" id="pickQuiz"><div class="icon">🏆</div><div class="info"><div class="name">Quiz Calcio</div><div class="desc">A risposta multipla</div></div></div>
       <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo vince</div></div></div>
       <div class="game-card" id="pickCarr"><div class="icon">✈️</div><div class="info"><div class="name">La Carriera</div><div class="desc">Indovina il giocatore dai trasferimenti</div></div></div>
       <div class="game-card" id="pickIDK"><div class="icon">🕵️</div><div class="info"><div class="name">L'Identikit</div><div class="desc">Indovina dagli indizi</div></div></div>
-      <div class="game-card" id="pickForm"><div class="icon">🏟️</div><div class="info"><div class="name">La Formazione</div><div class="desc">Ricostruisci gli 11 titolari storici</div></div></div>
+      <div class="game-card" id="pickForm"><div class="icon">🏟️</div><div class="info"><div class="name">La Formazione</div><div class="desc">Ricostruisci gli 11 titolari</div></div></div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+      <button class="btn btn-ghost" id="btnLeaveLobbyM" style="border:none; padding:10px; font-size:14px;">← Esci e Torna al Menu</button>
     </div>
   </div>
 </div>
 
-<!-- ════ 5B. LOBBY GUEST ════ -->
 <div class="screen hidden" id="s-lobby-guest">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lgCode">----</div></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <div class="spinner"></div>
     <p style="font-size:16px;font-weight:700;color:var(--muted);margin:0 0 6px;">In attesa del master...</p>
-    <p style="font-size:13px;color:var(--muted);margin:0;">L'host sta scegliendo il gioco e i round</p>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 30px;">Il master sta scegliendo il gioco</p>
+    <button class="btn btn-ghost" id="btnLeaveLobbyG" style="border:none; padding:10px; font-size:14px;">← Esci dal gioco</button>
   </div>
 </div>
 
-<!-- ════ GIOCHI (Stessa struttura, logica CSS unificata per nascondere avversario se in Solo) ════ -->
-
-<!-- 6. QUIZ -->
 <div class="screen hidden" id="s-quiz">
   <div class="loader-overlay hidden" id="ld-quiz"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> QUIZ</div><div class="pill" id="qProg">- / -</div></div>
@@ -295,12 +264,9 @@ body {
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center;" id="qCard">
     <div class="q-text" id="qText"></div><div class="options" id="qOpts"></div>
   </div>
-  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;">
-    <span id="qTimerLbl">--</span>
-  </div>
+  <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:12px;flex-shrink:0;"><span id="qTimerLbl">--</span></div>
 </div>
 
-<!-- 7. LA CARRIERA -->
 <div class="screen hidden" id="s-carr">
   <div class="loader-overlay hidden" id="ld-carr"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> LA CARRIERA</div><div class="pill" id="carrProg">- / -</div></div>
@@ -315,13 +281,12 @@ body {
     <div class="vf-feedback" id="carrFeedback" style="min-height:24px;font-size:14px;margin-bottom:16px;"></div>
   </div>
   <div class="carr-input-area">
-    <div class="carr-autocomplete" id="carrAuto"></div>
+    <div class="idk-autocomplete" id="carrAuto"></div>
     <input type="text" id="carrInp" placeholder="Nome giocatore..." autocomplete="off">
     <button id="carrBtn">INVIA</button>
   </div>
 </div>
 
-<!-- 8. VERO O FALSO -->
 <div class="screen hidden" id="s-vf">
   <div class="loader-overlay hidden" id="ld-vf"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> VERO O FALSO</div><div class="pill" id="vfProg">- / -</div></div>
@@ -340,7 +305,6 @@ body {
   </div>
 </div>
 
-<!-- 9. IDENTIKIT -->
 <div class="screen hidden" id="s-idk">
   <div class="loader-overlay hidden" id="ld-idk"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> IDENTIKIT</div><div class="pill" id="idkProg">- / -</div></div>
@@ -357,7 +321,6 @@ body {
   </div>
 </div>
 
-<!-- 10. FORMAZIONE -->
 <div class="screen hidden" id="s-form">
   <div class="loader-overlay hidden" id="ld-form"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> FORMAZIONE</div><div class="pill" id="formProg">- / -</div></div>
@@ -367,26 +330,29 @@ body {
   </div>
   <div class="timer-track"><div class="timer-fill" id="formTimerFill"></div></div>
   <div style="text-align:center; font-weight:900; margin-bottom:10px; font-size: 16px; color: var(--yellow);" id="formTitle">Titolo Formazione</div>
-  
   <div class="form-pitch" id="formPitch"></div>
   <div class="form-bench" id="formBench"></div>
 </div>
 
-<!-- 11. RISULTATO -->
 <div class="screen hidden" id="s-result">
   <div class="result-center fade-in">
     <div style="font-size:54px;margin-bottom:8px;" id="rMedal">🏆</div>
-    <p class="label-xs" style="margin:0 0 6px;">Partita Finita</p>
+    <p class="label-xs" id="rLabelTop" style="margin:0 0 6px;">Partita Finita</p>
     <div class="vs-scores">
       <div class="vs-num me" id="rMeScore">0</div>
-      <div style="font-size:18px;color:var(--muted);font-weight:700;" id="rSep">–</div>
+      <div class="vs-div" id="rVsSep">–</div>
       <div class="vs-num opp" id="rOppScore">0</div>
     </div>
-    <div style="display:flex;justify-content:space-between;width:100%;max-width:260px;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:20px;">
+    <div class="vs-names" id="rNamesContainer">
       <span id="rMeName">Tu</span><span id="rOppName">Avversario</span>
     </div>
     <div class="verdict" id="rVerdict">—</div>
-    <button class="btn btn-main" id="btnLobby" style="max-width:320px;">Torna al Menu/Lobby</button>
+    
+    <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px;margin-top:10px;">
+      <button class="btn btn-main" id="btnPlayAgain">🔄 Gioca Ancora</button>
+      <button class="btn btn-ghost" id="btnLeaveResult" style="border:none; padding:10px; font-size:14px;">← Torna al Menu Principale</button>
+    </div>
+    <p id="guestWaitMsg" class="hidden" style="font-size:13px;color:var(--muted);margin-top:16px;font-weight:700;">In attesa dell'host...</p>
   </div>
 </div>
 
@@ -397,43 +363,46 @@ body {
 'use strict';
 
 // =========================================================================
-// ⚙️ IMPOSTAZIONI DEI GIOCHI E PUNTEGGI
+// ⚙️ IMPOSTAZIONI DEI GIOCHI: MODIFICA QUI TEMPI E PUNTEGGI
 // =========================================================================
 
-const QUIZ_TIME     = 10;
-const QUIZ_PTS_WIN  = 1;
+// 1. IL QUIZ
+const QUIZ_TIME     = 10; // Secondi a disposizione per rispondere
+const QUIZ_PTS_WIN  = 1;  // Punti se indovini
 
-// N.B. VF e IDK mantengono la logica "chi preme prima" come richiesto. 
-// Potremo cambiare questa logica in "tutti rispondono" nel prossimo aggiornamento!
-const VF_TIME       = 10; 
-const VF_PTS_WIN    = 10; 
-const VF_PTS_LOSE   = 5;
+// 2. VERO O FALSO
+const VF_TIME       = 10; // Secondi prima che scada
+const VF_PTS_WIN    = 10; // Punti a chi preme per primo e indovina
+const VF_PTS_LOSE   = 5;  // Punti che vanno ALL'AVVERSARIO se chi preme sbaglia
 
-const CARR_TIME     = 15; 
-const CARR_PTS_WIN  = 2; 
-const CARR_PTS_LOSE = 2; 
+// 3. LA CARRIERA
+const CARR_TIME     = 15; // Secondi totali a disposizione
+const CARR_PTS_WIN  = 2;  // Punti se indovini
+const CARR_PTS_LOSE = 2;  // Punti che vanno all'avversario se sbagli
 
-const IDK_TIME      = 15; 
-const IDK_POINTS    = [4, 3, 2, 1];
+// 4. L'IDENTIKIT
+const IDK_TIME      = 15; // Secondi totali
+const IDK_POINTS    = [4, 3, 2, 1]; // Punti assegnati dal 1° al 4° indizio
 
-const FORM_TIME     = 60; 
-const FORM_PTS_PER_P= 2;
+// 5. LA FORMAZIONE
+const FORM_TIME     = 60; // Secondi totali
+const FORM_PTS_PER_P= 2;  // Punti per ogni giocatore posizionato giusto
 
-// =========================================================================
-// 📖 IL DIZIONARIO CALCIATORI (Unico per Carriera e Identikit)
-// =========================================================================
-let PLAYER_NAMES = []; // Si riempie da Firebase in background
-// =========================================================================
+// DIZIONARIO UNICO AUTCOMPLETAMENTO
+let PLAYER_NAMES = []; 
+let currentRoundsCount = 5; 
 
-/* ═══════════════════════════════════════════
-   AUDIO ENGINE
-═══════════════════════════════════════════ */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let aCtx = null;
 function initAudio() { if (!aCtx) { aCtx = new AudioCtx(); } else if (aCtx.state === 'suspended') { aCtx.resume(); } }
 function playTone(freq, type, duration, vol=0.1) {
   if (!aCtx) return;
-  try { const osc = aCtx.createOscillator(); const gain = aCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, aCtx.currentTime); gain.gain.setValueAtTime(vol, aCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + duration); osc.connect(gain); gain.connect(aCtx.destination); osc.start(); osc.stop(aCtx.currentTime + duration); } catch(e) {}
+  try {
+    const osc = aCtx.createOscillator(); const gain = aCtx.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(freq, aCtx.currentTime);
+    gain.gain.setValueAtTime(vol, aCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(aCtx.destination); osc.start(); osc.stop(aCtx.currentTime + duration);
+  } catch(e) {}
 }
 const sfx = {
   correct: () => { playTone(600, 'sine', 0.1); setTimeout(()=>playTone(800, 'sine', 0.25), 100); },
@@ -441,9 +410,6 @@ const sfx = {
   tick: () => { playTone(1000, 'sine', 0.05, 0.03); }
 };
 
-/* ═══════════════════════════════════════════
-   FIREBASE INIT & PREFETCH BACKGROUND
-═══════════════════════════════════════════ */
 firebase.initializeApp({
   apiKey: "AIzaSyDIyhNTyBCSEzSczT7dxyPej5iW6v2FWog",
   authDomain: "quizcalciomultiplayer.firebaseapp.com",
@@ -452,10 +418,12 @@ firebase.initializeApp({
 });
 const DB = firebase.database();
 const SV = firebase.database.ServerValue.TIMESTAMP;
+
 let serverOffset = 0;
 DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
 const now = () => Date.now() + serverOffset;
 
+// Caricamento silenzioso del dizionario nomi all'avvio
 async function fetchAutocompleteNames() {
   try {
     const [idkSnap, carrSnap] = await Promise.all([ DB.ref('gamedata/idk').once('value'), DB.ref('gamedata/carr').once('value') ]);
@@ -463,31 +431,38 @@ async function fetchAutocompleteNames() {
     if (idkSnap.exists()) Object.values(idkSnap.val()).forEach(item => { if (item && item.n) namesSet.add(item.n.trim()); });
     if (carrSnap.exists()) Object.values(carrSnap.val()).forEach(item => { if (item && item.p) namesSet.add(item.p.trim()); });
     PLAYER_NAMES = Array.from(namesSet);
-  } catch (e) { console.error("Errore autocompletamento:", e); }
+  } catch (e) { console.error(e); }
 }
 fetchAutocompleteNames();
 
-/* ═══════════════════════════════════════════
-   STATO LOCALE
-═══════════════════════════════════════════ */
 let myId = sessionStorage.getItem('pid');
 if (!myId) { myId = 'p' + Math.random().toString(36).slice(2,10); sessionStorage.setItem('pid', myId); }
 
 const localCache = { quiz: {}, vf: {}, idk: {}, form: {}, carr: {} };
 let activeFetches = {};
 
-let room = null, isMaster = false, myName = '', roomOff = null;
-let isSolo = false; // FLAG MODALITÀ SOLO
-let currentRoundsCount = 5; 
-
+let room = null, isMaster = false, isSolo = false, myName = '', roomOff = null;
 let tickId = null, advanceTimer = null, idkClueTimers = [];
 let lastIdx = -1, myAnswered = false, vfLocked = false, advanceScheduledFor = -1;
 let qIdx = [], vfIdx = [], idkIdx = [], formIdx = [], carrIdx = [];
 let formLocalFound = new Set(), selectedBenchPlayer = null;
 
 const $  = id => document.getElementById(id);
-const SCREENS = ['s-menu-name','s-menu-mode','s-menu-code','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-carr','s-vf','s-idk','s-form','s-result'];
-function show(id) { SCREENS.forEach(s => $(s).classList.add('hidden')); $(id).classList.remove('hidden'); applySoloUI(); }
+
+// Funzione core per mostrare le schermate e applicare i filtri UI "Solo"
+function show(id) { 
+  SCREENS.forEach(s => $(s).classList.add('hidden')); 
+  $(id).classList.remove('hidden'); 
+  applySoloUI();
+}
+
+function applySoloUI() {
+  document.querySelectorAll('.pchip.opp').forEach(el => el.style.display = isSolo ? 'none' : 'flex');
+  if ($('rOppScore')) $('rOppScore').style.display = isSolo ? 'none' : 'block';
+  if ($('rOppName')) $('rOppName').style.display = isSolo ? 'none' : 'block';
+  if ($('rVsSep')) $('rVsSep').style.display = isSolo ? 'none' : 'block';
+}
+
 function genCode() { const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join(''); }
 function shuffle(n,total) { const a=[...Array(total).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,n); }
 
@@ -495,16 +470,6 @@ function resetLocals() {
   clearInterval(tickId); clearTimeout(advanceTimer); idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
   lastIdx = -1; myAnswered = false; vfLocked = false; advanceScheduledFor = -1;
   formLocalFound.clear(); selectedBenchPlayer = null;
-}
-
-// Nasconde l'avversario se isSolo = true
-function applySoloUI() {
-  document.querySelectorAll('.pchip.opp').forEach(el => el.style.display = isSolo ? 'none' : 'flex');
-  if (isSolo) {
-    $('rOppScore').style.display = 'none'; $('rOppName').style.display = 'none'; $('rSep').style.display = 'none';
-  } else {
-    $('rOppScore').style.display = 'block'; $('rOppName').style.display = 'block'; $('rSep').style.display = 'block';
-  }
 }
 
 async function fetchGameData(mode, dbIdx, loaderId) {
@@ -515,134 +480,149 @@ async function fetchGameData(mode, dbIdx, loaderId) {
     activeFetches[key] = DB.ref(`gamedata/${mode}/${dbIdx}`).once('value').then(snap => {
       localCache[mode][dbIdx] = snap.val() || null;
       if ($(loaderId)) $(loaderId).classList.add('hidden');
-      delete activeFetches[key]; return localCache[mode][dbIdx];
+      delete activeFetches[key];
+      return localCache[mode][dbIdx];
     });
   }
   return activeFetches[key];
 }
 
-/* ═══════════════════════════════════════════
-   NUOVO FLUSSO MENU
-═══════════════════════════════════════════ */
-$('btnGoMode').addEventListener('click', () => {
+async function leaveRoom() {
+  if (room) {
+    if (isMaster && isSolo) {
+      await DB.ref('rooms/'+room).remove();
+    } else if (myId) {
+      await DB.ref('rooms/'+room+'/players/'+myId).remove();
+    }
+    if (roomOff) { roomOff(); roomOff = null; }
+  }
+  resetLocals(); room = null; isMaster = false; isSolo = false;
+  show('s-menu-mode');
+}
+
+// Collegamento pulsanti "Esci"
+$('btnLeaveWait').onclick = leaveRoom;
+$('btnLeaveLobbyM').onclick = leaveRoom;
+$('btnLeaveLobbyG').onclick = leaveRoom;
+$('btnLeaveResult').onclick = leaveRoom;
+
+/* ── FLUSSO MENU A STEP ── */
+$('btnNameNext').onclick = () => {
   initAudio();
   myName = $('iName').value.trim();
-  if (!myName) { $('menuNameErr').textContent = 'Inserisci il tuo nome.'; return; }
+  if(!myName) return $('menuNameErr').textContent = 'Inserisci il nome per continuare.';
   $('menuNameErr').textContent = '';
   show('s-menu-mode');
-});
+};
+$('btnBackToName').onclick = () => show('s-menu-name');
+$('btnBackToMode').onclick = () => show('s-menu-mode');
 
-// GIOCA DA SOLO
-$('btnGoSolo').addEventListener('click', async () => {
-  $('btnGoSolo').disabled = true;
-  isSolo = true;
-  isMaster = true;
+$('btnModeSolo').onclick = async () => {
+  $('btnModeSolo').disabled = true;
+  isSolo = true; isMaster = true;
   room = 'SOLO_' + genCode();
-  
   await DB.ref('rooms/'+room).set({ status:'lobby', masterId:myId, currentIndex:0, roundsTotal:5, players:{ [myId]:{ name:myName, score:0 } } });
-  DB.ref('rooms/'+room).onDisconnect().remove(); // Elimina tutta la stanza se è solo
-  
-  $('btnGoSolo').disabled = false;
+  DB.ref('rooms/'+room).onDisconnect().remove();
+  $('btnModeSolo').disabled = false;
   listenRoom();
-});
+};
 
-// CREA MULTIPLAYER
-$('btnGoCreate').addEventListener('click', async () => {
-  $('btnGoCreate').disabled = true;
+$('btnModeCreate').onclick = async () => {
+  $('btnModeCreate').disabled = true;
   isSolo = false; isMaster = true;
   let code, attempts = 0;
   do { code = genCode(); attempts++; } while ((await DB.ref('rooms/'+code).get()).exists() && attempts < 10);
   room = code;
   await DB.ref('rooms/'+room).set({ status:'waiting', masterId:myId, currentIndex:0, roundsTotal:5, players:{ [myId]:{ name:myName, score:0 } } });
   DB.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
-  
   $('wCode').textContent = room; show('s-wait'); listenRoom();
-  $('btnGoCreate').disabled = false;
-});
+  $('btnModeCreate').disabled = false;
+};
 
-// UNISCITI MULTIPLAYER
-$('btnGoJoin').addEventListener('click', () => { show('s-menu-code'); });
+$('btnModeJoin').onclick = () => show('s-menu-code');
 
-$('btnJoinConfirm').addEventListener('click', async () => {
+$('btnJoinConfirm').onclick = async () => {
   const code = $('iCode').value.trim().toUpperCase();
-  if (code.length !== 4) { $('menuCodeErr').textContent = 'Codice non valido.'; return; }
+  if (code.length !== 4) return $('menuCodeErr').textContent = 'Codice non valido.';
   $('menuCodeErr').textContent = ''; $('btnJoinConfirm').disabled = true;
-  
   const snap = await DB.ref('rooms/'+code).get();
   if (!snap.exists()) { $('menuCodeErr').textContent='Stanza non trovata.'; $('btnJoinConfirm').disabled=false; return; }
-  
   room = code; isMaster = false; isSolo = false;
   await DB.ref('rooms/'+room+'/players/'+myId).set({ name:myName, score:0 });
   DB.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
-  show('s-wait'); listenRoom();
-});
+  $('wCode').textContent = room; show('s-wait'); listenRoom();
+  $('btnJoinConfirm').disabled = false;
+};
 
-/* ═══════════════════════════════════════════
-   SALA D'ATTESA E LISTENER
-═══════════════════════════════════════════ */
 function listenRoom() {
   if (roomOff) roomOff();
   const ref = DB.ref('rooms/'+room);
-  const handler = ref.on('value', snap => { const d = snap.val(); if (d) handleUpdate(d); });
+  const handler = ref.on('value', snap => { 
+    const d = snap.val(); 
+    if (!d) {
+      if (!isMaster && room) leaveRoom(); // Host ha chiuso la stanza
+      return; 
+    }
+    handleUpdate(d); 
+  });
   roomOff = () => ref.off('value', handler);
 }
 
 function handleUpdate(data) {
-  const pids = Object.keys(data.players||{}).sort();
-  const me   = data.players[myId];
+  const players = data.players || {};
+  const pids = Object.keys(players).sort();
+  const me   = players[myId];
   const oppId = pids.find(id => id !== myId);
-  const opp  = oppId ? data.players[oppId] : null;
+  const opp  = oppId ? players[oppId] : null;
 
   if (data.qIdx)   qIdx   = data.qIdx;
   if (data.vfIdx)  vfIdx  = data.vfIdx;
   if (data.idkIdx) idkIdx = data.idkIdx;
   if (data.formIdx) formIdx = data.formIdx;
   if (data.carrIdx) carrIdx = data.carrIdx;
+  
   currentRoundsCount = data.roundsTotal || 5;
 
-  switch (data.status) {
-    case 'waiting':     
-        show('s-wait'); 
-        renderWaitingRoom(data.players, pids.length);
-        break;
-    case 'lobby':       renderLobby(me, opp);      break;
-    case 'playing':     renderQuiz(data, me, opp); break;
-    case 'carr_playing':renderCarr(data, me, opp); break;
-    case 'vf_playing':  renderVF(data, me, opp);   break;
-    case 'idk_playing': renderIDK(data, me, opp);  break;
-    case 'form_playing':renderForm(data, me, opp, oppId); break;
-    case 'finished':    resetLocals(); renderResult(me, opp); break;
-  }
-}
-
-function renderWaitingRoom(players, count) {
-    const list = $('wPlayersList'); list.innerHTML = '';
-    Object.keys(players).forEach(id => {
-        const d = document.createElement('div');
-        d.className = 'w-player-block' + (id === myId ? ' me' : '');
-        d.textContent = players[id].name;
-        list.appendChild(d);
+  // Aggiorna interfaccia Sala d'Attesa
+  if (data.status === 'waiting') {
+    show('s-wait');
+    const wCont = $('wPlayers'); wCont.innerHTML = '';
+    pids.forEach(id => {
+      const d = document.createElement('div');
+      d.style.cssText = 'background:rgba(255,255,255,0.1); padding:10px 15px; border-radius:10px; font-weight:800; border:1px solid rgba(255,255,255,0.2);';
+      if (id===myId) d.style.borderColor='var(--blue)';
+      d.textContent = players[id].name; wCont.appendChild(d);
     });
     
     if (isMaster) {
-        $('btnStartLobby').classList.remove('hidden');
-        $('wStatusText').textContent = "Aspetta altri giocatori o inizia!";
-        $('wSpinner').classList.add('hidden');
+      $('btnMasterGoLobby').classList.remove('hidden');
+      $('wText').textContent = "Aspetta altri giocatori o inizia!";
+      $('wSpinner').classList.add('hidden');
     } else {
-        $('btnStartLobby').classList.add('hidden');
-        $('wStatusText').textContent = "In attesa che l'host inizi la partita...";
-        $('wSpinner').classList.remove('hidden');
+      $('btnMasterGoLobby').classList.add('hidden');
+      $('wText').textContent = "In attesa dell'host...";
+      $('wSpinner').classList.remove('hidden');
     }
+  } else if (data.status === 'lobby') {
+    renderLobby(me, opp, pids);
+  } else {
+    switch (data.status) {
+      case 'playing':     renderQuiz(data, me, opp); break;
+      case 'carr_playing':renderCarr(data, me, opp); break;
+      case 'vf_playing':  renderVF(data, me, opp);   break;
+      case 'idk_playing': renderIDK(data, me, opp);  break;
+      case 'form_playing':renderForm(data, me, opp, oppId); break;
+      case 'finished':    resetLocals(); renderResult(me, opp); break;
+    }
+  }
 }
 
-$('btnStartLobby').addEventListener('click', () => {
-    if (isMaster) DB.ref('rooms/'+room).update({ status:'lobby' });
-});
+// Host decide di avviare la lobby dalla waiting room
+$('btnMasterGoLobby').onclick = () => {
+  if (isMaster) DB.ref('rooms/'+room).update({ status:'lobby' });
+};
 
-/* ═══════════════════════════════════════════
-   LOBBY
-═══════════════════════════════════════════ */
-function renderLobby(me, opp) {
+function renderLobby(me, opp, pids) {
   if (isMaster) {
     DB.ref('rooms/'+room+'/players').once('value', snap => {
       const ps = snap.val()||{};
@@ -650,18 +630,18 @@ function renderLobby(me, opp) {
     });
   }
   resetLocals();
-  $('lmCode').textContent = isSolo ? 'SOLO' : room;
-  $('lgCode').textContent = room;
-  const cont = $('lmPlayers'); cont.innerHTML = '';
+  $('lmCode').textContent = $('lgCode').textContent = isSolo ? 'SOLO' : room;
   
-  const pList = [{ n:me?.name||'Tu', cls:'me' }];
-  if (!isSolo && opp) pList.push({ n:opp.name, cls:'opp' });
-
-  pList.forEach(p => {
+  const cont = $('lmPlayers'); cont.innerHTML = '';
+  const plist = [{ n:me?.name||'Tu', cls:'me' }];
+  if (!isSolo && opp) plist.push({ n:opp.name, cls:'opp' });
+  
+  plist.forEach(p => {
     const d = document.createElement('div'); d.style.cssText = 'flex:1;padding:10px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;';
     d.style.background = p.cls==='me' ? 'rgba(0,229,255,.1)' : 'rgba(57,255,143,.1)'; d.style.color = p.cls==='me' ? 'var(--blue)' : 'var(--green)';
     d.textContent = p.n; cont.appendChild(d);
   });
+  
   show(isMaster ? 's-lobby-master' : 's-lobby-guest');
 }
 
@@ -672,13 +652,15 @@ window.setRounds = function(n) {
 
 async function startGame(mode, idxKey, btnId) {
   if (!isMaster) return;
-  const btn = $(btnId); const ogContent = btn.innerHTML;
+  const btn = $(btnId);
+  const ogContent = btn.innerHTML;
   btn.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;"><div class="spinner" style="width:24px;height:24px;margin:0;"></div></div>';
   btn.style.pointerEvents = 'none';
 
   const dbMode = mode === 'playing' ? 'quiz' : mode.split('_')[0];
   const snap = await DB.ref('gamedata/counts/' + dbMode).once('value');
   const total = snap.val() || 5; 
+  
   const actualRounds = Math.min(currentRoundsCount, total);
 
   DB.ref('rooms/'+room).update({
@@ -686,6 +668,7 @@ async function startGame(mode, idxKey, btnId) {
     [idxKey]: shuffle(actualRounds, total),
     startedAt: SV, roomAns: null, scored: null, formAnswers: null, formFinished: null
   });
+
   btn.innerHTML = ogContent; btn.style.pointerEvents = 'auto';
 }
 
@@ -695,50 +678,49 @@ $('pickVF').onclick   = () => startGame('vf_playing', 'vfIdx', 'pickVF');
 $('pickIDK').onclick  = () => startGame('idk_playing', 'idkIdx', 'pickIDK');
 $('pickForm').onclick = () => startGame('form_playing', 'formIdx', 'pickForm');
 
-/* ═══════════════════════════════════════════
-   TIMER GLOBALE E AUTO-ADVANCE
-═══════════════════════════════════════════ */
 function startTick(startedAt, duration, fillId, lblId, onEnd) {
-  clearInterval(tickId); let lastSec = -1;
+  clearInterval(tickId);
+  let lastSec = -1;
   const tick = () => {
     const rem = Math.max(duration - (now()-startedAt)/1000, 0);
     const lbl=$(lblId), fill=$(fillId);
+    
     const currentSec = Math.ceil(rem);
     if (currentSec <= 3 && currentSec > 0 && currentSec !== lastSec) { sfx.tick(); lastSec = currentSec; }
-    if (lbl) lbl.textContent = currentSec+'s';
+
+    if (lbl)  lbl.textContent = currentSec+'s';
     if (fill) { fill.style.width=(rem/duration*100)+'%'; fill.classList.toggle('danger', rem<=3); }
     if (rem <= 0) { clearInterval(tickId); onEnd?.(); }
   };
   tick(); tickId = setInterval(tick, 100);
 }
 
+// Avanzamento Master condiviso (Quiz e Carriera)
+let quizAdvancing = false;
 function masterCheckQuiz(data, idx, modeStr, durationLimit) {
-  if (!isMaster || advanceScheduledFor === idx) return;
+  if (quizAdvancing) return;
   const players = data.players||{}, ids = Object.keys(players);
-  // Se isSolo, non aspettiamo 2 giocatori, basta 1
+  // Se isSolo, aspettiamo solo 1 risposta, altrimenti 2
   const targetCount = isSolo ? 1 : 2;
   if (!isSolo && ids.length < 2) return;
   
   const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
   const timeUp  = data.startedAt && (now() > data.startedAt + durationLimit*1000 + 400);
-  
   if (allDone || timeUp) {
-    advanceScheduledFor = idx; clearTimeout(advanceTimer);
-    advanceTimer = setTimeout(() => { nextRound(modeStr, idx, currentRoundsCount); }, allDone ? 1200 : 300);
+    quizAdvancing = true; clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(() => { quizAdvancing=false; nextRound(modeStr, idx, currentRoundsCount); }, allDone ? 1200 : 300);
   }
 }
 
-/* ═══════════════════════════════════════════
-   GIOCHI LAZY LOADING
-═══════════════════════════════════════════ */
-
-/* ── QUIZ ── */
 async function renderQuiz(data, me, opp) {
   show('s-quiz');
   $('qMeName').textContent = me?.name||'Tu'; $('qMeScore').textContent = me?.score||0;
   $('qOppName').textContent = opp?.name||'...'; $('qOppScore').textContent = opp?.score||0;
-  const idx = data.currentIndex || 0; $('qProg').textContent = (idx+1)+' / '+currentRoundsCount;
+
+  const idx = data.currentIndex || 0;
+  $('qProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = qIdx[idx] ?? idx;
+
   const q = await fetchGameData('quiz', dbIdx, 'ld-quiz');
   if (!q || data.currentIndex !== idx || data.status !== 'playing') return;
 
@@ -750,182 +732,383 @@ async function renderQuiz(data, me, opp) {
     startTick(data.startedAt || now(), QUIZ_TIME, 'qTimerFill', 'qTimerLbl', () => {
       if (!myAnswered) { myAnswered = true; revealQuiz(idx, -1); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:-1, ok:false }); }
     });
-  } else if (myA && !myAnswered) { myAnswered = true; revealQuiz(idx, myA.sel); }
-  masterCheckQuiz(data, idx, 'playing', QUIZ_TIME);
+  } else if (myA && !myAnswered) {
+    myAnswered = true; revealQuiz(idx, myA.sel);
+  }
+  if (isMaster) masterCheckQuiz(data, idx, 'playing', QUIZ_TIME);
 }
 
 function loadQuiz(idx, existing) {
-  const q = localCache.quiz[qIdx[idx] ?? idx]; $('qCard').classList.remove('fade-in'); void $('qCard').offsetWidth; $('qCard').classList.add('fade-in');
+  const dbIdx = qIdx[idx] ?? idx; const q = localCache.quiz[dbIdx];
+  const card = $('qCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
   $('qText').textContent = q.q; $('qOpts').innerHTML = '';
-  q.o.forEach((opt, oi) => { const b = document.createElement('button'); b.className='opt'; b.textContent=opt; b.onclick = () => submitQuiz(idx, oi); $('qOpts').appendChild(b); });
+  q.o.forEach((opt, oi) => {
+    const b = document.createElement('button'); b.className='opt'; b.textContent=opt;
+    b.onclick = () => submitQuiz(idx, oi); $('qOpts').appendChild(b);
+  });
   if (existing) revealQuiz(idx, existing.sel);
 }
+
 function submitQuiz(idx, sel) {
   if (myAnswered) return; myAnswered = true;
-  const ok = sel === localCache.quiz[qIdx[idx] ?? idx].c;
+  const dbIdx = qIdx[idx] ?? idx; const ok = sel === localCache.quiz[dbIdx].c;
   if(ok) sfx.correct(); else sfx.wrong();
-  revealQuiz(idx, sel); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
+  revealQuiz(idx, sel);
+  DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
   if (ok && QUIZ_PTS_WIN > 0) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+QUIZ_PTS_WIN);
 }
+
 function revealQuiz(idx, sel) {
-  const correct = localCache.quiz[qIdx[idx] ?? idx].c;
-  $('qOpts').querySelectorAll('.opt').forEach((b,i) => { b.disabled = true; if (i===correct) b.classList.add('correct'); else if (i===sel) b.classList.add('wrong'); });
+  const dbIdx = qIdx[idx] ?? idx; const correct = localCache.quiz[dbIdx].c;
+  $('qOpts').querySelectorAll('.opt').forEach((b,i) => {
+    b.disabled = true;
+    if (i===correct) b.classList.add('correct'); else if (i===sel) b.classList.add('wrong');
+  });
 }
 
-/* ── CARRIERA ── */
 async function renderCarr(data, me, opp) {
   show('s-carr');
   $('carrMeName').textContent = me?.name||'Tu'; $('carrMeScore').textContent = me?.score||0;
   $('carrOppName').textContent = opp?.name||'...'; $('carrOppScore').textContent = opp?.score||0;
-  const idx = data.currentIndex || 0; $('carrProg').textContent = (idx+1)+' / '+currentRoundsCount;
+
+  const idx = data.currentIndex || 0;
+  $('carrProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = carrIdx[idx] ?? idx;
+
   const q = await fetchGameData('carr', dbIdx, 'ld-carr');
   if (!q || data.currentIndex !== idx || data.status !== 'carr_playing') return;
 
-  const myA = me?.answers?.[idx], oppA = opp?.answers?.[idx];
-  $('carrMeSt').textContent = myA ? '✓ Risposto' : 'Scegli…'; $('carrOppSt').textContent = oppA ? '✓ Risposto' : '...';
+  const ans = data.roomAns?.[idx] ?? null;
+  const timeIsUp = (now() > (data.startedAt + CARR_TIME*1000));
+  let ms = me?.score || 0; let os = opp?.score || 0;
+
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
+    if (ans.pid === myId) { if(ok) ms += CARR_PTS_WIN; else os += CARR_PTS_LOSE; } else { if(ok) os += CARR_PTS_WIN; else ms += CARR_PTS_LOSE; }
+  }
+  $('carrMeScore').textContent = ms; $('carrOppScore').textContent = os;
 
   if (idx !== lastIdx) {
-    lastIdx = idx; myAnswered = !!myA; $('carrInp').value = ''; $('carrFeedback').textContent = ''; $('carrInp').disabled = $('carrBtn').disabled = false; $('carrAuto').style.display = 'none'; loadCarr(idx);
+    lastIdx = idx; vfLocked = false;
+    $('carrInp').value = ''; $('carrFeedback').textContent = '';
+    $('carrInp').disabled = $('carrBtn').disabled = false;
+    $('carrAuto').style.display = 'none';
+    loadCarr(idx);
     startTick(data.startedAt || now(), CARR_TIME, 'carrTimerFill', null, () => {
-      if (!myAnswered) { myAnswered = true; revealCarr(idx, null); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:null, ok:false }); }
+      // Affidato al check qui sotto
     });
-  } else if (myA && !myAnswered) { myAnswered = true; revealCarr(idx, myA.sel); }
-  masterCheckQuiz(data, idx, 'carr_playing', CARR_TIME);
+  }
+
+  // Risposta o Timeout
+  if (ans || timeIsUp) {
+    $('carrInp').disabled = $('carrBtn').disabled = true;
+    $('carrAuto').style.display = 'none';
+    clearInterval(tickId);
+    
+    if (ans) {
+      const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
+      const first = ans.pid === myId;
+      if (first) {
+        if(ok) sfx.correct(); else sfx.wrong();
+        $('carrFeedback').textContent = ok ? `Esatto! È ${q.p}! +${CARR_PTS_WIN} pt 🎉` : `Sbagliato! Era ${q.p}. +${CARR_PTS_LOSE} pt all'avversario`;
+        $('carrFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+      } else {
+        if(!ok) sfx.correct(); else sfx.wrong();
+        const oppName = opp?.name || 'L\'avversario';
+        $('carrFeedback').textContent = ok ? `${oppName} ha indovinato: ${q.p}! +${CARR_PTS_WIN} pt` : `${oppName} ha sbagliato (era ${q.p})! +${CARR_PTS_LOSE} pt a te`;
+        $('carrFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
+      }
+    } else {
+      $('carrFeedback').textContent = `Tempo scaduto! Era: ${q.p}`;
+      $('carrFeedback').style.color = 'var(--yellow)';
+    }
+
+    if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
+      advanceScheduledFor = idx;
+      if (ans) {
+        const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
+        const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
+        const winnerId = ok ? ans.pid : loserId;
+        let updates = {};
+        if (ok) { updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + CARR_PTS_WIN; }
+        else if (loserId) { updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + CARR_PTS_LOSE; }
+        updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
+      } else {
+        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+      }
+      clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('carr_playing', idx, currentRoundsCount), 3000);
+    }
+  }
 }
 
 function loadCarr(idx) {
-  const q = localCache.carr[carrIdx[idx] ?? idx]; $('carrCard').classList.remove('fade-in'); void $('carrCard').offsetWidth; $('carrCard').classList.add('fade-in');
-  const tC = $('carrTeams'); tC.innerHTML = '';
-  q.t.forEach((team, i) => { const tD = document.createElement('div'); tD.className = 'carr-team'; tD.textContent = team; tC.appendChild(tD); if(i < q.t.length - 1) { const aD = document.createElement('div'); aD.className = 'carr-arrow'; aD.innerHTML = '➔'; tC.appendChild(aD); } });
+  const dbIdx = carrIdx[idx] ?? idx; const q = localCache.carr[dbIdx];
+  const card = $('carrCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
+  
+  const teamsContainer = $('carrTeams'); teamsContainer.innerHTML = '';
+  q.t.forEach((team, i) => {
+    const tDiv = document.createElement('div'); tDiv.className = 'carr-team'; tDiv.textContent = team;
+    teamsContainer.appendChild(tDiv);
+    if(i < q.t.length - 1) { const arrDiv = document.createElement('div'); arrDiv.className = 'carr-arrow'; arrDiv.innerHTML = '➔'; teamsContainer.appendChild(arrDiv); }
+  });
 }
 
 $('carrInp').oninput = function() {
-  const v = this.value.toLowerCase(), ac=$('carrAuto'); ac.innerHTML=''; if (!v) { ac.style.display='none'; return; }
+  const v = this.value.toLowerCase(), ac=$('carrAuto'); ac.innerHTML='';
+  if (!v) { ac.style.display='none'; return; }
   const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
-  if (matches.length) { ac.style.display='block'; matches.forEach(n => { const d = document.createElement('div'); d.className='carr-ac-item'; d.textContent=n; d.onclick = () => { $('carrInp').value=n; ac.style.display='none'; }; ac.appendChild(d); }); } else { ac.style.display='none'; }
+  if (matches.length) {
+    ac.style.display='block';
+    matches.forEach(n => {
+      const d = document.createElement('div'); d.className='carr-ac-item'; d.textContent=n;
+      d.onclick = () => { $('carrInp').value=n; ac.style.display='none'; }; ac.appendChild(d);
+    });
+  } else { ac.style.display='none'; }
 };
-$('carrBtn').onclick = () => {
-  if (myAnswered) return; myAnswered = true;
-  const val = $('carrInp').value.trim(); const dbIdx = carrIdx[lastIdx] ?? lastIdx; const ok = val.toLowerCase() === localCache.carr[dbIdx].p.toLowerCase();
-  if(ok) sfx.correct(); else sfx.wrong(); revealCarr(lastIdx, val);
-  DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+lastIdx).set({ sel:val, ok });
-  if (ok) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+CARR_PTS_WIN);
-};
-function revealCarr(idx, sel) {
-  $('carrInp').disabled = $('carrBtn').disabled = true; $('carrAuto').style.display = 'none';
-  const q = localCache.carr[carrIdx[idx] ?? idx];
-  const ok = sel && sel.toLowerCase() === q.p.toLowerCase();
-  $('carrFeedback').textContent = sel ? (ok ? `Esatto! È ${q.p}` : `Sbagliato! Era ${q.p}`) : `Tempo scaduto! Era ${q.p}`;
-  $('carrFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
-}
 
-/* ── VERO O FALSO ── */
+$('carrBtn').onclick = () => {
+  const val = $('carrInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
+  DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val } : undefined);
+};
+
 async function renderVF(data, me, opp) {
   show('s-vf');
   $('vfMeName').textContent = me?.name||'Tu'; $('vfOppName').textContent = opp?.name||'...';
-  const idx = data.currentIndex || 0; $('vfProg').textContent = (idx+1)+' / '+currentRoundsCount;
+  const idx = data.currentIndex || 0;
+  $('vfProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = vfIdx[idx] ?? idx;
+
   const q = await fetchGameData('vf', dbIdx, 'ld-vf');
   if (!q || data.currentIndex !== idx || data.status !== 'vf_playing') return;
 
   const ans = data.roomAns?.[idx] ?? null;
+  const timeIsUp = (now() > (data.startedAt + VF_TIME*1000));
   let ms = me?.score || 0; let os = opp?.score || 0;
-  if (ans && !data.scored?.[idx]) { const ok = ans.v === q.a; if (ans.pid === myId) { if (ok) ms+=VF_PTS_WIN; else os+=VF_PTS_LOSE; } else { if (ok) os+=VF_PTS_WIN; else ms+=VF_PTS_LOSE; } }
+  
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v === q.a;
+    if (ans.pid === myId) { if (ok) ms+=VF_PTS_WIN; else os+=VF_PTS_LOSE; } else { if (ok) os+=VF_PTS_WIN; else ms+=VF_PTS_LOSE; }
+  }
   $('vfMeScore').textContent = ms; $('vfOppScore').textContent = os;
 
   if (idx !== lastIdx) {
-    lastIdx = idx; vfLocked = false; $('vfCard').classList.remove('fade-in'); void $('vfCard').offsetWidth; $('vfCard').classList.add('fade-in');
-    $('vfText').textContent = q.s; $('vfFeedback').textContent = ''; $('vfV').disabled = $('vfF').disabled = false; $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
-    startTick(data.startedAt || now(), VF_TIME, null, null, () => { if (!ans && isMaster && advanceScheduledFor !== idx) { advanceScheduledFor = idx; clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 1000); } });
+    lastIdx = idx; vfLocked = false;
+    const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
+    $('vfText').textContent = q.s; $('vfFeedback').textContent = ''; $('vfV').disabled = $('vfF').disabled = false;
+    $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
+
+    startTick(data.startedAt || now(), VF_TIME, null, null, () => {});
   }
 
-  if (ans) {
-    $('vfV').disabled = $('vfF').disabled = true; clearInterval(tickId);
-    const ok = ans.v === q.a; const first = ans.pid === myId;
-    (ans.v ? $('vfV') : $('vfF')).classList.add('hit');
-    if (first) { if(ok) sfx.correct(); else sfx.wrong(); $('vfFeedback').textContent = ok ? `⚡ Esatto! +${VF_PTS_WIN} punti 🎉` : `❌ Sbagliato! +${VF_PTS_LOSE} punti all'avversario`; $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)'; } 
-    else { if(!ok) sfx.correct(); else sfx.wrong(); const oppName = opp?.name || 'L\'avversario'; $('vfFeedback').textContent = ok ? `⚡ ${oppName} ha risposto prima!` : `✅ ${oppName} ha sbagliato! +${VF_PTS_LOSE} pt a te`; $('vfFeedback').style.color = ok ? 'var(--red)' : 'var(--green)'; }
+  if (ans || timeIsUp) {
+    $('vfV').disabled = $('vfF').disabled = true;
+    clearInterval(tickId);
+
+    if (ans) {
+      const ok = ans.v === q.a; const first = ans.pid === myId;
+      const pressedBtn = ans.v ? $('vfV') : $('vfF'); pressedBtn.classList.add('hit');
+
+      if (first) {
+        if(ok) sfx.correct(); else sfx.wrong();
+        $('vfFeedback').textContent = ok ? `⚡ Esatto! +${VF_PTS_WIN} punti 🎉` : `❌ Sbagliato! +${VF_PTS_LOSE} punti all'avversario`;
+        $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+      } else {
+        if(!ok) sfx.correct(); else sfx.wrong();
+        const oppName = opp?.name || 'L\'avversario';
+        $('vfFeedback').textContent = ok ? `⚡ ${oppName} ha risposto prima!` : `✅ ${oppName} ha sbagliato! +${VF_PTS_LOSE} pt a te`;
+        $('vfFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
+      }
+    } else {
+       $('vfFeedback').textContent = `Tempo scaduto! La risposta era ${q.a ? 'VERO' : 'FALSO'}`;
+       $('vfFeedback').style.color = 'var(--yellow)';
+    }
 
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
-      advanceScheduledFor = idx; const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid); let updates = {};
-      if (ok) { updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + VF_PTS_WIN; } else if (loserId) { updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + VF_PTS_LOSE; }
-      updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
+      advanceScheduledFor = idx; 
+      if (ans) {
+        const ok = ans.v === q.a;
+        const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
+        let updates = {};
+        if (ok) { updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + VF_PTS_WIN; }
+        else if (loserId) { updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + VF_PTS_LOSE; }
+        updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
+      } else {
+        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+      }
       clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 2000);
     }
   }
 }
+
 $('vfV').onclick = () => { if (vfLocked) return; vfLocked = true; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? { pid:myId, v:true } : undefined); };
 $('vfF').onclick = () => { if (vfLocked) return; vfLocked = true; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? { pid:myId, v:false } : undefined); };
 
-/* ── IDENTIKIT ── */
 async function renderIDK(data, me, opp) {
   show('s-idk');
   $('idkMeName').textContent = me?.name||'Tu'; $('idkOppName').textContent = opp?.name||'...';
-  const idx = data.currentIndex || 0; $('idkProg').textContent = (idx+1)+' / '+currentRoundsCount;
+  const idx = data.currentIndex || 0;
+  $('idkProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = idkIdx[idx] ?? idx;
+
   const q = await fetchGameData('idk', dbIdx, 'ld-idk');
   if (!q || data.currentIndex !== idx || data.status !== 'idk_playing') return;
 
   const ans = data.roomAns?.[idx] ?? null;
+  const timeIsUp = (now() > (data.startedAt + IDK_TIME*1000));
   let ms = me?.score || 0; let os = opp?.score || 0;
-  if (ans && !data.scored?.[idx]) { const ok = ans.v.toLowerCase() === q.n.toLowerCase(); if (ans.pid === myId) { if(ok) ms += ans.pts; else os += ans.pts; } else { if(ok) os += ans.pts; else ms += ans.pts; } }
+  if (ans && !data.scored?.[idx]) {
+    const ok = ans.v.toLowerCase() === q.n.toLowerCase();
+    if (ans.pid === myId) { if(ok) ms += ans.pts; else os += ans.pts; } else { if(ok) os += ans.pts; else ms += ans.pts; }
+  }
   $('idkMeScore').textContent = ms; $('idkOppScore').textContent = os;
 
   if (idx !== lastIdx) {
-    lastIdx = idx; vfLocked = false; idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
+    lastIdx = idx; vfLocked = false;
+    idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
     $('idkClues').innerHTML = ''; $('idkInp').value = ''; $('idkFeedback').textContent = '';
     $('idkInp').disabled = $('idkBtn').disabled = false; $('idkAuto').style.display = 'none';
 
     const base = data.startedAt || now();
-    q.c.forEach((clue, i) => { const delay = Math.max(0, base + i*(IDK_TIME/4)*1000 - now()); idkClueTimers.push(setTimeout(() => { if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1); else showClue(clue, IDK_POINTS[i] ?? 1); }, delay)); });
-    startTick(data.startedAt || now(), IDK_TIME, null, null, () => { if (!ans && isMaster && advanceScheduledFor !== idx) { advanceScheduledFor = idx; clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 1000); } });
+    q.c.forEach((clue, i) => {
+      const delay = Math.max(0, base + i*(IDK_TIME/4)*1000 - now());
+      idkClueTimers.push(setTimeout(() => { if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1); else showClue(clue, IDK_POINTS[i] ?? 1); }, delay));
+    });
+
+    startTick(data.startedAt || now(), IDK_TIME, null, null, () => {});
   }
 
-  if (ans) {
-    $('idkInp').disabled = $('idkBtn').disabled = true; idkClueTimers.forEach(clearTimeout); idkClueTimers = []; $('idkAuto').style.display = 'none'; clearInterval(tickId);
-    const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase(); const first = ans.pid === myId;
-    if (first) { if(ok) sfx.correct(); else sfx.wrong(); $('idkFeedback').textContent = ok ? `Esatto! +${ans.pts} pt 🎉` : `Sbagliato! +${ans.pts} pt all'avversario`; $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)'; } 
-    else { if(!ok) sfx.correct(); else sfx.wrong(); const oppName = opp?.name || 'L\'avversario'; $('idkFeedback').textContent = ok ? `${oppName} ha indovinato! +${ans.pts} pt` : `${oppName} ha sbagliato! +${ans.pts} pt a te`; $('idkFeedback').style.color = ok ? 'var(--red)' : 'var(--green)'; }
+  if (ans || timeIsUp) {
+    $('idkInp').disabled = $('idkBtn').disabled = true;
+    idkClueTimers.forEach(clearTimeout); idkClueTimers = []; $('idkAuto').style.display = 'none';
+    clearInterval(tickId);
+
+    if (ans) {
+      const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase(); const first = ans.pid === myId;
+      if (first) {
+        if(ok) sfx.correct(); else sfx.wrong();
+        $('idkFeedback').textContent = ok ? `Esatto! +${ans.pts} pt 🎉` : `Sbagliato! +${ans.pts} pt all'avversario`;
+        $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+      } else {
+        if(!ok) sfx.correct(); else sfx.wrong();
+        const oppName = opp?.name || 'L\'avversario';
+        $('idkFeedback').textContent = ok ? `${oppName} ha indovinato! +${ans.pts} pt` : `${oppName} ha sbagliato! +${ans.pts} pt a te`;
+        $('idkFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
+      }
+    } else {
+      $('idkFeedback').textContent = `Tempo scaduto! Era: ${q.n}`;
+      $('idkFeedback').style.color = 'var(--yellow)';
+    }
 
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
-      advanceScheduledFor = idx; const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid); const winnerId = ok ? ans.pid : loserId; let updates = {};
-      if (winnerId) updates[`players/${winnerId}/score`] = (data.players[winnerId]?.score || 0) + ans.pts; updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
+      advanceScheduledFor = idx;
+      if (ans) {
+        const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase();
+        const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
+        const winnerId = ok ? ans.pid : loserId;
+        let updates = {};
+        if (winnerId) updates[`players/${winnerId}/score`] = (data.players[winnerId]?.score || 0) + ans.pts;
+        updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
+      } else {
+        DB.ref('rooms/' + room + '/scored/' + idx).set(true);
+      }
       clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 2500);
     }
   }
 }
-function showClue(text, pts) { const d = document.createElement('div'); d.className='idk-clue'; d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`; $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight; }
-$('idkInp').oninput = function() { const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML=''; if (!v) { ac.style.display='none'; return; } const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v)); if (matches.length) { ac.style.display='block'; matches.forEach(n => { const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n; d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; }; ac.appendChild(d); }); } else { ac.style.display='none'; } };
-$('idkBtn').onclick = () => { const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true; const shown = $('idkClues').children.length; const pts = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val, pts } : undefined); };
 
-/* ── FORMAZIONE ── */
+function showClue(text, pts) {
+  const d = document.createElement('div'); d.className='idk-clue';
+  d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`;
+  $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight;
+}
+
+$('idkInp').oninput = function() {
+  const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML='';
+  if (!v) { ac.style.display='none'; return; }
+  const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
+  if (matches.length) {
+    ac.style.display='block';
+    matches.forEach(n => {
+      const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n;
+      d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; }; ac.appendChild(d);
+    });
+  } else { ac.style.display='none'; }
+};
+
+$('idkBtn').onclick = () => {
+  const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
+  const shown = $('idkClues').children.length; const pts = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1;
+  DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val, pts } : undefined);
+};
+
 async function renderForm(data, me, opp, oppId) {
   show('s-form');
   $('formMeName').textContent = me?.name||'Tu'; $('formMeScore').textContent = me?.score||0;
   $('formOppName').textContent = opp?.name||'...'; $('formOppScore').textContent = opp?.score||0;
-  const idx = data.currentIndex || 0; $('formProg').textContent = (idx+1)+' / '+currentRoundsCount;
+
+  const idx = data.currentIndex || 0;
+  $('formProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = formIdx[idx] ?? idx;
+
   const q = await fetchGameData('form', dbIdx, 'ld-form');
   if (!q || data.currentIndex !== idx || data.status !== 'form_playing') return;
 
   $('formMeSt').textContent = `${data.formAnswers?.[idx]?.[myId]?.count || 0}/11`;
-  $('formOppSt').textContent = oppId ? `${data.formAnswers?.[idx]?.[oppId]?.count || 0}/11` : '';
+  $('formOppSt').textContent = `${data.formAnswers?.[idx]?.[oppId]?.count || 0}/11`;
 
   if (idx !== lastIdx) {
     lastIdx = idx; formLocalFound.clear(); selectedBenchPlayer = null; buildFormUI(q, idx);
-    startTick(data.startedAt || now(), FORM_TIME, 'formTimerFill', null, () => { if (isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx); });
+    startTick(data.startedAt || now(), FORM_TIME, 'formTimerFill', null, () => {
+      if (isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx);
+    });
   }
+
   if (data.formFinished?.[idx] && isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx);
 }
-function triggerFormAdvance(data, idx) { advanceScheduledFor = idx; clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('form_playing', idx, currentRoundsCount), 2000); }
-function buildFormUI(q, idx) { $('formTitle').textContent = q.title; const pitch = $('formPitch'); pitch.innerHTML = ''; let playerIndex = 0; q.layout.forEach(rowCounts => { const rowDiv = document.createElement('div'); rowDiv.className = 'form-row'; for(let i=0; i<rowCounts[0]; i++) { const expectedName = q.team[playerIndex]; const slot = document.createElement('div'); slot.className = 'form-slot'; slot.dataset.name = expectedName; slot.textContent = '?'; slot.onclick = () => handleSlotClick(slot, expectedName, idx); rowDiv.appendChild(slot); playerIndex++; } pitch.appendChild(rowDiv); }); const bench = $('formBench'); bench.innerHTML = ''; [...q.bench].sort(() => Math.random() - 0.5).forEach(name => { const btn = document.createElement('button'); btn.className = 'bench-btn'; btn.textContent = name; btn.onclick = () => handleBenchClick(btn, name); bench.appendChild(btn); }); }
-function handleBenchClick(btn, name) { if (formLocalFound.has(name)) return; document.querySelectorAll('.bench-btn').forEach(b => b.classList.remove('selected', 'error')); if (selectedBenchPlayer?.name === name) { selectedBenchPlayer = null; } else { selectedBenchPlayer = { btn, name }; btn.classList.add('selected'); } }
-function handleSlotClick(slot, expectedName, idx) { if (!selectedBenchPlayer || formLocalFound.has(expectedName)) return; if (selectedBenchPlayer.name === expectedName) { sfx.correct(); formLocalFound.add(expectedName); slot.classList.add('filled'); slot.textContent = expectedName; selectedBenchPlayer.btn.classList.add('hidden'); selectedBenchPlayer.btn.classList.remove('selected'); selectedBenchPlayer = null; DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + FORM_PTS_PER_P); DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => { const newCount = (c||0) + 1; if (newCount === 11) DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId); return newCount; }); } else { sfx.wrong(); selectedBenchPlayer.btn.classList.add('error'); const benchBtnRef = selectedBenchPlayer.btn; setTimeout(() => { benchBtnRef.classList.remove('error', 'selected'); }, 400); selectedBenchPlayer = null; } }
 
-/* ═══════════════════════════════════════════
-   AVANZAMENTO & RISULTATO
-═══════════════════════════════════════════ */
+function triggerFormAdvance(data, idx) {
+  advanceScheduledFor = idx; clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(() => nextRound('form_playing', idx, currentRoundsCount), 2000);
+}
+
+function buildFormUI(q, idx) {
+  $('formTitle').textContent = q.title; const pitch = $('formPitch'); pitch.innerHTML = '';
+  let playerIndex = 0;
+  q.layout.forEach(rowCounts => {
+    const rowDiv = document.createElement('div'); rowDiv.className = 'form-row';
+    for(let i=0; i<rowCounts[0]; i++) {
+      const expectedName = q.team[playerIndex]; const slot = document.createElement('div'); slot.className = 'form-slot'; slot.dataset.name = expectedName; slot.textContent = '?';
+      slot.onclick = () => handleSlotClick(slot, expectedName, idx); rowDiv.appendChild(slot); playerIndex++;
+    }
+    pitch.appendChild(rowDiv);
+  });
+  const bench = $('formBench'); bench.innerHTML = '';
+  [...q.bench].sort(() => Math.random() - 0.5).forEach(name => {
+    const btn = document.createElement('button'); btn.className = 'bench-btn'; btn.textContent = name;
+    btn.onclick = () => handleBenchClick(btn, name); bench.appendChild(btn);
+  });
+}
+
+function handleBenchClick(btn, name) {
+  if (formLocalFound.has(name)) return;
+  document.querySelectorAll('.bench-btn').forEach(b => b.classList.remove('selected', 'error'));
+  if (selectedBenchPlayer?.name === name) { selectedBenchPlayer = null; } else { selectedBenchPlayer = { btn, name }; btn.classList.add('selected'); }
+}
+function handleSlotClick(slot, expectedName, idx) {
+  if (!selectedBenchPlayer || formLocalFound.has(expectedName)) return;
+  if (selectedBenchPlayer.name === expectedName) {
+    sfx.correct(); 
+    formLocalFound.add(expectedName); slot.classList.add('filled'); slot.textContent = expectedName;
+    selectedBenchPlayer.btn.classList.add('hidden'); selectedBenchPlayer.btn.classList.remove('selected'); selectedBenchPlayer = null;
+    DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + FORM_PTS_PER_P);
+    DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => { const newCount = (c||0) + 1; if (newCount === 11) DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId); return newCount; });
+  } else {
+    sfx.wrong();
+    selectedBenchPlayer.btn.classList.add('error'); const benchBtnRef = selectedBenchPlayer.btn;
+    setTimeout(() => { benchBtnRef.classList.remove('error', 'selected'); }, 400); selectedBenchPlayer = null;
+  }
+}
+
 function nextRound(mode, idx, max) {
   if (idx+1 >= max) { DB.ref('rooms/'+room).update({ status:'finished' }); } 
   else { DB.ref('rooms/'+room).update({ currentIndex: idx+1, startedAt: SV, roomAns: null, scored: null, formAnswers: null, formFinished: null }); }
@@ -944,17 +1127,21 @@ function renderResult(me, opp) {
     else if (ms<os) { $('rMedal').textContent='😔'; $('rVerdict').textContent='Hai perso. Rivincita?'; $('rVerdict').className='verdict lose'; }
     else { $('rMedal').textContent='🤝'; $('rVerdict').textContent='Pareggio!'; $('rVerdict').className='verdict draw'; }
   }
+
+  // Gestione Bottoni Gioca Ancora
+  if (isMaster) {
+    $('btnPlayAgain').classList.remove('hidden');
+    $('guestWaitMsg').classList.add('hidden');
+    $('btnPlayAgain').textContent = isSolo ? '🔄 Gioca Ancora' : '🔄 Rigioca (Scegli gioco)';
+  } else {
+    $('btnPlayAgain').classList.add('hidden');
+    $('guestWaitMsg').classList.remove('hidden');
+  }
 }
 
-$('btnLobby').onclick = () => { 
-  if (isMaster) {
-    if (isSolo) {
-       // Se è in solo e finisce, cancelliamo per non inquinare il DB o resettiamo. Meglio ricaricare la pagina o tornare al menu principale
-       window.location.reload(); 
-    } else {
-       DB.ref('rooms/'+room).update({ status:'lobby', scored:null, roomAns:null, startedAt:null, formAnswers:null, formFinished:null }); 
-    }
-  }
+// Rigioca master
+$('btnPlayAgain').onclick = () => {
+  if (isMaster) DB.ref('rooms/'+room).update({ status:'lobby', scored:null, roomAns:null, startedAt:null, formAnswers:null, formFinished:null });
 };
 </script>
 </body>
