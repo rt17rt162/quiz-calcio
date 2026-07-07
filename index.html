@@ -46,8 +46,8 @@ body {
 .logo { font-size: 14px; font-weight: 900; letter-spacing: .5px; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .logo em { font-style: normal; -webkit-text-fill-color: initial; }
 .pill { font-size: 12px; font-weight: 700; color: var(--muted); background: rgba(255,255,255,.06); padding: 5px 12px; border-radius: 99px; }
-.label-xs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
-.title-lg { font-size: clamp(22px, 7vw, 30px); font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0; }
+.label-xs { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); text-align: center; margin-bottom: 6px;}
+.title-lg { font-size: clamp(22px, 7vw, 30px); font-weight: 900; background: linear-gradient(90deg, var(--blue), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 0 0 32px 0; text-align: center;}
 
 /* ─── INPUTS & BUTTONS ─── */
 .field { width: 100%; margin-bottom: 14px; }
@@ -59,6 +59,7 @@ body {
 .btn:disabled { opacity: .45; cursor: default; transform: none; }
 .btn-main { background: linear-gradient(135deg, var(--blue), var(--green)); color: #080e0b; box-shadow: 0 8px 28px rgba(0,229,255,.25); }
 .btn-ghost { background: rgba(255,255,255,.05); color: var(--text); border: 1.5px solid rgba(255,255,255,.12); }
+.btn-lock { background: rgba(255,255,255,.02); color: var(--muted); border: 1.5px solid rgba(255,255,255,.05); cursor: not-allowed; }
 .err { font-size: 13px; font-weight: 600; color: var(--red); min-height: 18px; margin-top: 12px; text-align:center; }
 .spinner { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,.1); border-top-color: var(--green); animation: spin .85s linear infinite; margin: 0 auto 14px; }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -68,10 +69,14 @@ body {
 .r-btn { flex: 1; padding: 10px; border-radius: 10px; background: transparent; border: none; color: var(--muted); font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.2s; }
 .r-btn.active { background: var(--blue); color: #000; box-shadow: 0 4px 15px rgba(0,229,255,.3); }
 
-/* ─── ROOM & PLAYERS ─── */
-.code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0 28px; }
+/* ─── WAITING ROOM & PLAYERS ─── */
+.code-box { background: rgba(255,255,255,.04); border: 1.5px dashed rgba(0,229,255,.35); border-radius: 16px; padding: 18px 22px; text-align: center; margin: 20px 0; }
 .code-val { font-size: 42px; font-weight: 900; letter-spacing: 8px; color: var(--blue); line-height: 1.1; }
 .code-hint { font-size: 12px; color: var(--muted); margin-top: 6px; font-weight: 600; }
+.waiting-players { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; width: 100%; max-width: 340px; }
+.w-player-block { background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.15); padding: 12px 18px; border-radius: 12px; font-size: 15px; font-weight: 800; color: white; animation: fadeUp .3s ease; }
+.w-player-block.me { border-color: var(--blue); background: rgba(0,229,255,.1); color: var(--blue); }
+
 .score-bar { display: flex; gap: 10px; flex-shrink: 0; margin: 10px 0; }
 .pchip { flex: 1; background: rgba(255,255,255,.05); border: 1.5px solid rgba(255,255,255,.1); border-radius: 14px; padding: 10px 12px; transition: transform 0.2s; }
 .pchip.me  { border-color: rgba(0,229,255,.4); }
@@ -104,7 +109,7 @@ body {
 .opt.correct { background: rgba(57,255,143,.2); border-color: var(--green); color: #c5ffe0; box-shadow: 0 0 18px rgba(57,255,143,.35); }
 .opt.wrong   { background: rgba(255,71,87,.2);  border-color: var(--red);   color: #ffd0d3; box-shadow: 0 0 18px rgba(255,71,87,.3); }
 
-/* ─── CARRIERA UI (Teams Flow) ─── */
+/* ─── CARRIERA UI ─── */
 .carr-teams { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
 .carr-team { background: rgba(0,229,255,.1); border: 1.5px solid var(--blue); color: var(--blue); padding: 8px 14px; border-radius: 12px; font-size: 14px; font-weight: 800; }
 .carr-arrow { color: var(--muted); font-size: 18px; display: flex; align-items: center; justify-content: center; }
@@ -173,59 +178,81 @@ body {
 <body>
 <div class="glow"></div>
 
-<!-- 1. MENU: INSERIMENTO NOME -->
+<!-- ════ 1. MENU: NOME ════ -->
 <div class="screen" id="s-menu-name">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
-      <p class="label-xs" style="text-align:center;margin:0 0 6px;">⚽ Party Calcio</p>
-      <h1 class="title-lg" style="text-align:center;margin:0 0 32px;">Chi sei?</h1>
-      <div class="field"><label for="iName">Il tuo nome</label><input id="iName" type="text" placeholder="Es. Marco" maxlength="14" autocomplete="off"></div>
+      <p class="label-xs">⚽ Party Calcio</p>
+      <h1 class="title-lg">Chi sei?</h1>
+      <div class="field">
+        <input id="iName" type="text" placeholder="Es. Marco" maxlength="14" autocomplete="off" style="text-align:center;">
+      </div>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
-        <button class="btn btn-main" id="btnGoCreate">Crea Nuova Stanza</button>
-        <button class="btn btn-ghost" id="btnGoJoin">Unisciti a un Amico</button>
+        <button class="btn btn-main" id="btnGoMode">Avanti</button>
       </div>
       <p class="err" id="menuNameErr"></p>
     </div>
   </div>
 </div>
 
-<!-- 2. MENU: INSERIMENTO CODICE (Solo per chi si unisce) -->
+<!-- ════ 2. MENU: SCELTA MODALITÀ ════ -->
+<div class="screen hidden" id="s-menu-mode">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="width:100%;max-width:340px;">
+      <p class="label-xs">Scegli come giocare</p>
+      <h1 class="title-lg">Modalità</h1>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
+        <button class="btn btn-main" id="btnGoSolo">👤 Gioca da Solo</button>
+        <button class="btn btn-ghost" id="btnGoCreate">➕ Crea Nuova Stanza</button>
+        <button class="btn btn-ghost" id="btnGoJoin">🤝 Unisciti a un Amico</button>
+        <button class="btn btn-lock" disabled>🏆 Torneo (Presto...)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ 3. MENU: INSERIMENTO CODICE ════ -->
 <div class="screen hidden" id="s-menu-code">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <div style="width:100%;max-width:340px;">
-      <p class="label-xs" style="text-align:center;margin:0 0 6px;">Entra in gioco</p>
-      <h1 class="title-lg" style="text-align:center;margin:0 0 32px;">Inserisci Codice</h1>
+      <p class="label-xs">Entra in gioco</p>
+      <h1 class="title-lg">Inserisci Codice</h1>
       <div class="field"><input id="iCode" type="text" placeholder="Es. A3BX" maxlength="4" autocomplete="off" oninput="this.value=this.value.toUpperCase()" style="text-align:center; font-size:24px; letter-spacing:4px;"></div>
       <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
         <button class="btn btn-main" id="btnJoinConfirm">Entra nella Stanza</button>
-        <button class="btn btn-ghost" id="btnBackToName" style="border:none; padding:10px; font-size:14px;">← Torna indietro</button>
+        <button class="btn btn-ghost" onclick="show('s-menu-mode')" style="border:none; padding:10px; font-size:14px;">← Torna indietro</button>
       </div>
       <p class="err" id="menuCodeErr"></p>
     </div>
   </div>
 </div>
 
-<!-- 3. WAITING ROOM (Condividi Codice) -->
+<!-- ════ 4. WAITING ROOM (SALA D'ATTESA) ════ -->
 <div class="screen hidden" id="s-wait">
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-    <p class="label-xs" style="margin:0 0 4px;">Condividi il codice</p>
-    <div class="code-box">
+    <p class="label-xs" style="margin:0 0 4px;">Codice Stanza</p>
+    <div class="code-box" style="margin: 10px 0 20px;">
       <div class="code-val" id="wCode">----</div>
-      <div class="code-hint">Fai inserire questo codice all'avversario</div>
     </div>
-    <div class="spinner"></div>
-    <p style="font-size:15px;color:var(--muted);font-weight:600;">In attesa dell'avversario...</p>
+    <p class="label-xs">Giocatori Connessi</p>
+    <div class="waiting-players" id="wPlayersList"></div>
+    <div class="spinner" id="wSpinner"></div>
+    <p style="font-size:15px;color:var(--muted);font-weight:600;" id="wStatusText">In attesa di altri giocatori...</p>
+    
+    <div style="width:100%; max-width:340px; margin-top:20px;">
+        <button class="btn btn-main hidden" id="btnStartLobby">Vai alla scelta giochi ➔</button>
+    </div>
   </div>
 </div>
 
-<!-- 4A. LOBBY MASTER -->
+<!-- ════ 5A. LOBBY MASTER / SOLO ════ -->
 <div class="screen hidden" id="s-lobby-master">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lmCode">----</div></div>
   <div style="margin-top:18px;">
-    <p class="label-xs" style="margin:0 0 6px;">Entrambi connessi!</p>
+    <p class="label-xs" style="margin:0 0 6px;">Giocatori pronti</p>
     <div style="display:flex;gap:10px;margin-bottom:24px;" id="lmPlayers"></div>
     
-    <p class="label-xs" style="margin:0 0 4px;">1. Scegli le domande (Round)</p>
+    <p class="label-xs" style="margin:0 0 4px;">1. Scegli i round</p>
     <div class="rounds-selector">
       <button class="r-btn" onclick="setRounds(3)">3</button>
       <button class="r-btn active" onclick="setRounds(5)">5</button>
@@ -233,28 +260,30 @@ body {
       <button class="r-btn" onclick="setRounds(15)">15</button>
     </div>
 
-    <p class="label-xs" style="margin:0 0 4px;">2. Avvia il mini-gioco</p>
+    <p class="label-xs" style="margin:0 0 4px;">2. Scegli il gioco</p>
     <div class="game-grid">
       <div class="game-card" id="pickQuiz"><div class="icon">🏆</div><div class="info"><div class="name">Quiz Calcio</div><div class="desc">A risposta multipla</div></div></div>
       <div class="game-card" id="pickVF"><div class="icon">🟢🔴</div><div class="info"><div class="name">Vero o Falso</div><div class="desc">Chi preme primo vince</div></div></div>
       <div class="game-card" id="pickCarr"><div class="icon">✈️</div><div class="info"><div class="name">La Carriera</div><div class="desc">Indovina il giocatore dai trasferimenti</div></div></div>
       <div class="game-card" id="pickIDK"><div class="icon">🕵️</div><div class="info"><div class="name">L'Identikit</div><div class="desc">Indovina dagli indizi</div></div></div>
-      <div class="game-card" id="pickForm"><div class="icon">🏟️</div><div class="info"><div class="name">La Formazione</div><div class="desc">Ricostruisci gli 11 titolari</div></div></div>
+      <div class="game-card" id="pickForm"><div class="icon">🏟️</div><div class="info"><div class="name">La Formazione</div><div class="desc">Ricostruisci gli 11 titolari storici</div></div></div>
     </div>
   </div>
 </div>
 
-<!-- 4B. LOBBY GUEST -->
+<!-- ════ 5B. LOBBY GUEST ════ -->
 <div class="screen hidden" id="s-lobby-guest">
   <div class="hdr"><div class="logo"><em>⚽</em> PARTY CALCIO</div><div class="pill" id="lgCode">----</div></div>
   <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
     <div class="spinner"></div>
     <p style="font-size:16px;font-weight:700;color:var(--muted);margin:0 0 6px;">In attesa del master...</p>
-    <p style="font-size:13px;color:var(--muted);margin:0;">Il master sta scegliendo il gioco e i round</p>
+    <p style="font-size:13px;color:var(--muted);margin:0;">L'host sta scegliendo il gioco e i round</p>
   </div>
 </div>
 
-<!-- 5. QUIZ -->
+<!-- ════ GIOCHI (Stessa struttura, logica CSS unificata per nascondere avversario se in Solo) ════ -->
+
+<!-- 6. QUIZ -->
 <div class="screen hidden" id="s-quiz">
   <div class="loader-overlay hidden" id="ld-quiz"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> QUIZ</div><div class="pill" id="qProg">- / -</div></div>
@@ -271,7 +300,7 @@ body {
   </div>
 </div>
 
-<!-- 6. LA CARRIERA -->
+<!-- 7. LA CARRIERA -->
 <div class="screen hidden" id="s-carr">
   <div class="loader-overlay hidden" id="ld-carr"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> LA CARRIERA</div><div class="pill" id="carrProg">- / -</div></div>
@@ -292,7 +321,7 @@ body {
   </div>
 </div>
 
-<!-- 7. VERO O FALSO -->
+<!-- 8. VERO O FALSO -->
 <div class="screen hidden" id="s-vf">
   <div class="loader-overlay hidden" id="ld-vf"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> VERO O FALSO</div><div class="pill" id="vfProg">- / -</div></div>
@@ -311,7 +340,7 @@ body {
   </div>
 </div>
 
-<!-- 8. IDENTIKIT -->
+<!-- 9. IDENTIKIT -->
 <div class="screen hidden" id="s-idk">
   <div class="loader-overlay hidden" id="ld-idk"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> IDENTIKIT</div><div class="pill" id="idkProg">- / -</div></div>
@@ -328,7 +357,7 @@ body {
   </div>
 </div>
 
-<!-- 9. FORMAZIONE -->
+<!-- 10. FORMAZIONE -->
 <div class="screen hidden" id="s-form">
   <div class="loader-overlay hidden" id="ld-form"><div class="spinner"></div><p style="font-weight:700;">Caricamento...</p></div>
   <div class="hdr"><div class="logo"><em>⚽</em> FORMAZIONE</div><div class="pill" id="formProg">- / -</div></div>
@@ -343,21 +372,21 @@ body {
   <div class="form-bench" id="formBench"></div>
 </div>
 
-<!-- 10. RISULTATO -->
+<!-- 11. RISULTATO -->
 <div class="screen hidden" id="s-result">
   <div class="result-center fade-in">
     <div style="font-size:54px;margin-bottom:8px;" id="rMedal">🏆</div>
     <p class="label-xs" style="margin:0 0 6px;">Partita Finita</p>
     <div class="vs-scores">
       <div class="vs-num me" id="rMeScore">0</div>
-      <div style="font-size:18px;color:var(--muted);font-weight:700;">–</div>
+      <div style="font-size:18px;color:var(--muted);font-weight:700;" id="rSep">–</div>
       <div class="vs-num opp" id="rOppScore">0</div>
     </div>
     <div style="display:flex;justify-content:space-between;width:100%;max-width:260px;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:20px;">
       <span id="rMeName">Tu</span><span id="rOppName">Avversario</span>
     </div>
     <div class="verdict" id="rVerdict">—</div>
-    <button class="btn btn-main" id="btnLobby" style="max-width:320px;">Torna alla Lobby</button>
+    <button class="btn btn-main" id="btnLobby" style="max-width:320px;">Torna al Menu/Lobby</button>
   </div>
 </div>
 
@@ -368,64 +397,44 @@ body {
 'use strict';
 
 // =========================================================================
-// ⚙️ IMPOSTAZIONI DEI GIOCHI: MODIFICA QUI TEMPI E PUNTEGGI
+// ⚙️ IMPOSTAZIONI DEI GIOCHI E PUNTEGGI
 // =========================================================================
 
-// 1. IL QUIZ
-const QUIZ_TIME     = 10; // Secondi a disposizione per rispondere
-const QUIZ_PTS_WIN  = 1;  // Punti se indovini
+const QUIZ_TIME     = 10;
+const QUIZ_PTS_WIN  = 1;
 
-// 2. VERO O FALSO
-const VF_TIME       = 10; // Secondi prima che scada se nessuno preme
-const VF_PTS_WIN    = 10; // Punti a chi preme per primo e indovina
-const VF_PTS_LOSE   = 5;  // Punti che vanno ALL'AVVERSARIO se chi preme sbaglia
+// N.B. VF e IDK mantengono la logica "chi preme prima" come richiesto. 
+// Potremo cambiare questa logica in "tutti rispondono" nel prossimo aggiornamento!
+const VF_TIME       = 10; 
+const VF_PTS_WIN    = 10; 
+const VF_PTS_LOSE   = 5;
 
-// 3. LA CARRIERA
-const CARR_TIME     = 20; // Secondi per scrivere il nome
-const CARR_PTS_WIN  = 2;  // Punti se indovini
-const CARR_PTS_LOSE = 2;  // Punti che vanno ALL'AVVERSARIO se sbagli
+const CARR_TIME     = 15; 
+const CARR_PTS_WIN  = 2; 
+const CARR_PTS_LOSE = 2; 
 
-// 4. L'IDENTIKIT
-const IDK_TIME      = 30; // Secondi a disposizione totali
-const IDK_POINTS    = [4, 3, 2, 1]; // Punti in base all'indizio svelato (dal 1° al 4°)
+const IDK_TIME      = 15; 
+const IDK_POINTS    = [4, 3, 2, 1];
 
-// 5. LA FORMAZIONE
-const FORM_TIME     = 60; // Secondi a disposizione
-const FORM_PTS_PER_P= 2;  // Punti assegnati per ogni giocatore inserito correttamente
+const FORM_TIME     = 60; 
+const FORM_PTS_PER_P= 2;
 
 // =========================================================================
-// 📖 IL DIZIONARIO AUTOMATICO (NON MODIFICARE A MANO)
+// 📖 IL DIZIONARIO CALCIATORI (Unico per Carriera e Identikit)
 // =========================================================================
-let PLAYER_NAMES = []; // Partirà vuoto, si riempirà da solo in background all'avvio del sito
+let PLAYER_NAMES = []; // Si riempie da Firebase in background
 // =========================================================================
-
-// Configurazione Lobby
-let currentRoundsCount = 5; 
 
 /* ═══════════════════════════════════════════
    AUDIO ENGINE
 ═══════════════════════════════════════════ */
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let aCtx = null;
-
-function initAudio() {
-  if (!aCtx) { aCtx = new AudioCtx(); } else if (aCtx.state === 'suspended') { aCtx.resume(); }
-}
-
+function initAudio() { if (!aCtx) { aCtx = new AudioCtx(); } else if (aCtx.state === 'suspended') { aCtx.resume(); } }
 function playTone(freq, type, duration, vol=0.1) {
   if (!aCtx) return;
-  try {
-    const osc = aCtx.createOscillator();
-    const gain = aCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, aCtx.currentTime);
-    gain.gain.setValueAtTime(vol, aCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + duration);
-    osc.connect(gain); gain.connect(aCtx.destination);
-    osc.start(); osc.stop(aCtx.currentTime + duration);
-  } catch(e) {}
+  try { const osc = aCtx.createOscillator(); const gain = aCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, aCtx.currentTime); gain.gain.setValueAtTime(vol, aCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, aCtx.currentTime + duration); osc.connect(gain); gain.connect(aCtx.destination); osc.start(); osc.stop(aCtx.currentTime + duration); } catch(e) {}
 }
-
 const sfx = {
   correct: () => { playTone(600, 'sine', 0.1); setTimeout(()=>playTone(800, 'sine', 0.25), 100); },
   wrong: () => { playTone(200, 'sawtooth', 0.35); },
@@ -443,39 +452,23 @@ firebase.initializeApp({
 });
 const DB = firebase.database();
 const SV = firebase.database.ServerValue.TIMESTAMP;
-
 let serverOffset = 0;
 DB.ref('.info/serverTimeOffset').on('value', s => { serverOffset = s.val() || 0; });
 const now = () => Date.now() + serverOffset;
 
-// 🥷 IL TRUCCO NINJA: Scarica i nomi in background appena apri il sito
 async function fetchAutocompleteNames() {
   try {
-    const [idkSnap, carrSnap] = await Promise.all([
-      DB.ref('gamedata/idk').once('value'),
-      DB.ref('gamedata/carr').once('value')
-    ]);
-    
+    const [idkSnap, carrSnap] = await Promise.all([ DB.ref('gamedata/idk').once('value'), DB.ref('gamedata/carr').once('value') ]);
     const namesSet = new Set();
-    
-    if (idkSnap.exists()) {
-      Object.values(idkSnap.val()).forEach(item => { if (item && item.n) namesSet.add(item.n.trim()); });
-    }
-    if (carrSnap.exists()) {
-      Object.values(carrSnap.val()).forEach(item => { if (item && item.p) namesSet.add(item.p.trim()); });
-    }
-    
+    if (idkSnap.exists()) Object.values(idkSnap.val()).forEach(item => { if (item && item.n) namesSet.add(item.n.trim()); });
+    if (carrSnap.exists()) Object.values(carrSnap.val()).forEach(item => { if (item && item.p) namesSet.add(item.p.trim()); });
     PLAYER_NAMES = Array.from(namesSet);
-    console.log(`✅ Autocompletamento pronto! Nomi caricati: ${PLAYER_NAMES.length}`);
-  } catch (e) {
-    console.error("Errore nel pre-caricamento dei nomi:", e);
-  }
+  } catch (e) { console.error("Errore autocompletamento:", e); }
 }
-// Avvia il caricamento silenzioso SUBITO all'avvio della pagina
 fetchAutocompleteNames();
 
 /* ═══════════════════════════════════════════
-   STATO LOCALE E CACHE
+   STATO LOCALE
 ═══════════════════════════════════════════ */
 let myId = sessionStorage.getItem('pid');
 if (!myId) { myId = 'p' + Math.random().toString(36).slice(2,10); sessionStorage.setItem('pid', myId); }
@@ -484,14 +477,17 @@ const localCache = { quiz: {}, vf: {}, idk: {}, form: {}, carr: {} };
 let activeFetches = {};
 
 let room = null, isMaster = false, myName = '', roomOff = null;
+let isSolo = false; // FLAG MODALITÀ SOLO
+let currentRoundsCount = 5; 
+
 let tickId = null, advanceTimer = null, idkClueTimers = [];
 let lastIdx = -1, myAnswered = false, vfLocked = false, advanceScheduledFor = -1;
 let qIdx = [], vfIdx = [], idkIdx = [], formIdx = [], carrIdx = [];
 let formLocalFound = new Set(), selectedBenchPlayer = null;
 
 const $  = id => document.getElementById(id);
-const SCREENS = ['s-menu-name','s-menu-code','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-carr','s-vf','s-idk','s-form','s-result'];
-function show(id) { SCREENS.forEach(s => $(s).classList.add('hidden')); $(id).classList.remove('hidden'); }
+const SCREENS = ['s-menu-name','s-menu-mode','s-menu-code','s-wait','s-lobby-master','s-lobby-guest','s-quiz','s-carr','s-vf','s-idk','s-form','s-result'];
+function show(id) { SCREENS.forEach(s => $(s).classList.add('hidden')); $(id).classList.remove('hidden'); applySoloUI(); }
 function genCode() { const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join(''); }
 function shuffle(n,total) { const a=[...Array(total).keys()]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a.slice(0,n); }
 
@@ -499,6 +495,16 @@ function resetLocals() {
   clearInterval(tickId); clearTimeout(advanceTimer); idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
   lastIdx = -1; myAnswered = false; vfLocked = false; advanceScheduledFor = -1;
   formLocalFound.clear(); selectedBenchPlayer = null;
+}
+
+// Nasconde l'avversario se isSolo = true
+function applySoloUI() {
+  document.querySelectorAll('.pchip.opp').forEach(el => el.style.display = isSolo ? 'none' : 'flex');
+  if (isSolo) {
+    $('rOppScore').style.display = 'none'; $('rOppName').style.display = 'none'; $('rSep').style.display = 'none';
+  } else {
+    $('rOppScore').style.display = 'block'; $('rOppName').style.display = 'block'; $('rSep').style.display = 'block';
+  }
 }
 
 async function fetchGameData(mode, dbIdx, loaderId) {
@@ -509,59 +515,70 @@ async function fetchGameData(mode, dbIdx, loaderId) {
     activeFetches[key] = DB.ref(`gamedata/${mode}/${dbIdx}`).once('value').then(snap => {
       localCache[mode][dbIdx] = snap.val() || null;
       if ($(loaderId)) $(loaderId).classList.add('hidden');
-      delete activeFetches[key];
-      return localCache[mode][dbIdx];
+      delete activeFetches[key]; return localCache[mode][dbIdx];
     });
   }
   return activeFetches[key];
 }
 
 /* ═══════════════════════════════════════════
-   MENU REDESIGN
+   NUOVO FLUSSO MENU
 ═══════════════════════════════════════════ */
-$('btnGoCreate').addEventListener('click', async () => {
+$('btnGoMode').addEventListener('click', () => {
   initAudio();
   myName = $('iName').value.trim();
   if (!myName) { $('menuNameErr').textContent = 'Inserisci il tuo nome.'; return; }
   $('menuNameErr').textContent = '';
-  $('btnGoCreate').disabled = $('btnGoJoin').disabled = true;
+  show('s-menu-mode');
+});
+
+// GIOCA DA SOLO
+$('btnGoSolo').addEventListener('click', async () => {
+  $('btnGoSolo').disabled = true;
+  isSolo = true;
+  isMaster = true;
+  room = 'SOLO_' + genCode();
   
+  await DB.ref('rooms/'+room).set({ status:'lobby', masterId:myId, currentIndex:0, roundsTotal:5, players:{ [myId]:{ name:myName, score:0 } } });
+  DB.ref('rooms/'+room).onDisconnect().remove(); // Elimina tutta la stanza se è solo
+  
+  $('btnGoSolo').disabled = false;
+  listenRoom();
+});
+
+// CREA MULTIPLAYER
+$('btnGoCreate').addEventListener('click', async () => {
+  $('btnGoCreate').disabled = true;
+  isSolo = false; isMaster = true;
   let code, attempts = 0;
   do { code = genCode(); attempts++; } while ((await DB.ref('rooms/'+code).get()).exists() && attempts < 10);
-  room = code; isMaster = true;
+  room = code;
   await DB.ref('rooms/'+room).set({ status:'waiting', masterId:myId, currentIndex:0, roundsTotal:5, players:{ [myId]:{ name:myName, score:0 } } });
   DB.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
   
   $('wCode').textContent = room; show('s-wait'); listenRoom();
+  $('btnGoCreate').disabled = false;
 });
 
-$('btnGoJoin').addEventListener('click', () => {
-  initAudio();
-  myName = $('iName').value.trim();
-  if (!myName) { $('menuNameErr').textContent = 'Inserisci il tuo nome.'; return; }
-  $('menuNameErr').textContent = '';
-  show('s-menu-code');
-});
-
-$('btnBackToName').addEventListener('click', () => { show('s-menu-name'); });
+// UNISCITI MULTIPLAYER
+$('btnGoJoin').addEventListener('click', () => { show('s-menu-code'); });
 
 $('btnJoinConfirm').addEventListener('click', async () => {
   const code = $('iCode').value.trim().toUpperCase();
   if (code.length !== 4) { $('menuCodeErr').textContent = 'Codice non valido.'; return; }
-  $('menuCodeErr').textContent = '';
-  $('btnJoinConfirm').disabled = true;
+  $('menuCodeErr').textContent = ''; $('btnJoinConfirm').disabled = true;
   
   const snap = await DB.ref('rooms/'+code).get();
   if (!snap.exists()) { $('menuCodeErr').textContent='Stanza non trovata.'; $('btnJoinConfirm').disabled=false; return; }
   
-  room = code; isMaster = false;
+  room = code; isMaster = false; isSolo = false;
   await DB.ref('rooms/'+room+'/players/'+myId).set({ name:myName, score:0 });
   DB.ref('rooms/'+room+'/players/'+myId).onDisconnect().remove();
-  $('wCode').textContent = room; show('s-wait'); listenRoom();
+  show('s-wait'); listenRoom();
 });
 
 /* ═══════════════════════════════════════════
-   FIREBASE LISTENER
+   SALA D'ATTESA E LISTENER
 ═══════════════════════════════════════════ */
 function listenRoom() {
   if (roomOff) roomOff();
@@ -581,16 +598,13 @@ function handleUpdate(data) {
   if (data.idkIdx) idkIdx = data.idkIdx;
   if (data.formIdx) formIdx = data.formIdx;
   if (data.carrIdx) carrIdx = data.carrIdx;
-  
   currentRoundsCount = data.roundsTotal || 5;
 
-  if (isMaster && data.status === 'waiting' && pids.length === 2) {
-    DB.ref('rooms/'+room).update({ status:'lobby' });
-    return;
-  }
-
   switch (data.status) {
-    case 'waiting':     show('s-wait');            break;
+    case 'waiting':     
+        show('s-wait'); 
+        renderWaitingRoom(data.players, pids.length);
+        break;
     case 'lobby':       renderLobby(me, opp);      break;
     case 'playing':     renderQuiz(data, me, opp); break;
     case 'carr_playing':renderCarr(data, me, opp); break;
@@ -601,8 +615,32 @@ function handleUpdate(data) {
   }
 }
 
+function renderWaitingRoom(players, count) {
+    const list = $('wPlayersList'); list.innerHTML = '';
+    Object.keys(players).forEach(id => {
+        const d = document.createElement('div');
+        d.className = 'w-player-block' + (id === myId ? ' me' : '');
+        d.textContent = players[id].name;
+        list.appendChild(d);
+    });
+    
+    if (isMaster) {
+        $('btnStartLobby').classList.remove('hidden');
+        $('wStatusText').textContent = "Aspetta altri giocatori o inizia!";
+        $('wSpinner').classList.add('hidden');
+    } else {
+        $('btnStartLobby').classList.add('hidden');
+        $('wStatusText').textContent = "In attesa che l'host inizi la partita...";
+        $('wSpinner').classList.remove('hidden');
+    }
+}
+
+$('btnStartLobby').addEventListener('click', () => {
+    if (isMaster) DB.ref('rooms/'+room).update({ status:'lobby' });
+});
+
 /* ═══════════════════════════════════════════
-   LOBBY E AVVIO ASINCRONO
+   LOBBY
 ═══════════════════════════════════════════ */
 function renderLobby(me, opp) {
   if (isMaster) {
@@ -612,9 +650,14 @@ function renderLobby(me, opp) {
     });
   }
   resetLocals();
-  $('lmCode').textContent = $('lgCode').textContent = room;
+  $('lmCode').textContent = isSolo ? 'SOLO' : room;
+  $('lgCode').textContent = room;
   const cont = $('lmPlayers'); cont.innerHTML = '';
-  [{ n:me?.name||'Tu', cls:'me' }, { n:opp?.name||'Avversario', cls:'opp' }].forEach(p => {
+  
+  const pList = [{ n:me?.name||'Tu', cls:'me' }];
+  if (!isSolo && opp) pList.push({ n:opp.name, cls:'opp' });
+
+  pList.forEach(p => {
     const d = document.createElement('div'); d.style.cssText = 'flex:1;padding:10px;border-radius:12px;font-weight:800;font-size:14px;text-align:center;';
     d.style.background = p.cls==='me' ? 'rgba(0,229,255,.1)' : 'rgba(57,255,143,.1)'; d.style.color = p.cls==='me' ? 'var(--blue)' : 'var(--green)';
     d.textContent = p.n; cont.appendChild(d);
@@ -629,15 +672,13 @@ window.setRounds = function(n) {
 
 async function startGame(mode, idxKey, btnId) {
   if (!isMaster) return;
-  const btn = $(btnId);
-  const ogContent = btn.innerHTML;
+  const btn = $(btnId); const ogContent = btn.innerHTML;
   btn.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;width:100%;"><div class="spinner" style="width:24px;height:24px;margin:0;"></div></div>';
   btn.style.pointerEvents = 'none';
 
   const dbMode = mode === 'playing' ? 'quiz' : mode.split('_')[0];
   const snap = await DB.ref('gamedata/counts/' + dbMode).once('value');
   const total = snap.val() || 5; 
-  
   const actualRounds = Math.min(currentRoundsCount, total);
 
   DB.ref('rooms/'+room).update({
@@ -645,7 +686,6 @@ async function startGame(mode, idxKey, btnId) {
     [idxKey]: shuffle(actualRounds, total),
     startedAt: SV, roomAns: null, scored: null, formAnswers: null, formFinished: null
   });
-
   btn.innerHTML = ogContent; btn.style.pointerEvents = 'auto';
 }
 
@@ -656,51 +696,49 @@ $('pickIDK').onclick  = () => startGame('idk_playing', 'idkIdx', 'pickIDK');
 $('pickForm').onclick = () => startGame('form_playing', 'formIdx', 'pickForm');
 
 /* ═══════════════════════════════════════════
-   TIMER GLOBALE
+   TIMER GLOBALE E AUTO-ADVANCE
 ═══════════════════════════════════════════ */
 function startTick(startedAt, duration, fillId, lblId, onEnd) {
-  clearInterval(tickId);
-  let lastSec = -1;
+  clearInterval(tickId); let lastSec = -1;
   const tick = () => {
     const rem = Math.max(duration - (now()-startedAt)/1000, 0);
     const lbl=$(lblId), fill=$(fillId);
-    
     const currentSec = Math.ceil(rem);
     if (currentSec <= 3 && currentSec > 0 && currentSec !== lastSec) { sfx.tick(); lastSec = currentSec; }
-
-    if (lbl)  lbl.textContent = currentSec+'s';
+    if (lbl) lbl.textContent = currentSec+'s';
     if (fill) { fill.style.width=(rem/duration*100)+'%'; fill.classList.toggle('danger', rem<=3); }
     if (rem <= 0) { clearInterval(tickId); onEnd?.(); }
   };
   tick(); tickId = setInterval(tick, 100);
 }
 
-// Funzione condivisa master timeout (Quiz)
-let quizAdvancing = false;
 function masterCheckQuiz(data, idx, modeStr, durationLimit) {
-  if (quizAdvancing) return;
+  if (!isMaster || advanceScheduledFor === idx) return;
   const players = data.players||{}, ids = Object.keys(players);
-  if (ids.length < 2) return;
+  // Se isSolo, non aspettiamo 2 giocatori, basta 1
+  const targetCount = isSolo ? 1 : 2;
+  if (!isSolo && ids.length < 2) return;
+  
   const allDone = ids.every(id => players[id]?.answers?.[idx] !== undefined);
   const timeUp  = data.startedAt && (now() > data.startedAt + durationLimit*1000 + 400);
+  
   if (allDone || timeUp) {
-    quizAdvancing = true; clearTimeout(advanceTimer);
-    advanceTimer = setTimeout(() => { quizAdvancing=false; nextRound(modeStr, idx, currentRoundsCount); }, allDone ? 1200 : 300);
+    advanceScheduledFor = idx; clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(() => { nextRound(modeStr, idx, currentRoundsCount); }, allDone ? 1200 : 300);
   }
 }
 
 /* ═══════════════════════════════════════════
-   QUIZ LAZY LOADING
+   GIOCHI LAZY LOADING
 ═══════════════════════════════════════════ */
+
+/* ── QUIZ ── */
 async function renderQuiz(data, me, opp) {
   show('s-quiz');
   $('qMeName').textContent = me?.name||'Tu'; $('qMeScore').textContent = me?.score||0;
   $('qOppName').textContent = opp?.name||'...'; $('qOppScore').textContent = opp?.score||0;
-
-  const idx = data.currentIndex || 0;
-  $('qProg').textContent = (idx+1)+' / '+currentRoundsCount;
+  const idx = data.currentIndex || 0; $('qProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = qIdx[idx] ?? idx;
-
   const q = await fetchGameData('quiz', dbIdx, 'ld-quiz');
   if (!q || data.currentIndex !== idx || data.status !== 'playing') return;
 
@@ -712,392 +750,181 @@ async function renderQuiz(data, me, opp) {
     startTick(data.startedAt || now(), QUIZ_TIME, 'qTimerFill', 'qTimerLbl', () => {
       if (!myAnswered) { myAnswered = true; revealQuiz(idx, -1); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:-1, ok:false }); }
     });
-  } else if (myA && !myAnswered) {
-    myAnswered = true; revealQuiz(idx, myA.sel);
-  }
-  if (isMaster) masterCheckQuiz(data, idx, 'playing', QUIZ_TIME);
+  } else if (myA && !myAnswered) { myAnswered = true; revealQuiz(idx, myA.sel); }
+  masterCheckQuiz(data, idx, 'playing', QUIZ_TIME);
 }
 
 function loadQuiz(idx, existing) {
-  const dbIdx = qIdx[idx] ?? idx; const q = localCache.quiz[dbIdx];
-  const card = $('qCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
+  const q = localCache.quiz[qIdx[idx] ?? idx]; $('qCard').classList.remove('fade-in'); void $('qCard').offsetWidth; $('qCard').classList.add('fade-in');
   $('qText').textContent = q.q; $('qOpts').innerHTML = '';
-  q.o.forEach((opt, oi) => {
-    const b = document.createElement('button'); b.className='opt'; b.textContent=opt;
-    b.onclick = () => submitQuiz(idx, oi); $('qOpts').appendChild(b);
-  });
+  q.o.forEach((opt, oi) => { const b = document.createElement('button'); b.className='opt'; b.textContent=opt; b.onclick = () => submitQuiz(idx, oi); $('qOpts').appendChild(b); });
   if (existing) revealQuiz(idx, existing.sel);
 }
-
 function submitQuiz(idx, sel) {
   if (myAnswered) return; myAnswered = true;
-  const dbIdx = qIdx[idx] ?? idx; const ok = sel === localCache.quiz[dbIdx].c;
+  const ok = sel === localCache.quiz[qIdx[idx] ?? idx].c;
   if(ok) sfx.correct(); else sfx.wrong();
-  revealQuiz(idx, sel);
-  DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
-  
+  revealQuiz(idx, sel); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel, ok });
   if (ok && QUIZ_PTS_WIN > 0) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+QUIZ_PTS_WIN);
 }
-
 function revealQuiz(idx, sel) {
-  const dbIdx = qIdx[idx] ?? idx; const correct = localCache.quiz[dbIdx].c;
-  $('qOpts').querySelectorAll('.opt').forEach((b,i) => {
-    b.disabled = true;
-    if (i===correct) b.classList.add('correct'); else if (i===sel) b.classList.add('wrong');
-  });
+  const correct = localCache.quiz[qIdx[idx] ?? idx].c;
+  $('qOpts').querySelectorAll('.opt').forEach((b,i) => { b.disabled = true; if (i===correct) b.classList.add('correct'); else if (i===sel) b.classList.add('wrong'); });
 }
 
-/* ═══════════════════════════════════════════
-   LA CARRIERA LAZY LOADING
-═══════════════════════════════════════════ */
+/* ── CARRIERA ── */
 async function renderCarr(data, me, opp) {
   show('s-carr');
   $('carrMeName').textContent = me?.name||'Tu'; $('carrMeScore').textContent = me?.score||0;
   $('carrOppName').textContent = opp?.name||'...'; $('carrOppScore').textContent = opp?.score||0;
-
-  const idx = data.currentIndex || 0;
-  $('carrProg').textContent = (idx+1)+' / '+currentRoundsCount;
+  const idx = data.currentIndex || 0; $('carrProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = carrIdx[idx] ?? idx;
-
   const q = await fetchGameData('carr', dbIdx, 'ld-carr');
   if (!q || data.currentIndex !== idx || data.status !== 'carr_playing') return;
 
-  const ans = data.roomAns?.[idx] ?? null;
-  let ms = me?.score || 0; let os = opp?.score || 0;
-
-  if (ans && !data.scored?.[idx]) {
-    const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
-    if (ans.pid === myId) { if(ok) ms += CARR_PTS_WIN; else os += CARR_PTS_LOSE; } else { if(ok) os += CARR_PTS_WIN; else ms += CARR_PTS_LOSE; }
-  }
-  $('carrMeScore').textContent = ms; $('carrOppScore').textContent = os;
+  const myA = me?.answers?.[idx], oppA = opp?.answers?.[idx];
+  $('carrMeSt').textContent = myA ? '✓ Risposto' : 'Scegli…'; $('carrOppSt').textContent = oppA ? '✓ Risposto' : '...';
 
   if (idx !== lastIdx) {
-    lastIdx = idx; vfLocked = false;
-    $('carrInp').value = ''; $('carrFeedback').textContent = '';
-    $('carrInp').disabled = $('carrBtn').disabled = false;
-    $('carrAuto').style.display = 'none';
-    loadCarr(idx);
+    lastIdx = idx; myAnswered = !!myA; $('carrInp').value = ''; $('carrFeedback').textContent = ''; $('carrInp').disabled = $('carrBtn').disabled = false; $('carrAuto').style.display = 'none'; loadCarr(idx);
     startTick(data.startedAt || now(), CARR_TIME, 'carrTimerFill', null, () => {
-      if (!ans && isMaster && advanceScheduledFor !== idx) {
-         advanceScheduledFor = idx;
-         clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('carr_playing', idx, currentRoundsCount), 1000);
-      }
+      if (!myAnswered) { myAnswered = true; revealCarr(idx, null); DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+idx).set({ sel:null, ok:false }); }
     });
-  }
-
-  if (ans) {
-    $('carrInp').disabled = $('carrBtn').disabled = true;
-    $('carrAuto').style.display = 'none';
-    clearInterval(tickId);
-    
-    const ok = ans.v.trim().toLowerCase() === q.p.trim().toLowerCase();
-    const first = ans.pid === myId;
-
-    if (first) {
-      if(ok) sfx.correct(); else sfx.wrong();
-      $('carrFeedback').textContent = ok ? `Esatto! È ${q.p}! +${CARR_PTS_WIN} pt 🎉` : `Sbagliato! Era ${q.p}. +${CARR_PTS_LOSE} pt all'avversario`;
-      $('carrFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
-    } else {
-      if(!ok) sfx.correct(); else sfx.wrong();
-      const oppName = opp?.name || 'L\'avversario';
-      $('carrFeedback').textContent = ok ? `${oppName} ha indovinato: ${q.p}! +${CARR_PTS_WIN} pt` : `${oppName} ha sbagliato (era ${q.p})! +${CARR_PTS_LOSE} pt a te`;
-      $('carrFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
-    }
-
-    if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
-      advanceScheduledFor = idx;
-      const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
-      const winnerId = ok ? ans.pid : loserId;
-      let updates = {};
-      
-      if (ok) {
-        updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + CARR_PTS_WIN;
-      } else {
-        if (loserId) updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + CARR_PTS_LOSE;
-      }
-
-      updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
-      clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('carr_playing', idx, currentRoundsCount), 3000);
-    }
-  }
+  } else if (myA && !myAnswered) { myAnswered = true; revealCarr(idx, myA.sel); }
+  masterCheckQuiz(data, idx, 'carr_playing', CARR_TIME);
 }
 
 function loadCarr(idx) {
-  const dbIdx = carrIdx[idx] ?? idx; const q = localCache.carr[dbIdx];
-  const card = $('carrCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
-  
-  const teamsContainer = $('carrTeams'); teamsContainer.innerHTML = '';
-  q.t.forEach((team, i) => {
-    const tDiv = document.createElement('div'); tDiv.className = 'carr-team'; tDiv.textContent = team;
-    teamsContainer.appendChild(tDiv);
-    if(i < q.t.length - 1) {
-      const arrDiv = document.createElement('div'); arrDiv.className = 'carr-arrow'; arrDiv.innerHTML = '➔';
-      teamsContainer.appendChild(arrDiv);
-    }
-  });
+  const q = localCache.carr[carrIdx[idx] ?? idx]; $('carrCard').classList.remove('fade-in'); void $('carrCard').offsetWidth; $('carrCard').classList.add('fade-in');
+  const tC = $('carrTeams'); tC.innerHTML = '';
+  q.t.forEach((team, i) => { const tD = document.createElement('div'); tD.className = 'carr-team'; tD.textContent = team; tC.appendChild(tD); if(i < q.t.length - 1) { const aD = document.createElement('div'); aD.className = 'carr-arrow'; aD.innerHTML = '➔'; tC.appendChild(aD); } });
 }
 
 $('carrInp').oninput = function() {
-  const v = this.value.toLowerCase(), ac=$('carrAuto'); ac.innerHTML='';
-  if (!v) { ac.style.display='none'; return; }
+  const v = this.value.toLowerCase(), ac=$('carrAuto'); ac.innerHTML=''; if (!v) { ac.style.display='none'; return; }
   const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
-  if (matches.length) {
-    ac.style.display='block';
-    matches.forEach(n => {
-      const d = document.createElement('div'); d.className='carr-ac-item'; d.textContent=n;
-      d.onclick = () => { $('carrInp').value=n; ac.style.display='none'; };
-      ac.appendChild(d);
-    });
-  } else { ac.style.display='none'; }
+  if (matches.length) { ac.style.display='block'; matches.forEach(n => { const d = document.createElement('div'); d.className='carr-ac-item'; d.textContent=n; d.onclick = () => { $('carrInp').value=n; ac.style.display='none'; }; ac.appendChild(d); }); } else { ac.style.display='none'; }
 };
-
 $('carrBtn').onclick = () => {
-  const val = $('carrInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
-  DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val } : undefined);
+  if (myAnswered) return; myAnswered = true;
+  const val = $('carrInp').value.trim(); const dbIdx = carrIdx[lastIdx] ?? lastIdx; const ok = val.toLowerCase() === localCache.carr[dbIdx].p.toLowerCase();
+  if(ok) sfx.correct(); else sfx.wrong(); revealCarr(lastIdx, val);
+  DB.ref('rooms/'+room+'/players/'+myId+'/answers/'+lastIdx).set({ sel:val, ok });
+  if (ok) DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0)+CARR_PTS_WIN);
 };
+function revealCarr(idx, sel) {
+  $('carrInp').disabled = $('carrBtn').disabled = true; $('carrAuto').style.display = 'none';
+  const q = localCache.carr[carrIdx[idx] ?? idx];
+  const ok = sel && sel.toLowerCase() === q.p.toLowerCase();
+  $('carrFeedback').textContent = sel ? (ok ? `Esatto! È ${q.p}` : `Sbagliato! Era ${q.p}`) : `Tempo scaduto! Era ${q.p}`;
+  $('carrFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
+}
 
-/* ═══════════════════════════════════════════
-   VERO O FALSO LAZY LOADING
-═══════════════════════════════════════════ */
+/* ── VERO O FALSO ── */
 async function renderVF(data, me, opp) {
   show('s-vf');
   $('vfMeName').textContent = me?.name||'Tu'; $('vfOppName').textContent = opp?.name||'...';
-  const idx = data.currentIndex || 0;
-  $('vfProg').textContent = (idx+1)+' / '+currentRoundsCount;
+  const idx = data.currentIndex || 0; $('vfProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = vfIdx[idx] ?? idx;
-
   const q = await fetchGameData('vf', dbIdx, 'ld-vf');
   if (!q || data.currentIndex !== idx || data.status !== 'vf_playing') return;
 
   const ans = data.roomAns?.[idx] ?? null;
   let ms = me?.score || 0; let os = opp?.score || 0;
-  
-  if (ans && !data.scored?.[idx]) {
-    const ok = ans.v === q.a;
-    if (ans.pid === myId) { if (ok) ms+=VF_PTS_WIN; else os+=VF_PTS_LOSE; } else { if (ok) os+=VF_PTS_WIN; else ms+=VF_PTS_LOSE; }
-  }
+  if (ans && !data.scored?.[idx]) { const ok = ans.v === q.a; if (ans.pid === myId) { if (ok) ms+=VF_PTS_WIN; else os+=VF_PTS_LOSE; } else { if (ok) os+=VF_PTS_WIN; else ms+=VF_PTS_LOSE; } }
   $('vfMeScore').textContent = ms; $('vfOppScore').textContent = os;
 
   if (idx !== lastIdx) {
-    lastIdx = idx; vfLocked = false;
-    const card = $('vfCard'); card.classList.remove('fade-in'); void card.offsetWidth; card.classList.add('fade-in');
-    $('vfText').textContent = q.s; $('vfFeedback').textContent = ''; $('vfV').disabled = $('vfF').disabled = false;
-    $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
-
-    startTick(data.startedAt || now(), VF_TIME, null, null, () => {
-      if (!ans && isMaster && advanceScheduledFor !== idx) {
-         advanceScheduledFor = idx;
-         clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 1000);
-      }
-    });
+    lastIdx = idx; vfLocked = false; $('vfCard').classList.remove('fade-in'); void $('vfCard').offsetWidth; $('vfCard').classList.add('fade-in');
+    $('vfText').textContent = q.s; $('vfFeedback').textContent = ''; $('vfV').disabled = $('vfF').disabled = false; $('vfV').className = 'vf-btn vero'; $('vfF').className = 'vf-btn falso';
+    startTick(data.startedAt || now(), VF_TIME, null, null, () => { if (!ans && isMaster && advanceScheduledFor !== idx) { advanceScheduledFor = idx; clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 1000); } });
   }
 
   if (ans) {
-    $('vfV').disabled = $('vfF').disabled = true;
-    clearInterval(tickId);
-
+    $('vfV').disabled = $('vfF').disabled = true; clearInterval(tickId);
     const ok = ans.v === q.a; const first = ans.pid === myId;
-    const pressedBtn = ans.v ? $('vfV') : $('vfF'); pressedBtn.classList.add('hit');
-
-    if (first) {
-      if(ok) sfx.correct(); else sfx.wrong();
-      $('vfFeedback').textContent = ok ? `⚡ Esatto! +${VF_PTS_WIN} punti 🎉` : `❌ Sbagliato! +${VF_PTS_LOSE} punti all'avversario`;
-      $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
-    } else {
-      if(!ok) sfx.correct(); else sfx.wrong();
-      const oppName = opp?.name || 'L\'avversario';
-      $('vfFeedback').textContent = ok ? `⚡ ${oppName} ha risposto prima!` : `✅ ${oppName} ha sbagliato! +${VF_PTS_LOSE} pt a te`;
-      $('vfFeedback').style.color = ok ? 'var(--red)' : 'var(--green)';
-    }
+    (ans.v ? $('vfV') : $('vfF')).classList.add('hit');
+    if (first) { if(ok) sfx.correct(); else sfx.wrong(); $('vfFeedback').textContent = ok ? `⚡ Esatto! +${VF_PTS_WIN} punti 🎉` : `❌ Sbagliato! +${VF_PTS_LOSE} punti all'avversario`; $('vfFeedback').style.color = ok ? 'var(--green)' : 'var(--red)'; } 
+    else { if(!ok) sfx.correct(); else sfx.wrong(); const oppName = opp?.name || 'L\'avversario'; $('vfFeedback').textContent = ok ? `⚡ ${oppName} ha risposto prima!` : `✅ ${oppName} ha sbagliato! +${VF_PTS_LOSE} pt a te`; $('vfFeedback').style.color = ok ? 'var(--red)' : 'var(--green)'; }
 
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
-      advanceScheduledFor = idx; 
-      const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid);
-      let updates = {};
-      
-      if (ok) {
-        updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + VF_PTS_WIN;
-      } else {
-        if (loserId) updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + VF_PTS_LOSE;
-      }
-
+      advanceScheduledFor = idx; const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid); let updates = {};
+      if (ok) { updates[`players/${ans.pid}/score`] = (data.players[ans.pid]?.score || 0) + VF_PTS_WIN; } else if (loserId) { updates[`players/${loserId}/score`] = (data.players[loserId]?.score || 0) + VF_PTS_LOSE; }
       updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
       clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('vf_playing', idx, currentRoundsCount), 2000);
     }
   }
 }
-
 $('vfV').onclick = () => { if (vfLocked) return; vfLocked = true; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? { pid:myId, v:true } : undefined); };
 $('vfF').onclick = () => { if (vfLocked) return; vfLocked = true; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c===null ? { pid:myId, v:false } : undefined); };
 
-/* ═══════════════════════════════════════════
-   IDENTIKIT: VERSIONE RIPRISTINATA E CORRETTA
-═══════════════════════════════════════════ */
+/* ── IDENTIKIT ── */
 async function renderIDK(data, me, opp) {
   show('s-idk');
-  $('idkMeName').textContent = me?.name || 'Tu'; 
-  $('idkMeScore').textContent = me?.score || 0;
-  $('idkOppName').textContent = opp?.name || '...'; 
-  $('idkOppScore').textContent = opp?.score || 0;
-
-  const idx = data.currentIndex || 0;
-  $('idkProg').textContent = (idx + 1) + ' / ' + currentRoundsCount;
+  $('idkMeName').textContent = me?.name||'Tu'; $('idkOppName').textContent = opp?.name||'...';
+  const idx = data.currentIndex || 0; $('idkProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = idkIdx[idx] ?? idx;
-
   const q = await fetchGameData('idk', dbIdx, 'ld-idk');
   if (!q || data.currentIndex !== idx || data.status !== 'idk_playing') return;
 
   const ans = data.roomAns?.[idx] ?? null;
-  const timeIsUp = (now() > (data.startedAt + IDK_TIME * 1000));
+  let ms = me?.score || 0; let os = opp?.score || 0;
+  if (ans && !data.scored?.[idx]) { const ok = ans.v.toLowerCase() === q.n.toLowerCase(); if (ans.pid === myId) { if(ok) ms += ans.pts; else os += ans.pts; } else { if(ok) os += ans.pts; else ms += ans.pts; } }
+  $('idkMeScore').textContent = ms; $('idkOppScore').textContent = os;
 
-  // Gestione aggiornamento round/nuovi indizi
   if (idx !== lastIdx) {
-    lastIdx = idx; 
-    vfLocked = false;
-    idkClueTimers.forEach(clearTimeout); 
-    idkClueTimers = [];
-    $('idkClues').innerHTML = ''; 
-    $('idkInp').value = ''; 
-    $('idkFeedback').textContent = '';
-    $('idkInp').disabled = false; 
-    $('idkBtn').disabled = false;
+    lastIdx = idx; vfLocked = false; idkClueTimers.forEach(clearTimeout); idkClueTimers = [];
+    $('idkClues').innerHTML = ''; $('idkInp').value = ''; $('idkFeedback').textContent = '';
+    $('idkInp').disabled = $('idkBtn').disabled = false; $('idkAuto').style.display = 'none';
 
     const base = data.startedAt || now();
-    q.c.forEach((clue, i) => {
-      const delay = Math.max(0, base + i * (IDK_TIME / 4) * 1000 - now());
-      idkClueTimers.push(setTimeout(() => {
-        showClue(clue, IDK_POINTS[i] ?? 1);
-      }, delay));
-    });
+    q.c.forEach((clue, i) => { const delay = Math.max(0, base + i*(IDK_TIME/4)*1000 - now()); idkClueTimers.push(setTimeout(() => { if (!DB._delegate) showClue(clue, IDK_POINTS[i] ?? 1); else showClue(clue, IDK_POINTS[i] ?? 1); }, delay)); });
+    startTick(data.startedAt || now(), IDK_TIME, null, null, () => { if (!ans && isMaster && advanceScheduledFor !== idx) { advanceScheduledFor = idx; clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 1000); } });
   }
 
-  // LOGICA DI FINE TURNO (Rivelazione o Risposta)
-  if (ans || timeIsUp) {
-    // Blocca input se qualcuno ha risposto o tempo scaduto
-    $('idkInp').disabled = true;
-    $('idkBtn').disabled = true;
-    idkClueTimers.forEach(clearTimeout);
-    
-    if (ans) {
-      const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase();
-      const first = ans.pid === myId;
-      $('idkFeedback').textContent = ok ? (first ? `Esatto! +${ans.pts} pt 🎉` : `L'avversario ha indovinato!`) : `Sbagliato! Era: ${q.n}`;
-      $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)';
-    } else if (timeIsUp) {
-      $('idkFeedback').textContent = `Tempo scaduto! Era: ${q.n}`;
-      $('idkFeedback').style.color = 'var(--yellow)';
-    }
+  if (ans) {
+    $('idkInp').disabled = $('idkBtn').disabled = true; idkClueTimers.forEach(clearTimeout); idkClueTimers = []; $('idkAuto').style.display = 'none'; clearInterval(tickId);
+    const ok = ans.v.trim().toLowerCase() === q.n.toLowerCase(); const first = ans.pid === myId;
+    if (first) { if(ok) sfx.correct(); else sfx.wrong(); $('idkFeedback').textContent = ok ? `Esatto! +${ans.pts} pt 🎉` : `Sbagliato! +${ans.pts} pt all'avversario`; $('idkFeedback').style.color = ok ? 'var(--green)' : 'var(--red)'; } 
+    else { if(!ok) sfx.correct(); else sfx.wrong(); const oppName = opp?.name || 'L\'avversario'; $('idkFeedback').textContent = ok ? `${oppName} ha indovinato! +${ans.pts} pt` : `${oppName} ha sbagliato! +${ans.pts} pt a te`; $('idkFeedback').style.color = ok ? 'var(--red)' : 'var(--green)'; }
 
-    // Avanzamento automatico per il Master
     if (isMaster && !data.scored?.[idx] && advanceScheduledFor !== idx) {
-      advanceScheduledFor = idx;
-      DB.ref('rooms/' + room + '/scored/' + idx).set(true);
-      clearTimeout(advanceTimer);
-      advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 3000);
+      advanceScheduledFor = idx; const loserId = Object.keys(data.players||{}).find(id => id !== ans.pid); const winnerId = ok ? ans.pid : loserId; let updates = {};
+      if (winnerId) updates[`players/${winnerId}/score`] = (data.players[winnerId]?.score || 0) + ans.pts; updates[`scored/${idx}`] = true; DB.ref('rooms/' + room).update(updates);
+      clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('idk_playing', idx, currentRoundsCount), 2500);
     }
   }
 }
+function showClue(text, pts) { const d = document.createElement('div'); d.className='idk-clue'; d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`; $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight; }
+$('idkInp').oninput = function() { const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML=''; if (!v) { ac.style.display='none'; return; } const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v)); if (matches.length) { ac.style.display='block'; matches.forEach(n => { const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n; d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; }; ac.appendChild(d); }); } else { ac.style.display='none'; } };
+$('idkBtn').onclick = () => { const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true; const shown = $('idkClues').children.length; const pts = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1; DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val, pts } : undefined); };
 
-function showClue(text, pts) {
-  const d = document.createElement('div'); d.className='idk-clue';
-  d.innerHTML = `<div class="idk-points">${pts} PUNT${pts===1?'O':'I'}</div>${text}`;
-  $('idkClues').appendChild(d); $('idkClues').scrollTop = $('idkClues').scrollHeight;
-}
-
-$('idkInp').oninput = function() {
-  const v = this.value.toLowerCase(), ac=$('idkAuto'); ac.innerHTML='';
-  if (!v) { ac.style.display='none'; return; }
-  const matches = PLAYER_NAMES.filter(n => n.toLowerCase().includes(v));
-  if (matches.length) {
-    ac.style.display='block';
-    matches.forEach(n => {
-      const d = document.createElement('div'); d.className='idk-ac-item'; d.textContent=n;
-      d.onclick = () => { $('idkInp').value=n; ac.style.display='none'; };
-      ac.appendChild(d);
-    });
-  } else { ac.style.display='none'; }
-};
-
-$('idkBtn').onclick = () => {
-  const val = $('idkInp').value.trim(); if (vfLocked || !val) return; vfLocked = true;
-  const shown = $('idkClues').children.length; const pts = IDK_POINTS[Math.min(shown - 1, IDK_POINTS.length - 1)] ?? 1;
-  DB.ref('rooms/'+room+'/roomAns/'+lastIdx).transaction(c => c === null ? { pid:myId, v:val, pts } : undefined);
-};
-
-
-/* ═══════════════════════════════════════════
-   FORMAZIONE LAZY LOADING
-═══════════════════════════════════════════ */
+/* ── FORMAZIONE ── */
 async function renderForm(data, me, opp, oppId) {
   show('s-form');
   $('formMeName').textContent = me?.name||'Tu'; $('formMeScore').textContent = me?.score||0;
   $('formOppName').textContent = opp?.name||'...'; $('formOppScore').textContent = opp?.score||0;
-
-  const idx = data.currentIndex || 0;
-  $('formProg').textContent = (idx+1)+' / '+currentRoundsCount;
+  const idx = data.currentIndex || 0; $('formProg').textContent = (idx+1)+' / '+currentRoundsCount;
   const dbIdx = formIdx[idx] ?? idx;
-
   const q = await fetchGameData('form', dbIdx, 'ld-form');
   if (!q || data.currentIndex !== idx || data.status !== 'form_playing') return;
 
   $('formMeSt').textContent = `${data.formAnswers?.[idx]?.[myId]?.count || 0}/11`;
-  $('formOppSt').textContent = `${data.formAnswers?.[idx]?.[oppId]?.count || 0}/11`;
+  $('formOppSt').textContent = oppId ? `${data.formAnswers?.[idx]?.[oppId]?.count || 0}/11` : '';
 
   if (idx !== lastIdx) {
     lastIdx = idx; formLocalFound.clear(); selectedBenchPlayer = null; buildFormUI(q, idx);
-    startTick(data.startedAt || now(), FORM_TIME, 'formTimerFill', null, () => {
-      if (isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx);
-    });
+    startTick(data.startedAt || now(), FORM_TIME, 'formTimerFill', null, () => { if (isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx); });
   }
-
   if (data.formFinished?.[idx] && isMaster && advanceScheduledFor !== idx) triggerFormAdvance(data, idx);
 }
-
-function triggerFormAdvance(data, idx) {
-  advanceScheduledFor = idx; clearTimeout(advanceTimer);
-  advanceTimer = setTimeout(() => nextRound('form_playing', idx, currentRoundsCount), 2000);
-}
-
-function buildFormUI(q, idx) {
-  $('formTitle').textContent = q.title; const pitch = $('formPitch'); pitch.innerHTML = '';
-  let playerIndex = 0;
-  q.layout.forEach(rowCounts => {
-    const rowDiv = document.createElement('div'); rowDiv.className = 'form-row';
-    for(let i=0; i<rowCounts[0]; i++) {
-      const expectedName = q.team[playerIndex]; const slot = document.createElement('div'); slot.className = 'form-slot'; slot.dataset.name = expectedName; slot.textContent = '?';
-      slot.onclick = () => handleSlotClick(slot, expectedName, idx); rowDiv.appendChild(slot); playerIndex++;
-    }
-    pitch.appendChild(rowDiv);
-  });
-  const bench = $('formBench'); bench.innerHTML = '';
-  [...q.bench].sort(() => Math.random() - 0.5).forEach(name => {
-    const btn = document.createElement('button'); btn.className = 'bench-btn'; btn.textContent = name;
-    btn.onclick = () => handleBenchClick(btn, name); bench.appendChild(btn);
-  });
-}
-
-function handleBenchClick(btn, name) {
-  if (formLocalFound.has(name)) return;
-  document.querySelectorAll('.bench-btn').forEach(b => b.classList.remove('selected', 'error'));
-  if (selectedBenchPlayer?.name === name) { selectedBenchPlayer = null; } else { selectedBenchPlayer = { btn, name }; btn.classList.add('selected'); }
-}
-function handleSlotClick(slot, expectedName, idx) {
-  if (!selectedBenchPlayer || formLocalFound.has(expectedName)) return;
-  if (selectedBenchPlayer.name === expectedName) {
-    sfx.correct(); // Suono corretto
-    formLocalFound.add(expectedName); slot.classList.add('filled'); slot.textContent = expectedName;
-    selectedBenchPlayer.btn.classList.add('hidden'); selectedBenchPlayer.btn.classList.remove('selected'); selectedBenchPlayer = null;
-    DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + FORM_PTS_PER_P);
-    DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => { const newCount = (c||0) + 1; if (newCount === 11) DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId); return newCount; });
-  } else {
-    sfx.wrong(); // Suono sbagliato
-    selectedBenchPlayer.btn.classList.add('error'); const benchBtnRef = selectedBenchPlayer.btn;
-    setTimeout(() => { benchBtnRef.classList.remove('error', 'selected'); }, 400); selectedBenchPlayer = null;
-  }
-}
+function triggerFormAdvance(data, idx) { advanceScheduledFor = idx; clearTimeout(advanceTimer); advanceTimer = setTimeout(() => nextRound('form_playing', idx, currentRoundsCount), 2000); }
+function buildFormUI(q, idx) { $('formTitle').textContent = q.title; const pitch = $('formPitch'); pitch.innerHTML = ''; let playerIndex = 0; q.layout.forEach(rowCounts => { const rowDiv = document.createElement('div'); rowDiv.className = 'form-row'; for(let i=0; i<rowCounts[0]; i++) { const expectedName = q.team[playerIndex]; const slot = document.createElement('div'); slot.className = 'form-slot'; slot.dataset.name = expectedName; slot.textContent = '?'; slot.onclick = () => handleSlotClick(slot, expectedName, idx); rowDiv.appendChild(slot); playerIndex++; } pitch.appendChild(rowDiv); }); const bench = $('formBench'); bench.innerHTML = ''; [...q.bench].sort(() => Math.random() - 0.5).forEach(name => { const btn = document.createElement('button'); btn.className = 'bench-btn'; btn.textContent = name; btn.onclick = () => handleBenchClick(btn, name); bench.appendChild(btn); }); }
+function handleBenchClick(btn, name) { if (formLocalFound.has(name)) return; document.querySelectorAll('.bench-btn').forEach(b => b.classList.remove('selected', 'error')); if (selectedBenchPlayer?.name === name) { selectedBenchPlayer = null; } else { selectedBenchPlayer = { btn, name }; btn.classList.add('selected'); } }
+function handleSlotClick(slot, expectedName, idx) { if (!selectedBenchPlayer || formLocalFound.has(expectedName)) return; if (selectedBenchPlayer.name === expectedName) { sfx.correct(); formLocalFound.add(expectedName); slot.classList.add('filled'); slot.textContent = expectedName; selectedBenchPlayer.btn.classList.add('hidden'); selectedBenchPlayer.btn.classList.remove('selected'); selectedBenchPlayer = null; DB.ref('rooms/'+room+'/players/'+myId+'/score').transaction(s => (s||0) + FORM_PTS_PER_P); DB.ref('rooms/'+room+'/formAnswers/'+idx+'/'+myId+'/count').transaction(c => { const newCount = (c||0) + 1; if (newCount === 11) DB.ref('rooms/'+room+'/formFinished/'+idx).set(myId); return newCount; }); } else { sfx.wrong(); selectedBenchPlayer.btn.classList.add('error'); const benchBtnRef = selectedBenchPlayer.btn; setTimeout(() => { benchBtnRef.classList.remove('error', 'selected'); }, 400); selectedBenchPlayer = null; } }
 
 /* ═══════════════════════════════════════════
-   AVANZAMENTO ROUND & RISULTATO
+   AVANZAMENTO & RISULTATO
 ═══════════════════════════════════════════ */
 function nextRound(mode, idx, max) {
   if (idx+1 >= max) { DB.ref('rooms/'+room).update({ status:'finished' }); } 
@@ -1109,12 +936,26 @@ function renderResult(me, opp) {
   const ms=me?.score||0, os=opp?.score||0;
   $('rMeScore').textContent = ms; $('rOppScore').textContent = os;
   $('rMeName').textContent = me?.name||'Tu'; $('rOppName').textContent = opp?.name||'Avversario';
-  if (ms>os) { $('rMedal').textContent='🏆'; $('rVerdict').textContent='Hai vinto! 🎉'; $('rVerdict').className='verdict win'; }
-  else if (ms<os) { $('rMedal').textContent='😔'; $('rVerdict').textContent='Hai perso. Rivincita?'; $('rVerdict').className='verdict lose'; }
-  else { $('rMedal').textContent='🤝'; $('rVerdict').textContent='Pareggio!'; $('rVerdict').className='verdict draw'; }
+  
+  if (isSolo) {
+     $('rMedal').textContent='🏆'; $('rVerdict').textContent='Allenamento Finito!'; $('rVerdict').className='verdict draw';
+  } else {
+    if (ms>os) { $('rMedal').textContent='🏆'; $('rVerdict').textContent='Hai vinto! 🎉'; $('rVerdict').className='verdict win'; }
+    else if (ms<os) { $('rMedal').textContent='😔'; $('rVerdict').textContent='Hai perso. Rivincita?'; $('rVerdict').className='verdict lose'; }
+    else { $('rMedal').textContent='🤝'; $('rVerdict').textContent='Pareggio!'; $('rVerdict').className='verdict draw'; }
+  }
 }
 
-$('btnLobby').onclick = () => { if (isMaster) DB.ref('rooms/'+room).update({ status:'lobby', scored:null, roomAns:null, startedAt:null, formAnswers:null, formFinished:null }); };
+$('btnLobby').onclick = () => { 
+  if (isMaster) {
+    if (isSolo) {
+       // Se è in solo e finisce, cancelliamo per non inquinare il DB o resettiamo. Meglio ricaricare la pagina o tornare al menu principale
+       window.location.reload(); 
+    } else {
+       DB.ref('rooms/'+room).update({ status:'lobby', scored:null, roomAns:null, startedAt:null, formAnswers:null, formFinished:null }); 
+    }
+  }
+};
 </script>
 </body>
 </html>
