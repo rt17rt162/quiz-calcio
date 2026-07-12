@@ -461,22 +461,23 @@ body {
 /* ==========================================================================
    🎛️ CONFIGURAZIONE GIOCHI: QUI PUOI CAMBIARE TEMPI E PUNTI
 ========================================================================== */
-const QUIZ_TIME     = 10; 
+const QUIZ_TIME     = 15; 
 const QUIZ_PTS_WIN  = 1;  
 
-const VF_TIME       = 10; 
+const VF_TIME       = 15; 
 const VF_PTS_WIN    = 1;  // Vero o Falso ora è equo (non di velocità)
 
-const CARR_TIME     = 15; 
+const CARR_TIME     = 25; 
 const CARR_PTS_WIN  = 2;  
-
+const CARR_PTS_LOSE = 0; // o il valore che vuoi assegnare a chi sbaglia
+  
 const IDK_TIME      = 15; 
 const IDK_POINTS    = [4, 3, 2, 1]; // Punti a scalare per Identikit
 
 const FORM_TIME     = 60; 
 const FORM_PTS_PER_P= 2;  // Punti per ogni giocatore indovinato in Formazione
 
-const CARR_PTS_LOSE = 0; // o il valore che vuoi assegnare a chi sbaglia
+
 // DIZIONARIO PER L'AUTOCOMPLETAMENTO (Usato in Carriera e Identikit)
 let PLAYER_NAMES = []; 
 let currentRoundsCount = 5; 
