@@ -168,7 +168,21 @@ body {
 .idk-input-area button:active { transform: scale(.95); }
 
 /* Menu a tendina Autocompletamento */
-.idk-autocomplete { position: absolute; bottom: 100%; left: 0; width: calc(100% - 110px); max-height: 150px; background: #1e2321; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); overflow-y: auto; display: none; z-index: 10; margin-bottom: 8px; box-shadow: 0 -5px 20px rgba(0,0,0,.5); }
+.idk-autocomplete { 
+    position: absolute; 
+    bottom: 100%; 
+    left: 0; 
+    right: 0; /* Aggiunto right: 0 per allinearsi bene */
+    max-height: 150px; 
+    background: #1e2321; 
+    border-radius: 14px; 
+    border: 1px solid rgba(255,255,255,.1); 
+    overflow-y: auto; /* Questo crea lo scroll se i nomi sono tanti */
+    display: none; 
+    z-index: 100; 
+    margin-bottom: 8px; 
+    box-shadow: 0 -5px 20px rgba(0,0,0,.8); 
+}
 .idk-ac-item { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.05); font-weight: 600; cursor: pointer; }
 .idk-ac-item:active { background: rgba(255,255,255,.1); }
 
